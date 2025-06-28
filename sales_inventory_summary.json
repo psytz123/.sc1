@@ -1,0 +1,21 @@
+{
+  "Report Date": "2025-06-28 12:48:46",
+  "Sales Summary": {
+    "Total Sales Value": "$3,051,812.48",
+    "Total Yards Sold": "583,737",
+    "Average Price per Yard": "$6.03",
+    "Number of Transactions": 1540,
+    "Unique Customers": 50,
+    "Unique Styles": 109
+  },
+  "Inventory Summary": {
+    "Total Inventory (yards)": "557,064",
+    "Total Weight (lbs)": "473,897",
+    "Number of Styles": 459
+  },
+  "Orders Summary": {
+    "Total Orders Value": "$491,603.92",
+    "Total Yards on Order": "82,782",
+    "Open Orders": 79
+  }
+}

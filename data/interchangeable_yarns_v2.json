@@ -1,0 +1,414 @@
+{
+  "Group_1_1-Jan_100%_Lurex_Sil": {
+    "yarn_ids": [
+      18830.0,
+      18966.0
+    ],
+    "specifications": {
+      "Description": "1-Jan",
+      "Blend": "100%",
+      "Type": "Lurex",
+      "Color": "Silver"
+    }
+  },
+  "Group_2_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18766.0,
+      18625.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Aqua"
+    }
+  },
+  "Group_3_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18514.0,
+      18563.0,
+      18372.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Black"
+    }
+  },
+  "Group_4_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18139.0,
+      11429.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Blue"
+    }
+  },
+  "Group_5_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18673.0,
+      14148.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "COOL GREY"
+    }
+  },
+  "Group_6_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18961.0,
+      18787.0,
+      18290.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Dawn Grey"
+    }
+  },
+  "Group_7_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18039.0,
+      18559.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Daybreak"
+    }
+  },
+  "Group_8_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18765.0,
+      18728.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "INDIGO"
+    }
+  },
+  "Group_9_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18613.0,
+      11967.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Merrimack"
+    }
+  },
+  "Group_10_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18188.0,
+      18566.0,
+      18360.0,
+      6938.0,
+      18753.0,
+      18620.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_11_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18789.0,
+      18733.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Orange"
+    }
+  },
+  "Group_12_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18145.0,
+      18047.0,
+      18547.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Pewter"
+    }
+  },
+  "Group_13_1/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18618.0,
+      12047.0
+    ],
+    "specifications": {
+      "Description": "1/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Silver"
+    }
+  },
+  "Group_14_1/150/50_100%_Polyet": {
+    "yarn_ids": [
+      18761.0,
+      18713.0
+    ],
+    "specifications": {
+      "Description": "1/150/50",
+      "Blend": "100%",
+      "Type": "Polyethylene",
+      "Color": "Natural"
+    }
+  },
+  "Group_15_1/160/36_100%_Polyes": {
+    "yarn_ids": [
+      18315.0,
+      18314.0
+    ],
+    "specifications": {
+      "Description": "1/160/36",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Black"
+    }
+  },
+  "Group_16_1/200/192_100%_Polye": {
+    "yarn_ids": [
+      18507.0,
+      18317.0,
+      18569.0
+    ],
+    "specifications": {
+      "Description": "1/200/192",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_17_1/300/120_100%_Polye": {
+    "yarn_ids": [
+      18973.0,
+      18773.0
+    ],
+    "specifications": {
+      "Description": "1/300/120",
+      "Blend": "100%",
+      "Type": "Polyethylene",
+      "Color": "Haze"
+    }
+  },
+  "Group_18_1/300/68_100%_Polyes": {
+    "yarn_ids": [
+      18321.0,
+      18413.0,
+      12526.0
+    ],
+    "specifications": {
+      "Description": "1/300/68",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_19_1/75/36_100%_Polyest": {
+    "yarn_ids": [
+      18993.0,
+      18228.0,
+      18363.0
+    ],
+    "specifications": {
+      "Description": "1/75/36",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Black"
+    }
+  },
+  "Group_20_1/75/72_100%_Polyest": {
+    "yarn_ids": [
+      11104.0,
+      18457.0,
+      18845.0
+    ],
+    "specifications": {
+      "Description": "1/75/72",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_21_2/150/48_100%_Polyes": {
+    "yarn_ids": [
+      18644.0,
+      18373.0
+    ],
+    "specifications": {
+      "Description": "2/150/48",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Black"
+    }
+  },
+  "Group_22_2/300/68_100%_Polyes": {
+    "yarn_ids": [
+      18391.0,
+      18927.0,
+      11927.0,
+      18763.0
+    ],
+    "specifications": {
+      "Description": "2/300/68",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_23_20/1_100%_Combed Cot": {
+    "yarn_ids": [
+      18876.0,
+      18576.0
+    ],
+    "specifications": {
+      "Description": "20/1",
+      "Blend": "100%",
+      "Type": "Combed Cotton",
+      "Color": "Natural"
+    }
+  },
+  "Group_24_20/1_100%_Polyester_": {
+    "yarn_ids": [
+      12205.0,
+      18077.0,
+      18359.0,
+      18438.0
+    ],
+    "specifications": {
+      "Description": "20/1",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_25_24/1_100%_Bamboo_Nat": {
+    "yarn_ids": [
+      18319.0,
+      18426.0
+    ],
+    "specifications": {
+      "Description": "24/1",
+      "Blend": "100%",
+      "Type": "Bamboo",
+      "Color": "Natural"
+    }
+  },
+  "Group_26_24/1_100%_Combed Cot": {
+    "yarn_ids": [
+      7716.0,
+      19040.0
+    ],
+    "specifications": {
+      "Description": "24/1",
+      "Blend": "100%",
+      "Type": "Combed Cotton",
+      "Color": "Natural"
+    }
+  },
+  "Group_27_24/1_95/5_Polyester_": {
+    "yarn_ids": [
+      19046.0,
+      18998.0
+    ],
+    "specifications": {
+      "Description": "24/1",
+      "Blend": "95/5",
+      "Type": "Polyester",
+      "Color": " 5% Black"
+    }
+  },
+  "Group_28_3/300/72_100%_Polyes": {
+    "yarn_ids": [
+      18343.0,
+      18414.0
+    ],
+    "specifications": {
+      "Description": "3/300/72",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_29_30/1_100%_Combed Cot": {
+    "yarn_ids": [
+      18110.0,
+      18782.0
+    ],
+    "specifications": {
+      "Description": "30/1",
+      "Blend": "100%",
+      "Type": "Combed Cotton",
+      "Color": "Natural"
+    }
+  },
+  "Group_30_30/1_100%_Polyester_": {
+    "yarn_ids": [
+      18439.0,
+      19030.0,
+      18376.0
+    ],
+    "specifications": {
+      "Description": "30/1",
+      "Blend": "100%",
+      "Type": "Polyester",
+      "Color": "Natural"
+    }
+  },
+  "Group_31_30/1_100%_Rayon_Natu": {
+    "yarn_ids": [
+      18097.0,
+      18086.0
+    ],
+    "specifications": {
+      "Description": "30/1",
+      "Blend": "100%",
+      "Type": "Rayon",
+      "Color": "Natural"
+    }
+  },
+  "Group_32_30/1_90/10_Polyester": {
+    "yarn_ids": [
+      19000.0,
+      19034.0
+    ],
+    "specifications": {
+      "Description": "30/1",
+      "Blend": "90/10",
+      "Type": "Polyester",
+      "Color": " 10% Black"
+    }
+  },
+  "Group_33_30/1_98/2_Polyester_": {
+    "yarn_ids": [
+      18899.0,
+      18872.0
+    ],
+    "specifications": {
+      "Description": "30/1",
+      "Blend": "98/2",
+      "Type": "Polyester",
+      "Color": " 2% Black"
+    }
+  }
+}

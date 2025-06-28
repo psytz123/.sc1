@@ -1,0 +1,6 @@
+style_id,forecast_qty,forecast_date,source,confidence,notes
+STYLE-001,38215,2025-09-26,sales_history,0.7259363201985654,"Based on 364 days history, weekly avg: 2402.0 yards, with seasonality adjustment"
+STYLE-002,33373,2025-09-26,sales_history,0.748085587199003,"Based on 364 days history, weekly avg: 2284.0 yards, with seasonality adjustment"
+STYLE-003,38010,2025-09-26,sales_history,0.7616331180473873,"Based on 364 days history, weekly avg: 2547.1 yards, with seasonality adjustment"
+STYLE-005,34391,2025-09-26,sales_history,0.7322473948462596,"Based on 363 days history, weekly avg: 2391.6 yards, with seasonality adjustment"
+STYLE-004,38806,2025-09-26,sales_history,0.7815757071246276,"Based on 362 days history, weekly avg: 2539.1 yards, with seasonality adjustment"

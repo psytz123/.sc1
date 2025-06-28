@@ -1,0 +1,125 @@
+Loading data files...
+
+Cleaning and preparing data...
+
+============================================================
+SALES ACTIVITY ANALYSIS
+============================================================
+
+Overall Sales Metrics:
+- Total Sales Value: $3,051,812.48
+- Total Yards Sold: 583,737 yards
+- Average Price per Yard: $6.03
+- Number of Transactions: 1,540
+- Unique Customers: 50
+- Unique Styles: 109
+
+Top 10 Customers by Sales Value:
+                                       Total Sales ($)  ...  Order Count
+Customer                                                ...             
+JEFFCO FIBRES INC                            503569.09  ...           68
+Serta Simmons Bedding Company                388368.78  ...          897
+Southerland Inc                              297144.83  ...          115
+Prana Sleep                                  281111.46  ...           35
+Brentwood / Silver Rest                      260869.40  ...            5
+BROOKLYN BEDDING                             252871.39  ...           69
+SEALY INC                                    201154.88  ...           56
+Earthing / Barefoot Sales Corporation         84670.71  ...            2
+Reliefmart/Ultrabed                           73802.75  ...           14
+Lebanon Apparel Corporation                   72996.00  ...            4
+
+[10 rows x 3 columns]
+
+Top 10 Selling Styles by Volume:
+             Total Yards  Total Sales ($)  Order Count
+Style                                                 
+CT2155-1          244834        344134.32          130
+70005413           33297        189387.54          170
+C1B4654-1SC        24022        264861.70            6
+CMR4067-3          17071         99004.84           14
+C1B4312-1          16767        206574.56           16
+CT22150-1          14742         57493.80           14
+C1B3987-1          13284        182628.90           15
+CF5388-0           11127         21475.11            1
+CF5127              9986         29458.70            2
+C1B3194-1           9196         36597.30           15
+
+Monthly Sales Trend:
+         Sales ($)   Yards
+Month                     
+2025-01  427845.60   79470
+2025-02  469851.74  100641
+2025-03  473949.14   99329
+2025-04  470908.96   95932
+2025-05  623346.17  116563
+2025-06  585910.87   91802
+
+============================================================
+INVENTORY ANALYSIS
+============================================================
+
+Inventory Summary:
+- Total Inventory: 557,064 yards
+- Total Weight: 473,897 lbs
+- Number of Styles in Stock: 459
+
+Top 10 Inventory Items by Yards:
+          style_id      yds      lbs
+181     CF5105-0/0  60300.0  29721.0
+307    CF5394-0/RW  49823.0  12051.0
+306     CF5394-0/0  42471.0  10762.0
+367     CT2155-1/0  32138.0  10479.0
+369  CT2155-1NYL/0  22642.0   7187.0
+384    CT22121-1/0  14976.0  10704.0
+179     CF5092-0/0  12415.0   6292.0
+458  MT101226-86/0  10574.0  18092.0
+81     C1B4240-1/0   9983.0   9451.0
+298  CF5380-0/SFRW   9952.0   2182.0
+
+============================================================
+CURRENT ORDERS ANALYSIS
+============================================================
+
+Current Orders Summary:
+- Total Orders Value: $491,603.92
+- Total Yards on Order: 82,782 yards
+- Number of Open Orders: 79
+
+Top Customers by Pending Order Volume:
+                                    Total Yards  Order Count  Estimated Value
+Sold To                                                                      
+MATTRESS SAFE INC                         30000            1         60000.00
+SEALY INC                                 13662            1         21995.82
+Zonkd Limitada de CV                      11000           12        132919.00
+Prana Sleep                                6800            7         82460.00
+Brentwood / Silver Rest                    6284            1         69124.00
+Reliefmart/Ultrabed                        3126            2         27061.54
+Crypton Inc                                3000            3         31080.00
+Serta Simmons Bedding Company              2710           40         13859.00
+Paramount Industrial Co Inc                2200            2         21890.00
+SALT LAKE MATTRESS AND MFG (Serta)         1000            2          6450.00
+
+============================================================
+INTEGRATED ANALYSIS
+============================================================
+
+Style Overlap Analysis:
+- Styles in sales history: 109
+- Styles in current orders: 26
+- Styles in inventory: 439
+- Styles in both sales and orders: 10
+- Styles in both sales and inventory: 51
+
+Demand vs Supply Analysis (Top 20 styles by sales):
+Style | Historical Sales (yds) | Current Inventory (yds) | Pending Orders (yds)
+--------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\psytz\.sc1\analyze_sales_inventory.py", line 174, in <module>
+    orders_match = orders_df[orders_df['fBase'].str.startswith(style)]
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\psytz\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\core\frame.py", line 4097, in __getitem__
+    if com.is_bool_indexer(key):
+       ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\psytz\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\core\common.py", line 136, in is_bool_indexer
+    raise ValueError(na_msg)
+ValueError: Cannot mask with non-boolean array containing NA / NaN values

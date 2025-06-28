@@ -1,0 +1,562 @@
+{
+  "1-Jan_Lurex_Silver": {
+    "yarn_ids": [
+      18830,
+      18966
+    ],
+    "suppliers": [
+      "MERIDIAN SPECIALTY YARN GROUP INC",
+      "Betareks A. S."
+    ],
+    "specifications": {
+      "description": "1-Jan",
+      "blend": "100%",
+      "type": "Lurex",
+      "color": "Silver"
+    }
+  },
+  "1_150_48_Polyester_Aqua": {
+    "yarn_ids": [
+      18766,
+      18625
+    ],
+    "suppliers": [
+      "OMARA TEXTILES",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Aqua"
+    }
+  },
+  "1_150_48_Polyester_Black": {
+    "yarn_ids": [
+      18514,
+      18563,
+      18372
+    ],
+    "suppliers": [
+      "NORMTEX",
+      "AKRA POLYESTER GROUP/DAK",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Black"
+    }
+  },
+  "1_150_48_Polyester_Blue": {
+    "yarn_ids": [
+      18139,
+      11429
+    ],
+    "suppliers": [
+      "MERIDIAN SPECIALTY YARN GROUP INC",
+      "OMARA TEXTILES"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Blue"
+    }
+  },
+  "1_150_48_Polyester_COOL_GREY": {
+    "yarn_ids": [
+      18673,
+      14148
+    ],
+    "suppliers": [
+      "DECA GLOBAL",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "COOL GREY"
+    }
+  },
+  "1_150_48_Polyester_Dawn_Grey": {
+    "yarn_ids": [
+      18961,
+      18787,
+      18290
+    ],
+    "suppliers": [
+      "OMARA TEXTILES",
+      "MERIDIAN SPECIALTY YARN GROUP INC",
+      "UNIFI"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Dawn Grey"
+    }
+  },
+  "1_150_48_Polyester_Daybreak": {
+    "yarn_ids": [
+      18039,
+      18559
+    ],
+    "suppliers": [
+      "OMARA TEXTILES",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Daybreak"
+    }
+  },
+  "1_150_48_Polyester_INDIGO": {
+    "yarn_ids": [
+      18765,
+      18728
+    ],
+    "suppliers": [
+      "OMARA TEXTILES",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "INDIGO"
+    }
+  },
+  "1_150_48_Polyester_Merrimack": {
+    "yarn_ids": [
+      18613,
+      11967
+    ],
+    "suppliers": [
+      "AKRA POLYESTER GROUP/DAK",
+      "OMARA TEXTILES"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Merrimack"
+    }
+  },
+  "1_150_48_Polyester_Natural": {
+    "yarn_ids": [
+      18188,
+      18566,
+      18360,
+      6938,
+      18753,
+      18620
+    ],
+    "suppliers": [
+      "AKRA POLYESTER GROUP/DAK",
+      "AKRA POLYESTER GROUP/DAK",
+      "NORMTEX",
+      "UNIFI",
+      "MERIDIAN SPECIALTY YARN GROUP INC",
+      "UNIFI"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "1_150_48_Polyester_Orange": {
+    "yarn_ids": [
+      18789,
+      18733
+    ],
+    "suppliers": [
+      "DECA GLOBAL",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Orange"
+    }
+  },
+  "1_150_48_Polyester_Pewter": {
+    "yarn_ids": [
+      18145,
+      18047,
+      18547
+    ],
+    "suppliers": [
+      "KC TEX INC",
+      "OMARA TEXTILES",
+      "MERIDIAN SPECIALTY YARN GROUP INC"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Pewter"
+    }
+  },
+  "1_150_48_Polyester_Silver": {
+    "yarn_ids": [
+      18618,
+      12047
+    ],
+    "suppliers": [
+      "AKRA POLYESTER GROUP/DAK",
+      "OMARA TEXTILES"
+    ],
+    "specifications": {
+      "description": "1/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Silver"
+    }
+  },
+  "1_150_50_Polyethylene_Natural": {
+    "yarn_ids": [
+      18761,
+      18713
+    ],
+    "suppliers": [
+      "MINIFIBERS",
+      "MINIFIBERS"
+    ],
+    "specifications": {
+      "description": "1/150/50",
+      "blend": "100%",
+      "type": "Polyethylene",
+      "color": "Natural"
+    }
+  },
+  "1_160_36_Polyester_Black": {
+    "yarn_ids": [
+      18315,
+      18314
+    ],
+    "suppliers": [
+      "PROMPTEX YARNS INC",
+      "PROMPTEX YARNS INC"
+    ],
+    "specifications": {
+      "description": "1/160/36",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Black"
+    }
+  },
+  "1_200_192_Polyester_Natural": {
+    "yarn_ids": [
+      18507,
+      18317,
+      18569
+    ],
+    "suppliers": [
+      "DECA GLOBAL",
+      "CS AMERICA",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "1/200/192",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "1_300_120_Polyethylene_Haze": {
+    "yarn_ids": [
+      18973,
+      18773
+    ],
+    "suppliers": [
+      "VERTEX",
+      "VERTEX"
+    ],
+    "specifications": {
+      "description": "1/300/120",
+      "blend": "100%",
+      "type": "Polyethylene",
+      "color": "Haze"
+    }
+  },
+  "1_300_68_Polyester_Natural": {
+    "yarn_ids": [
+      18321,
+      18413,
+      12526
+    ],
+    "suppliers": [
+      "KC TEX INC",
+      "DECA GLOBAL",
+      "UNIFI"
+    ],
+    "specifications": {
+      "description": "1/300/68",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "1_75_36_Polyester_Black": {
+    "yarn_ids": [
+      18993,
+      18228,
+      18363
+    ],
+    "suppliers": [
+      "DECA GLOBAL",
+      "NORMTEX",
+      "PROMPTEX YARNS INC"
+    ],
+    "specifications": {
+      "description": "1/75/36",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Black"
+    }
+  },
+  "1_75_72_Polyester_Natural": {
+    "yarn_ids": [
+      11104,
+      18457,
+      18845
+    ],
+    "suppliers": [
+      "CS AMERICA",
+      "CS AMERICA",
+      "CS AMERICA"
+    ],
+    "specifications": {
+      "description": "1/75/72",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "2_150_48_Polyester_Black": {
+    "yarn_ids": [
+      18644,
+      18373
+    ],
+    "suppliers": [
+      "PROMPTEX YARNS INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "2/150/48",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Black"
+    }
+  },
+  "2_300_68_Polyester_Natural": {
+    "yarn_ids": [
+      18391,
+      18927,
+      11927,
+      18763
+    ],
+    "suppliers": [
+      "PROMPTEX YARNS INC",
+      "DECA GLOBAL",
+      "UNIFI",
+      "MUTU GADING TEKSTIL"
+    ],
+    "specifications": {
+      "description": "2/300/68",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "20_1_Combed_Cotton_Natural": {
+    "yarn_ids": [
+      18876,
+      18576
+    ],
+    "suppliers": [
+      "DUNAWAY YARNS INC",
+      "PARKDALE YARN MILLS"
+    ],
+    "specifications": {
+      "description": "20/1",
+      "blend": "100%",
+      "type": "Combed Cotton",
+      "color": "Natural"
+    }
+  },
+  "20_1_Polyester_Natural": {
+    "yarn_ids": [
+      12205,
+      18077,
+      18359,
+      18438
+    ],
+    "suppliers": [
+      "KC TEX INC",
+      "KC TEX INC",
+      "PROMPTEX YARNS INC",
+      "BIELTEX, S.L."
+    ],
+    "specifications": {
+      "description": "20/1",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "24_1_Bamboo_Natural": {
+    "yarn_ids": [
+      18319,
+      18426
+    ],
+    "suppliers": [
+      "KC TEX INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "24/1",
+      "blend": "100%",
+      "type": "Bamboo",
+      "color": "Natural"
+    }
+  },
+  "24_1_Combed_Cotton_Natural": {
+    "yarn_ids": [
+      7716,
+      19040
+    ],
+    "suppliers": [
+      "PARKDALE YARN MILLS",
+      "DUNAWAY YARNS INC"
+    ],
+    "specifications": {
+      "description": "24/1",
+      "blend": "100%",
+      "type": "Combed Cotton",
+      "color": "Natural"
+    }
+  },
+  "24_1_Polyester__5__Black": {
+    "yarn_ids": [
+      19046,
+      18998
+    ],
+    "suppliers": [
+      "DUNAWAY YARNS INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "24/1",
+      "blend": "95/5",
+      "type": "Polyester",
+      "color": " 5% Black"
+    }
+  },
+  "3_300_72_Polyester_Natural": {
+    "yarn_ids": [
+      18343,
+      18414
+    ],
+    "suppliers": [
+      "PROMPTEX YARNS INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "3/300/72",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "30_1_Combed_Cotton_Natural": {
+    "yarn_ids": [
+      18110,
+      18782
+    ],
+    "suppliers": [
+      "KC TEX INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "30/1",
+      "blend": "100%",
+      "type": "Combed Cotton",
+      "color": "Natural"
+    }
+  },
+  "30_1_Polyester_Natural": {
+    "yarn_ids": [
+      18439,
+      19030,
+      18376
+    ],
+    "suppliers": [
+      "BIELTEX, S.L.",
+      "DUNAWAY YARNS INC",
+      "DECA GLOBAL"
+    ],
+    "specifications": {
+      "description": "30/1",
+      "blend": "100%",
+      "type": "Polyester",
+      "color": "Natural"
+    }
+  },
+  "30_1_Rayon_Natural": {
+    "yarn_ids": [
+      18097,
+      18086
+    ],
+    "suppliers": [
+      "EDPA USA, LLC",
+      "KC TEX INC"
+    ],
+    "specifications": {
+      "description": "30/1",
+      "blend": "100%",
+      "type": "Rayon",
+      "color": "Natural"
+    }
+  },
+  "30_1_Polyester__10__Black": {
+    "yarn_ids": [
+      19000,
+      19034
+    ],
+    "suppliers": [
+      "DECA GLOBAL",
+      "DUNAWAY YARNS INC"
+    ],
+    "specifications": {
+      "description": "30/1",
+      "blend": "90/10",
+      "type": "Polyester",
+      "color": " 10% Black"
+    }
+  },
+  "30_1_Polyester__2__Black": {
+    "yarn_ids": [
+      18899,
+      18872
+    ],
+    "suppliers": [
+      "PARKDALE YARN MILLS",
+      "PARKDALE YARN MILLS"
+    ],
+    "specifications": {
+      "description": "30/1",
+      "blend": "98/2",
+      "type": "Polyester",
+      "color": " 2% Black"
+    }
+  }
+}

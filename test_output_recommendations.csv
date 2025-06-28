@@ -1,0 +1,24 @@
+material_id,supplier_id,order_quantity,cost_per_unit,total_cost,lead_time_days,risk,reasoning
+FABRIC-DENIM,FabricWorld,4407.424022187233,15.93,70210.26467344262,20,medium,Material FABRIC-DENIM requires 33982.90 units | With 15% safety stock: 39080.34 | EOQ: 4407.42 | Total cost optimized: $0.00
+FABRIC-DENIM,TextilePro,34672.91327781277,20.87,723623.7001079525,20,medium,Material FABRIC-DENIM requires 33982.90 units | With 15% safety stock: 39080.34 | EOQ: 3456.70 | Total cost optimized: $0.00
+THREAD-POLYESTER,CottonMills,3416.11992228773,4.62,15782.474040969313,25,medium,Material THREAD-POLYESTER requires 23844.93 units | With 15% safety stock: 27421.67 | EOQ: 3416.12 | Total cost optimized: $0.00
+THREAD-POLYESTER,YarnCorp,24005.547277712274,5.27,126509.23415354367,24,medium,Material THREAD-POLYESTER requires 23844.93 units | With 15% safety stock: 27421.67 | EOQ: 4757.32 | Total cost optimized: $0.00
+THREAD-COTTON,YarnCorp,4097.903252392353,2.46,10080.84200088519,25,medium,Material THREAD-COTTON requires 9498.69 units | With 15% safety stock: 10923.49 | EOQ: 4097.90 | Total cost optimized: $0.00
+THREAD-COTTON,CottonMills,6825.586797607645,4.53,30919.908193162635,13,low,Material THREAD-COTTON requires 9498.69 units | With 15% safety stock: 10923.49 | EOQ: 3612.55 | Total cost optimized: $0.00
+FABRIC-COTTON,FabricWorld,1959.927164226247,16.78,32887.577815716424,23,medium,Material FABRIC-COTTON requires 30682.29 units | With 15% safety stock: 35284.64 | EOQ: 1959.93 | Total cost optimized: $0.00
+FABRIC-COTTON,TextilePro,33324.70978577375,24.99,832784.4975464861,17,medium,Material FABRIC-COTTON requires 30682.29 units | With 15% safety stock: 35284.64 | EOQ: 2528.75 | Total cost optimized: $0.00
+BUTTON-PLASTIC,ZipperInc,26383.970410180176,0.92,24273.252777365764,15,medium,Material BUTTON-PLASTIC requires 57686.90 units | With 15% safety stock: 66339.93 | EOQ: 26383.97 | Total cost optimized: $0.00
+BUTTON-PLASTIC,AccessoryPlus,39955.96458981982,1.35,53940.552196256765,15,medium,Material BUTTON-PLASTIC requires 57686.90 units | With 15% safety stock: 66339.93 | EOQ: 16117.03 | Total cost optimized: $0.00
+YARN-POLYESTER,FiberTech,4651.900006659975,3.9,18142.410025973903,26,medium,Material YARN-POLYESTER requires 29734.06 units | With 15% safety stock: 34194.17 | EOQ: 4651.90 | Total cost optimized: $0.00
+YARN-POLYESTER,YarnCorp,3456.646387403607,7.71,26650.743646881812,14,low,Material YARN-POLYESTER requires 29734.06 units | With 15% safety stock: 34194.17 | EOQ: 3456.65 | Total cost optimized: $0.00
+YARN-POLYESTER,CottonMills,26085.621455936416,7.26,189381.6117700984,25,medium,Material YARN-POLYESTER requires 29734.06 units | With 15% safety stock: 34194.17 | EOQ: 4991.52 | Total cost optimized: $0.00
+ZIPPER-YKK,ButtonCo,20823.337522500686,1.3,27070.33877925089,11,low,Material ZIPPER-YKK requires 68301.20 units | With 15% safety stock: 78546.38 | EOQ: 20823.34 | Total cost optimized: $0.00
+ZIPPER-YKK,AccessoryPlus,57723.042477499315,1.42,81966.72031804902,8,low,Material ZIPPER-YKK requires 68301.20 units | With 15% safety stock: 78546.38 | EOQ: 15873.74 | Total cost optimized: $0.00
+YARN-WOOL,CottonMills,5142.1921843969585,3.37,17329.18766141775,13,low,Material YARN-WOOL requires 12612.28 units | With 15% safety stock: 14504.12 | EOQ: 5142.19 | Total cost optimized: $0.00
+YARN-WOOL,FiberTech,9361.925215603042,5.98,55984.31278930619,16,medium,Material YARN-WOOL requires 12612.28 units | With 15% safety stock: 14504.12 | EOQ: 3092.54 | Total cost optimized: $0.00
+FABRIC-SILK,FabricWorld,1627.9569834668132,24.2,39396.55899989688,21,medium,Material FABRIC-SILK requires 20775.38 units | With 15% safety stock: 23891.69 | EOQ: 1627.96 | Total cost optimized: $0.00
+FABRIC-SILK,TextilePro,1750.0,11.71,20492.5,8,low,Material FABRIC-SILK requires 20775.38 units | With 15% safety stock: 23891.69 | EOQ: 3311.29 | Total cost optimized: $0.00
+BUTTON-METAL,AccessoryPlus,11278.820909504955,0.87,9812.57419126931,9,low,Material BUTTON-METAL requires 16185.90 units | With 15% safety stock: 18613.78 | EOQ: 11278.82 | Total cost optimized: $0.00
+BUTTON-METAL,ButtonCo,7334.964090495045,1.53,11222.495058457418,20,medium,Material BUTTON-METAL requires 16185.90 units | With 15% safety stock: 18613.78 | EOQ: 9397.89 | Total cost optimized: $0.00
+YARN-COTTON,FiberTech,2109.231558168904,3.31,6981.556457539073,13,low,Material YARN-COTTON requires 2767.51 units | With 15% safety stock: 3182.63 | EOQ: 2109.23 | Total cost optimized: $0.00
+YARN-COTTON,YarnCorp,1073.402641831096,4.11,4411.684857925805,30,medium,Material YARN-COTTON requires 2767.51 units | With 15% safety stock: 3182.63 | EOQ: 1522.21 | Total cost optimized: $0.00

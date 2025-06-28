@@ -1,0 +1,151 @@
+{
+  "18669": {
+    "total_qty": 10000.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "1853/L",
+        "style_qty": 10000.0,
+        "percentage": 100.0,
+        "yarn_qty": 10000.0
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 3070.8129513160957,
+      "Week 17": 2329.3733985557883,
+      "Week 18": 1535.4064756580478,
+      "Week 19": 1535.4064756580478,
+      "Week 20": 1528.8842301420918
+    }
+  },
+  "18903": {
+    "total_qty": 8000.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "1853/LU",
+        "style_qty": 8000.0,
+        "percentage": 100.0,
+        "yarn_qty": 8000.0
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 1669.6701302352926,
+      "Week 17": 1669.6701302352926,
+      "Week 18": 1669.6701302352926,
+      "Week 19": 1669.6701302352926,
+      "Week 20": 1321.4217246271232
+    }
+  },
+  "18320": {
+    "total_qty": 655.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "180001/20ST2",
+        "style_qty": 5000.0,
+        "percentage": 13.1,
+        "yarn_qty": 655.0
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 502.09215017064844,
+      "Week 17": 152.90784982935153
+    }
+  },
+  "18707": {
+    "total_qty": 2860.0000000000005,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "180001/20ST2",
+        "style_qty": 5000.0,
+        "percentage": 57.2,
+        "yarn_qty": 2860.0000000000005
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 2192.43316483402,
+      "Week 17": 667.5668351659805
+    }
+  },
+  "18708": {
+    "total_qty": 1485.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "180001/20ST2",
+        "style_qty": 5000.0,
+        "percentage": 29.7,
+        "yarn_qty": 1485.0
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 1138.341027699719,
+      "Week 17": 346.658972300281
+    }
+  },
+  "19057": {
+    "total_qty": 3000.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "2027-2.9/B",
+        "style_qty": 3000.0,
+        "percentage": 100.0,
+        "yarn_qty": 3000.0
+      }
+    ],
+    "weekly_breakdown": {
+      "Week 21": 1220.8290790279764,
+      "Week 22": 1220.8290790279764,
+      "Week 23": 558.4031039411884
+    }
+  },
+  "18696": {
+    "total_qty": 4025.9999999999995,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "205FLX2006/B",
+        "style_qty": 7500.0,
+        "percentage": 53.68,
+        "yarn_qty": 4025.9999999999995
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 250.72584639420276,
+      "Week 17": 250.72584639420276,
+      "Week 18": 250.72584639420276,
+      "Week 19": 250.72584639420276,
+      "Week 20": 250.72584639420276,
+      "Week 21": 250.72584639420276,
+      "Week 22": 250.72584639420276,
+      "Week 23": 250.72584639420276,
+      "Week 24": 250.72584639420276
+    }
+  },
+  "18870": {
+    "total_qty": 3474.0,
+    "unit": "yards",
+    "sources": [
+      {
+        "style_id": "205FLX2006/B",
+        "style_qty": 7500.0,
+        "percentage": 46.32,
+        "yarn_qty": 3474.0
+      }
+    ],
+    "weekly_breakdown": {
+      "This Week": 216.33040563966253,
+      "Week 17": 216.33040563966253,
+      "Week 18": 216.33040563966253,
+      "Week 19": 216.33040563966253,
+      "Week 20": 216.33040563966253,
+      "Week 21": 216.33040563966253,
+      "Week 22": 216.33040563966253,
+      "Week 23": 216.33040563966253,
+      "Week 24": 216.33040563966253
+    }
+  }
+}

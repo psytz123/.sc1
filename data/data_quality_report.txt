@@ -1,0 +1,172 @@
+============================================================
+BEVERLY KNITS DATA QUALITY REPORT
+============================================================
+Total Issues Found: 84
+
+🔍 Marked For Removal: 10 issues
+   📁 Supplier_ID.csv
+   📍 Row 0, Column: Lead_time
+   ❌ Current: AKRA POLYESTER GROUP/DAK
+   ✅ Action: Confirm removal or provide valid lead time/MOQ data
+
+   📁 Supplier_ID.csv
+   📍 Row 1, Column: Lead_time
+   ❌ Current: AMES (Do not Use)
+   ✅ Action: Confirm removal or provide valid lead time/MOQ data
+
+   📁 Supplier_ID.csv
+   📍 Row 6, Column: Lead_time
+   ❌ Current: BURLINGTON MANUFACTURING SERVICE
+   ✅ Action: Confirm removal or provide valid lead time/MOQ data
+
+   📁 Supplier_ID.csv
+   📍 Row 7, Column: Lead_time
+   ❌ Current: CAP YARNS LLC
+   ✅ Action: Confirm removal or provide valid lead time/MOQ data
+
+   📁 Supplier_ID.csv
+   📍 Row 22, Column: Lead_time
+   ❌ Current: NASP
+   ✅ Action: Confirm removal or provide valid lead time/MOQ data
+
+   ... and 5 more similar issues
+
+🔍 Zero Or Missing Cost: 10 issues
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 5, Column: Cost_Pound
+   ❌ Current: 0.0
+   ✅ Action: Provide valid cost per pound
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 6, Column: Cost_Pound
+   ❌ Current: 0.0
+   ✅ Action: Provide valid cost per pound
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 7, Column: Cost_Pound
+   ❌ Current: 0.0
+   ✅ Action: Provide valid cost per pound
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 8, Column: Cost_Pound
+   ❌ Current: 0.0
+   ✅ Action: Provide valid cost per pound
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 9, Column: Cost_Pound
+   ❌ Current: 0.0
+   ✅ Action: Provide valid cost per pound
+
+   ... and 5 more similar issues
+
+🔍 Missing Description: 12 issues
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 245, Column: Description
+   ❌ Current: Empty
+   ✅ Action: Provide description information
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 246, Column: Description
+   ❌ Current: Empty
+   ✅ Action: Provide description information
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 247, Column: Description
+   ❌ Current: Empty
+   ✅ Action: Provide description information
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 245, Column: Blend
+   ❌ Current: Empty
+   ✅ Action: Provide blend information
+
+   📁 Yarn_ID_Current_Inventory.csv
+   📍 Row 246, Column: Blend
+   ❌ Current: Empty
+   ✅ Action: Provide blend information
+
+   ... and 7 more similar issues
+
+🔍 Non Standard Type: 33 issues
+   📁 Yarn_ID_1.csv
+   📍 Row 7, Column: Type
+   ❌ Current: Tencel/Zoltek
+   ✅ Action: Standardize material type
+
+   📁 Yarn_ID_1.csv
+   📍 Row 25, Column: Type
+   ❌ Current: Karded Cotton
+   ✅ Action: Standardize material type
+
+   📁 Yarn_ID_1.csv
+   📍 Row 48, Column: Type
+   ❌ Current: Karded Cotton
+   ✅ Action: Standardize material type
+
+   📁 Yarn_ID_1.csv
+   📍 Row 109, Column: Type
+   ❌ Current: Karded Cotton
+   ✅ Action: Standardize material type
+
+   📁 Yarn_ID_1.csv
+   📍 Row 34, Column: Type
+   ❌ Current: Polyester/Cotton/Rayon
+   ✅ Action: Standardize material type
+
+   ... and 28 more similar issues
+
+🔍 Missing Yarn Master: 10 issues
+   📁 Style_BOM.csv
+   📍 Row -1, Column: Yarn_ID
+   ❌ Current: 18794
+   ✅ Action: Add yarn to master data or remove from BOM
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: Yarn_ID
+   ❌ Current: 18673
+   ✅ Action: Add yarn to master data or remove from BOM
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: Yarn_ID
+   ❌ Current: 18553
+   ✅ Action: Add yarn to master data or remove from BOM
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: Yarn_ID
+   ❌ Current: 18975
+   ✅ Action: Add yarn to master data or remove from BOM
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: Yarn_ID
+   ❌ Current: 18966
+   ✅ Action: Add yarn to master data or remove from BOM
+
+   ... and 5 more similar issues
+
+🔍 Incorrect Bom Total: 9 issues
+   📁 Style_BOM.csv
+   📍 Row -1, Column: BOM_Percentage
+   ❌ Current: 0.552
+   ✅ Action: BOM percentages should sum to 1.0
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: BOM_Percentage
+   ❌ Current: 0.948
+   ✅ Action: BOM percentages should sum to 1.0
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: BOM_Percentage
+   ❌ Current: 0.273
+   ✅ Action: BOM percentages should sum to 1.0
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: BOM_Percentage
+   ❌ Current: 0.368
+   ✅ Action: BOM percentages should sum to 1.0
+
+   📁 Style_BOM.csv
+   📍 Row -1, Column: BOM_Percentage
+   ❌ Current: 0.368
+   ✅ Action: BOM percentages should sum to 1.0
+
+   ... and 4 more similar issues

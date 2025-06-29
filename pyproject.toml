@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311']
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -34,7 +34,7 @@ disable = "C0330, C0326"
 max-line-length = "88"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -59,3 +59,66 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = "streamlit.*"
 ignore_missing_imports = true
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "beverly-knits-planner"
+version = "1.0.0"
+description = "AI-driven raw material planner for textile manufacturing"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Beverly Knits Team", email = "team@beverlyknits.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Manufacturing",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "pandas>=2.3.0",
+    "numpy>=2.3.1",
+    "scikit-learn>=1.7.0",
+    "xgboost>=3.0.2",
+    "lightgbm>=4.6.0",
+    "pydantic>=2.11.7",
+    "loguru>=0.7.3",
+    "aiohttp>=3.12.13",
+    "python-dotenv>=1.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.0.0",
+    "pytest-cov>=6.2.1",
+    "black>=25.1.0",
+    "flake8>=6.0.0",
+    "mypy>=1.4.0",
+    "isort>=6.0.1",
+]
+ml = [
+    "statsmodels>=0.14.0",
+    "scipy>=1.16.0",
+    "optuna>=3.2.0",
+    "imbalanced-learn>=0.11.0",
+]
+viz = [
+    "matplotlib>=3.10.3",
+    "seaborn>=0.13.2",
+    "plotly>=5.14.0",
+]
+
+[project.scripts]
+beverly-planner = "main:main"

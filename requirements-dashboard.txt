@@ -1,0 +1,23 @@
+# Dashboard-specific requirements for deployment
+# Minimal dependencies for the automation dashboard
+
+# Core async and HTTP
+aiohttp>=3.12.13
+aiofiles>=24.1.0
+
+# Dashboard UI
+rich>=14.0.0
+plotext>=5.2.8
+
+# Data handling
+python-dotenv>=1.1.1
+
+# Logging
+loguru>=0.7.3
+
+# Optional: Production server
+gunicorn>=21.2.0
+uvloop>=0.19.0  # Faster event loop for production
+
+# CLI argument parsing
+argparse  # Built-in to Python

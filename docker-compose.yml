@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build: .
+    container_name: zen-dashboard
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./data:/app/data:ro
+    environment:
+      - PYTHONPATH=/app
+      - LOG_LEVEL=INFO
+    ports:
+      - "8080:8080"
+    networks:
+      - zen-network
+    depends_on:
+      - zen-mcp-server
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  zen-mcp-server:
+    image: zen-mcp-server:latest  # Adjust based on your zen-mcp-server setup
+    container_name: zen-mcp-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./zen-mcp-server:/app
+    networks:
+      - zen-network
+
+networks:
+  zen-network:
+    driver: bridge
+
+volumes:
+  dashboard-data:
+    driver: local

@@ -272,20 +272,60 @@ class TestCodeEnhancedPlanner:
         assert "ml_enhancements" in result
         assert "planning_confidence" in result
         planner.plan.assert_called_once_with(forecast_data)
-    
+
     @pytest.mark.asyncio
     async def test_error_handling_in_analysis(self, planner):
         """Test error handling during code analysis"""
         planner.code_manager.analyze_textile_code_quality = AsyncMock(
             side_effect=Exception("Analysis failed")
         )
-        
+
         results = await planner.analyze_planning_code_quality()
-        
+
         # Should handle errors gracefully
         assert results["summary"]["analyzed"] == 0
         assert all("error" in module_result for module_result in results["modules"].values())
-    
+
+    @pytest.mark.asyncio
+    async def test_error_handling_in_initialization(self, planner):
+        """Test error handling during initialization"""
+        planner.code_manager.initialize = AsyncMock(
+            side_effect=Exception("Initialization failed")
+        )
+
+        with pytest.raises(Exception) as exc_info:
+            await planner.initialize_enhanced_capabilities()
+
+        assert "Initialization failed" in str(exc_info.value)
+
+    @pytest.mark.asyncio
+    async def test_error_handling_in_optimization(self, planner):
+        """Test error handling during performance optimization"""
+        planner.code_manager.refactor_planning_algorithm = AsyncMock(
+            side_effect=Exception("Refactoring failed")
+        )
+
+        results = await planner.optimize_planning_performance()
+
+        # Should handle errors gracefully and continue with other optimizations
+        assert "timestamp" in results
+        assert "optimizations" in results
+        assert results["summary"]["failed"] > 0
+
+    @pytest.mark.asyncio
+    async def test_error_handling_in_material_generation(self, planner):
+        """Test error handling during material support generation"""
+        planner.code_manager.generate_material_handler = AsyncMock(
+            side_effect=Exception("Generation failed")
+        )
+
+        result = await planner.generate_new_material_support("test_material", ["property1"])
+
+        # Should return error information
+        assert result["status"] == "error"
+        assert "error" in result
+        assert "Generation failed" in result["error"]
+
     @pytest.mark.asyncio
     async def test_cache_usage_in_analysis(self, planner):
         """Test that analysis results are cached"""

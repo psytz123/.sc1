@@ -140,7 +140,8 @@ class RawMaterialPlanner:
                     # Calculate EOQ
                     eoq = self.eoq_calculator.calculate_eoq(
                         buffered_requirement,
-                        selected_supplier.setup_cost,
+                        selected_supplier.ordering_cost,
+                        selected_supplier.cost_per_unit,  # Added unit_cost parameter
                         selected_supplier.holding_cost_rate
                     )
 
@@ -148,16 +149,16 @@ class RawMaterialPlanner:
                     order_qty = max(eoq, selected_supplier.moq)
 
                     # Round to order multiple if specified
-                    if selected_supplier.order_multiple > 1:
-                        order_qty = np.ceil(order_qty / selected_supplier.order_multiple) * selected_supplier.order_multiple
+                    # if selected_supplier.order_multiple > 1:
+                    #     order_qty = np.ceil(order_qty / selected_supplier.order_multiple) * selected_supplier.order_multiple
 
                     # Create recommendation
                     recommendation = ProcurementRecommendation(
                         material_id=material_id,
                         supplier_id=selected_supplier.supplier_id,
                         order_qty=order_qty,
-                        unit_price=selected_supplier.unit_price,
-                        total_cost=order_qty * selected_supplier.unit_price,
+                        unit_price=selected_supplier.cost_per_unit,
+                        total_cost=order_qty * selected_supplier.cost_per_unit,
                         order_date=datetime.now().date(),
                         delivery_date=datetime.now().date() + timedelta(days=selected_supplier.lead_time_days),
                         risk_flags=self._assess_risks(selected_supplier, order_qty, buffered_requirement)
@@ -309,8 +310,8 @@ class RawMaterialPlanner:
         recommendations = []
         remaining_qty = total_requirement
 
-        # Sort suppliers by total cost (price + shipping)
-        sorted_suppliers = sorted(suppliers, key=lambda s: s.unit_price + (s.shipping_cost / 1000))
+        # Sort suppliers by total cost (price only, as shipping_cost is not in the model)
+        sorted_suppliers = sorted(suppliers, key=lambda s: s.cost_per_unit)
 
         for supplier in sorted_suppliers:
             if remaining_qty <= 0:
@@ -321,7 +322,8 @@ class RawMaterialPlanner:
                 # Calculate EOQ for this supplier
                 eoq = self.eoq_calculator.calculate_eoq(
                     remaining_qty,
-                    supplier.setup_cost,
+                    supplier.ordering_cost,
+                    supplier.cost_per_unit,  # Added unit_cost parameter
                     supplier.holding_cost_rate
                 )
 
@@ -329,9 +331,9 @@ class RawMaterialPlanner:
                 order_qty = max(eoq, supplier.moq)
                 order_qty = min(order_qty, remaining_qty)
 
-                # Round to order multiple
-                if supplier.order_multiple > 1:
-                    order_qty = np.ceil(order_qty / supplier.order_multiple) * supplier.order_multiple
+                # Round to order multiple if specified
+                # if supplier.order_multiple > 1:
+                #     order_qty = np.ceil(order_qty / supplier.order_multiple) * supplier.order_multiple
 
                 # Create recommendation
                 recommendation = ProcurementRecommendation(
@@ -339,7 +341,7 @@ class RawMaterialPlanner:
                     supplier_id=supplier.supplier_id,
                     order_qty=order_qty,
                     unit_price=supplier.unit_price,
-                    total_cost=order_qty * supplier.unit_price,
+                    total_cost=order_qty * supplier.cost_per_unit,
                     order_date=datetime.now().date(),
                     delivery_date=datetime.now().date() + timedelta(days=supplier.lead_time_days),
                     risk_flags=self._assess_risks(supplier, order_qty, order_qty)

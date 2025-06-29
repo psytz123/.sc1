@@ -9,12 +9,12 @@ import os
 import sys
 from datetime import datetime
 
+# Add project root to path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-
-# Add project root to path for imports
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from config.settings import BusinessRules
 from data.sample_data_generator import SampleDataGenerator

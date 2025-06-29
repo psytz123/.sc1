@@ -62,53 +62,93 @@ class BOMExploder:
     
     @classmethod
     def from_dataframe(cls, df: pd.DataFrame) -> List[BillOfMaterials]:
-        """Create BOM objects from DataFrame"""
+        """Create BOM objects from DataFrame - optimized version"""
         boms = []
-        for _, row in df.iterrows():
-            # Check if this is a percentage-based BOM
-            percentage = row.get('percentage', None)
-            if percentage is not None:
+
+        # Validate required columns
+        required_columns = ['sku_id', 'material_id', 'qty_per_unit']
+        missing_columns = set(required_columns) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Missing required columns: {missing_columns}")
+
+        # Prepare data with proper types
+        df = df.copy()
+        df['sku_id'] = df['sku_id'].astype(str)
+        df['material_id'] = df['material_id'].astype(str)
+        df['qty_per_unit'] = pd.to_numeric(df['qty_per_unit'], errors='coerce')
+        df['unit_of_measure'] = df.get('unit_of_measure', 'unit').astype(str)
+
+        # Filter out invalid rows
+        invalid_rows = df[df['qty_per_unit'].isna() | (df['qty_per_unit'] <= 0)]
+        if not invalid_rows.empty:
+            logger.warning(f"Filtering out {len(invalid_rows)} invalid BOM rows")
+            df = df[~df['qty_per_unit'].isna() & (df['qty_per_unit'] > 0)]
+
+        # Convert to list of dictionaries for faster iteration
+        bom_data = df.to_dict('records')
+
+        for row in bom_data:
+            try:
                 bom = BillOfMaterials(
-                    sku_id=str(row['sku_id']),
-                    material_id=str(row['material_id']),
-                    qty_per_unit=0,  # Will be calculated from percentage
-                    unit=str(row.get('unit', 'yards')),
-                    percentage=float(percentage)
-                )
-            else:
-                bom = BillOfMaterials(
-                    sku_id=str(row['sku_id']),
-                    material_id=str(row['material_id']),
+                    sku_id=row['sku_id'],
+                    material_id=row['material_id'],
                     qty_per_unit=float(row['qty_per_unit']),
-                    unit=str(row['unit'])
+                    unit_of_measure=row['unit_of_measure']
                 )
-            boms.append(bom)
+                boms.append(bom)
+            except Exception as e:
+                logger.error(f"Error creating BOM from row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(boms)} BOM entries from {len(df)} rows")
         return boms
-    
+
     @classmethod
     def from_style_yarn_dataframe(cls, df: pd.DataFrame) -> List[StyleYarnBOM]:
         """
-        Create StyleYarnBOM objects from style-to-yarn DataFrame
+        Create StyleYarnBOM objects from style-to-yarn DataFrame - optimized version
         Enhanced to handle cfab_Yarn_Demand_By_Style.csv format
         """
         style_yarn_boms = []
-        
+
         # Handle different possible column names
         style_col = 'Style' if 'Style' in df.columns else 'style_id'
         yarn_col = 'Yarn' if 'Yarn' in df.columns else ('Yarn ID' if 'Yarn ID' in df.columns else 'yarn_id')
-        
-        for _, row in df.iterrows():
-            # Extract percentage from various possible formats
-            percentage = cls._extract_percentage(row)
-            if percentage > 0:
+
+        # Validate required columns
+        if style_col not in df.columns:
+            raise ValueError(f"Style column not found. Available columns: {list(df.columns)}")
+        if yarn_col not in df.columns:
+            raise ValueError(f"Yarn column not found. Available columns: {list(df.columns)}")
+
+        # Prepare data
+        df = df.copy()
+        df[style_col] = df[style_col].astype(str)
+        df[yarn_col] = df[yarn_col].astype(str)
+
+        # Extract percentages for all rows at once
+        df['percentage'] = df.apply(cls._extract_percentage, axis=1)
+
+        # Filter out zero percentages
+        valid_df = df[df['percentage'] > 0]
+
+        # Convert to list of dictionaries for faster iteration
+        style_yarn_data = valid_df.to_dict('records')
+
+        for row in style_yarn_data:
+            try:
                 style_yarn_bom = StyleYarnBOM(
-                    style_id=str(row[style_col]),
-                    yarn_id=str(row[yarn_col]),
-                    percentage=percentage,
+                    style_id=row[style_col],
+                    yarn_id=row[yarn_col],
+                    percentage=row['percentage'],
                     yarn_name=str(row.get('Yarn Name', '')) if 'Yarn Name' in row else None
                 )
                 style_yarn_boms.append(style_yarn_bom)
-        
+            except Exception as e:
+                logger.error(f"Error creating StyleYarnBOM from row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(style_yarn_boms)} style-yarn BOM entries from {len(df)} rows")
         return style_yarn_boms
     
     @classmethod

@@ -31,22 +31,46 @@ class InventoryNetter:
     
     @classmethod
     def from_dataframe(cls, df: pd.DataFrame) -> List[Inventory]:
-        """Create inventory objects from DataFrame"""
-        inventories = []
-        for _, row in df.iterrows():
-            po_date = None
-            if pd.notna(row.get('po_expected_date')):
-                po_date = pd.to_datetime(row['po_expected_date']).date()
-            
-            inventory = Inventory(
-                material_id=str(row['material_id']),
-                on_hand_qty=float(row['on_hand_qty']),
-                unit=str(row['unit']),
-                open_po_qty=float(row.get('open_po_qty', 0.0)),
-                po_expected_date=po_date
-            )
-            inventories.append(inventory)
-        return inventories
+        """Create inventory objects from DataFrame - optimized version"""
+        inventory_items = []
+
+        # Validate required columns
+        required_columns = ['material_id', 'on_hand_qty', 'on_order_qty', 'expected_date']
+        missing_columns = set(required_columns) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Missing required columns: {missing_columns}")
+
+        # Prepare data with proper types
+        df = df.copy()
+        df['material_id'] = df['material_id'].astype(str)
+        df['on_hand_qty'] = pd.to_numeric(df['on_hand_qty'], errors='coerce').fillna(0)
+        df['on_order_qty'] = pd.to_numeric(df['on_order_qty'], errors='coerce').fillna(0)
+        df['expected_date'] = pd.to_datetime(df['expected_date'], errors='coerce')
+
+        # Filter out invalid rows
+        invalid_rows = df[(df['on_hand_qty'] < 0) | (df['on_order_qty'] < 0)]
+        if not invalid_rows.empty:
+            logger.warning(f"Filtering out {len(invalid_rows)} invalid inventory rows")
+            df = df[(df['on_hand_qty'] >= 0) & (df['on_order_qty'] >= 0)]
+
+        # Convert to list of dictionaries for faster iteration
+        inventory_data = df.to_dict('records')
+
+        for row in inventory_data:
+            try:
+                inventory = Inventory(
+                    material_id=row['material_id'],
+                    on_hand_qty=float(row['on_hand_qty']),
+                    on_order_qty=float(row['on_order_qty']),
+                    expected_date=row['expected_date'].date() if pd.notna(row['expected_date']) else None
+                )
+                inventory_items.append(inventory)
+            except Exception as e:
+                logger.error(f"Error creating inventory from row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(inventory_items)} inventory items from {len(df)} rows")
+        return inventory_items
     
     @classmethod
     def calculate_net_requirements(cls, 

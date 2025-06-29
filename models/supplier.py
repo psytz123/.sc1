@@ -286,30 +286,62 @@ class SupplierSelector:
     
     @classmethod
     def from_dataframe(cls, df: pd.DataFrame) -> List[Supplier]:
-        """Create Supplier objects from DataFrame"""
+        """Create supplier objects from DataFrame - optimized version"""
         suppliers = []
-        
-        required_columns = ['material_id', 'supplier_id', 'cost_per_unit', 
+
+        required_columns = ['material_id', 'supplier_id', 'cost_per_unit',
                           'lead_time_days', 'moq']
-        
+
         for col in required_columns:
             if col not in df.columns:
                 raise ValueError(f"Missing required column: {col}")
-        
-        for _, row in df.iterrows():
-            supplier = Supplier(
-                material_id=str(row['material_id']),
-                supplier_id=str(row['supplier_id']),
-                cost_per_unit=float(row['cost_per_unit']),
-                lead_time_days=int(row['lead_time_days']),
-                moq=int(row['moq']),
-                contract_qty_limit=int(row.get('contract_qty_limit')) if pd.notna(row.get('contract_qty_limit')) else None,
-                reliability_score=float(row.get('reliability_score', 1.0)),
-                ordering_cost=float(row.get('ordering_cost', 100.0)),
-                holding_cost_rate=float(row.get('holding_cost_rate', 0.2))
-            )
-            suppliers.append(supplier)
-        
+
+        # Validate data types and handle missing values upfront
+        df = df.copy()
+        df['material_id'] = df['material_id'].astype(str)
+        df['supplier_id'] = df['supplier_id'].astype(str)
+        df['cost_per_unit'] = pd.to_numeric(df['cost_per_unit'], errors='coerce')
+        df['lead_time_days'] = pd.to_numeric(df['lead_time_days'], errors='coerce').fillna(0).astype(int)
+        df['moq'] = pd.to_numeric(df['moq'], errors='coerce').fillna(1).astype(int)
+
+        # Handle optional columns with defaults
+        if 'contract_qty_limit' in df.columns:
+            df['contract_qty_limit'] = pd.to_numeric(df['contract_qty_limit'], errors='coerce')
+        else:
+            df['contract_qty_limit'] = None
+
+        df['reliability_score'] = pd.to_numeric(df.get('reliability_score', 1.0), errors='coerce').fillna(1.0)
+        df['ordering_cost'] = pd.to_numeric(df.get('ordering_cost', 100.0), errors='coerce').fillna(100.0)
+        df['holding_cost_rate'] = pd.to_numeric(df.get('holding_cost_rate', 0.2), errors='coerce').fillna(0.2)
+
+        # Check for invalid data
+        invalid_rows = df[df['cost_per_unit'].isna() | (df['cost_per_unit'] <= 0)]
+        if not invalid_rows.empty:
+            logger.warning(f"Found {len(invalid_rows)} rows with invalid cost_per_unit values")
+            df = df[~df['cost_per_unit'].isna() & (df['cost_per_unit'] > 0)]
+
+        # Use vectorized operations to create supplier objects
+        supplier_data = df.to_dict('records')
+
+        for row in supplier_data:
+            try:
+                supplier = Supplier(
+                    material_id=row['material_id'],
+                    supplier_id=row['supplier_id'],
+                    cost_per_unit=float(row['cost_per_unit']),
+                    lead_time_days=int(row['lead_time_days']),
+                    moq=int(row['moq']),
+                    contract_qty_limit=int(row['contract_qty_limit']) if pd.notna(row['contract_qty_limit']) else None,
+                    reliability_score=float(row['reliability_score']),
+                    ordering_cost=float(row['ordering_cost']),
+                    holding_cost_rate=float(row['holding_cost_rate'])
+                )
+                suppliers.append(supplier)
+            except Exception as e:
+                logger.error(f"Error creating supplier from row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(suppliers)} suppliers from {len(df)} rows")
         return suppliers
     
     def select_optimal_supplier(self,

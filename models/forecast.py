@@ -69,16 +69,45 @@ class ForecastProcessor:
 
     @classmethod
     def from_dataframe(cls, df: pd.DataFrame) -> list[FinishedGoodsForecast]:
-        """Create forecast objects from DataFrame"""
+        """Create forecast objects from DataFrame - optimized version"""
         forecasts = []
-        for _, row in df.iterrows():
-            forecast = FinishedGoodsForecast(
-                sku_id=str(row['sku_id']),
-                forecast_qty=int(row['forecast_qty']),
-                forecast_date=pd.to_datetime(row['forecast_date']).date(),
-                source=str(row['source'])
-            )
-            forecasts.append(forecast)
+
+        # Validate required columns
+        required_columns = ['sku_id', 'forecast_qty', 'forecast_date', 'source']
+        missing_columns = set(required_columns) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Missing required columns: {missing_columns}")
+
+        # Prepare data with proper types
+        df = df.copy()
+        df['sku_id'] = df['sku_id'].astype(str)
+        df['source'] = df['source'].astype(str)
+        df['forecast_qty'] = pd.to_numeric(df['forecast_qty'], errors='coerce').fillna(0).astype(int)
+        df['forecast_date'] = pd.to_datetime(df['forecast_date'], errors='coerce')
+
+        # Filter out invalid rows
+        invalid_rows = df[df['forecast_date'].isna() | (df['forecast_qty'] < 0)]
+        if not invalid_rows.empty:
+            logger.warning(f"Filtering out {len(invalid_rows)} invalid forecast rows")
+            df = df[~df['forecast_date'].isna() & (df['forecast_qty'] >= 0)]
+
+        # Convert to list of dictionaries for faster iteration
+        forecast_data = df.to_dict('records')
+
+        for row in forecast_data:
+            try:
+                forecast = FinishedGoodsForecast(
+                    sku_id=row['sku_id'],
+                    forecast_qty=int(row['forecast_qty']),
+                    forecast_date=row['forecast_date'].date(),
+                    source=row['source']
+                )
+                forecasts.append(forecast)
+            except Exception as e:
+                logger.error(f"Error creating forecast from row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(forecasts)} forecasts from {len(df)} rows")
         return forecasts
 
     def aggregate_forecasts(self, forecasts: list[FinishedGoodsForecast]) -> dict[str, float]:

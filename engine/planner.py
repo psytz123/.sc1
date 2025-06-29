@@ -3,11 +3,9 @@ Planning Engine - Orchestrates the raw material planning process
 """
 
 from collections import defaultdict
-from utils.logger import get_logger
-
-logger = get_logger(__name__)
 from datetime import datetime, timedelta
 from typing import Dict, List
+from functools import lru_cache
 
 import pandas as pd
 
@@ -15,13 +13,16 @@ from config.settings import PlanningConfig
 from models.bom import BillOfMaterials, BOMExploder
 from models.forecast import FinishedGoodsForecast, ForecastProcessor
 from models.inventory import Inventory, InventoryNetter
-from models.recommendation import ProcurementRecommendation, RiskFlag
+from models.recommendation import ProcurementRecommendation
 from models.supplier import EOQCalculator, Supplier, SupplierSelector
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class RawMaterialPlanner:
     """Main planning engine that orchestrates the planning process"""
-    
+
     def __init__(self, config: PlanningConfig):
         self.config = config
         self.forecast_processor = ForecastProcessor(config)
@@ -29,18 +30,40 @@ class RawMaterialPlanner:
         self.inventory_netter = InventoryNetter()
         self.supplier_selector = SupplierSelector(config)
         self.eoq_calculator = EOQCalculator()
-        
-    def plan(self, 
+        self._supplier_cache = {}  # Cache for supplier lookups
+        self._bom_cache = {}  # Cache for BOM lookups
+
+    def plan(self,
              forecasts: List[FinishedGoodsForecast],
-             boms: List[BillOfMaterials], 
+             boms: List[BillOfMaterials],
              inventory: List[Inventory],
              suppliers: List[Supplier]) -> List[ProcurementRecommendation]:
         """
         Execute the 6-step planning process
-        
+
         Returns:
             List of procurement recommendations
         """
+        # Input validation
+        if not isinstance(forecasts, list):
+            raise TypeError("forecasts must be a list")
+        if not isinstance(boms, list):
+            raise TypeError("boms must be a list")
+        if not isinstance(inventory, list):
+            raise TypeError("inventory must be a list")
+        if not isinstance(suppliers, list):
+            raise TypeError("suppliers must be a list")
+
+        if not forecasts:
+            logger.warning("No forecasts provided")
+            return []
+        if not boms:
+            logger.warning("No BOMs provided")
+            return []
+        if not suppliers:
+            logger.warning("No suppliers provided")
+            return []
+
         logger.info("Starting Beverly Knits Raw Material Planning Engine")
         logger.info("=" * 50)
 
@@ -89,10 +112,10 @@ class RawMaterialPlanner:
         self._last_recommendations = recommendations
 
         return recommendations
-    
+
     def _generate_recommendations(self,
-                                net_requirements: Dict[str, float],
-                                suppliers: List[Supplier]) -> List[ProcurementRecommendation]:
+                                  net_requirements: Dict[str, float],
+                                  suppliers: List[Supplier]) -> List[ProcurementRecommendation]:
         """Generate procurement recommendations with supplier selection"""
         recommendations = []
 
@@ -240,7 +263,7 @@ class RawMaterialPlanner:
             return yarn_requirements
 
         except ImportError:
-            logger.info(f"   ⚠️  Enhanced BOM integration not available, falling back to standard method")
+            logger.info("   ⚠️  Enhanced BOM integration not available, falling back to standard method")
             # Fall back to the original method
             import pandas as pd
 

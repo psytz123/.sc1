@@ -242,26 +242,28 @@ class ReportGenerator:
             normal = [r for r in recommendations if 14 < r.lead_time_days <= 30]
             low = [r for r in recommendations if r.lead_time_days > 30]
             
-            summary = f"""
-Beverly Knits Raw Material Planning Summary
-==========================================
-Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-Total Recommendations: {total_items}
-Total Procurement Cost: ${total_cost:,.2f}
-
-Urgency Breakdown:
-- High Priority (Urgent): {len(urgent)} items
-- Normal Priority: {len(normal)} items  
-- Low Priority: {len(low)} items
-
-Configuration:
-- Safety Stock: {config.get('safety_stock_percentage', 0) * 100:.0f}%
-- Planning Horizon: {config.get('planning_horizon_days', 30)} days
-- EOQ Optimization: {'Enabled' if config.get('enable_eoq_optimization', False) else 'Disabled'}
-- Multi-Supplier: {'Enabled' if config.get('enable_multi_supplier', False) else 'Disabled'}
-"""
-            return summary
+            # Build summary string
+            summary_lines = [
+                "Beverly Knits Raw Material Planning Summary",
+                "==========================================",
+                f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                "",
+                f"Total Recommendations: {total_items}",
+                f"Total Procurement Cost: ${total_cost:,.2f}",
+                "",
+                "Urgency Breakdown:",
+                f"- High Priority (Urgent): {len(urgent)} items",
+                f"- Normal Priority: {len(normal)} items",
+                f"- Low Priority: {len(low)} items",
+                "",
+                "Configuration:",
+                f"- Safety Stock: {config.get('safety_stock_percentage', 0) * 100:.0f}%",
+                f"- Planning Horizon: {config.get('planning_horizon_days', 30)} days",
+                f"- EOQ Optimization: {'Enabled' if config.get('enable_eoq_optimization', False) else 'Disabled'}",
+                f"- Multi-Supplier: {'Enabled' if config.get('enable_multi_supplier', False) else 'Disabled'}"
+            ]
+            
+            return '\n'.join(summary_lines)
         except Exception as e:
             logger.error(f"Error generating report summary: {str(e)}")
             return "Error generating summary report"

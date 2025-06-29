@@ -1,18 +1,23 @@
 """Test EOQ and Multi-Supplier functionality"""
-import pytest
-from models.supplier import EOQCalculator, MultiSupplierOptimizer
-from models.supplier import Supplier, SupplierAllocation
 from data.sample_data_generator import SampleDataGenerator
-from models.forecast import ForecastProcessor
-from models.bom import BOMExploder
-from models.inventory import InventoryNetter
-from models.supplier import SupplierSelector
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 from engine.planner import RawMaterialPlanner
+from models.bom import BOMExploder
+from models.forecast import ForecastProcessor
+from models.inventory import InventoryNetter
+from models.supplier import (
+    EOQCalculator,
+    MultiSupplierOptimizer,
+    Supplier,
+    SupplierSelector,
+)
 
 
 def test_eoq_calculator():
     """Test EOQ calculation"""
-    print("Testing EOQ Calculator...")
+    logger.info("Testing EOQ Calculator...")
     
     # Test basic EOQ calculation
     annual_demand = 10000
@@ -29,12 +34,12 @@ def test_eoq_calculator():
     expected_eoq = (2 * annual_demand * ordering_cost / (holding_cost_rate * unit_cost)) ** 0.5
     
     assert abs(eoq - expected_eoq) < 0.01
-    print(f"   ✓ EOQ calculated correctly: {eoq:.2f} units")
+    logger.info(f"   ✓ EOQ calculated correctly: {eoq:.2f} units")
 
 
 def test_multi_supplier_optimizer():
     """Test multi-supplier optimization"""
-    print("Testing Multi-Supplier Optimizer...")
+    logger.info("Testing Multi-Supplier Optimizer...")
     
     # Create test suppliers
     suppliers = [
@@ -89,14 +94,14 @@ def test_multi_supplier_optimizer():
     total_allocated = sum(a.quantity for a in allocations)
     assert abs(total_allocated - total_quantity) < 0.01
     
-    print(f"   ✓ Allocated {total_quantity} units across {len(allocations)} suppliers")
+    logger.info(f"   ✓ Allocated {total_quantity} units across {len(allocations)} suppliers")
     for allocation in allocations:
-        print(f"     - {allocation.supplier.supplier_id}: {allocation.quantity:.0f} units @ ${allocation.cost:.2f}")
+        logger.info(f"     - {allocation.supplier.supplier_id}: {allocation.quantity:.0f} units @ ${allocation.cost:.2f}")
 
 
 def test_enhanced_planning():
     """Test the enhanced planning with EOQ and multi-supplier"""
-    print("🧠 Testing Enhanced Planning System...")
+    logger.info("🧠 Testing Enhanced Planning System...")
     
     # Generate sample data
     sample_data = SampleDataGenerator.generate_all_sample_data(5)
@@ -128,38 +133,38 @@ def test_enhanced_planning():
     planner = RawMaterialPlanner(config)
     recommendations = planner.plan(forecasts, boms, inventories, suppliers)
     
-    print(f"   Generated {len(recommendations)} recommendations")
+    logger.info(f"   Generated {len(recommendations)} recommendations")
     
     # Check that recommendations were generated
     assert len(recommendations) > 0
     
     # Verify EOQ was applied (check reasoning)
     eoq_applied = any('EOQ' in r.reasoning for r in recommendations)
-    print(f"   ✓ EOQ optimization applied: {eoq_applied}")
+    logger.info(f"   ✓ EOQ optimization applied: {eoq_applied}")
     
     # Verify multi-supplier was considered
     multi_supplier_used = any('Multiple suppliers' in r.reasoning for r in recommendations)
-    print(f"   ✓ Multi-supplier sourcing used: {multi_supplier_used}")
+    logger.info(f"   ✓ Multi-supplier sourcing used: {multi_supplier_used}")
     
     # Show sample recommendations
-    print("\n   Sample Recommendations:")
+    logger.info("\n   Sample Recommendations:")
     for rec in recommendations[:3]:
-        print(f"   - {rec.material_id}: {rec.order_quantity:.0f} units from {rec.supplier_id}")
-        print(f"     Cost: ${rec.total_cost:,.2f}, Lead time: {rec.lead_time_days} days")
-        print(f"     {rec.reasoning}")
+        logger.info(f"   - {rec.material_id}: {rec.order_quantity:.0f} units from {rec.supplier_id}")
+        logger.info(f"     Cost: ${rec.total_cost:,.2f}, Lead time: {rec.lead_time_days} days")
+        logger.info(f"     {rec.reasoning}")
 
 
 if __name__ == "__main__":
-    print("Running EOQ and Multi-Supplier Tests...")
-    print("=" * 50)
+    logger.info("Running EOQ and Multi-Supplier Tests...")
+    logger.info("=" * 50)
     
     test_eoq_calculator()
-    print()
+    logger.info()
     
     test_multi_supplier_optimizer()
-    print()
+    logger.info()
     
     test_enhanced_planning()
-    print()
+    logger.info()
     
-    print("All tests completed! ✅")
+    logger.info("All tests completed! ✅")

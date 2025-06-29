@@ -2,10 +2,14 @@
 Sample data generator for Beverly Knits Raw Material Planner
 """
 
-import pandas as pd
-from datetime import datetime, timedelta
 import random
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+from datetime import datetime, timedelta
 from typing import Dict
+
+import pandas as pd
 
 
 class SampleDataGenerator:
@@ -208,7 +212,7 @@ class SampleDataGenerator:
     def save_sample_data_to_csv(output_dir: str = "data", num_skus: int = 10):
         """Generate and save sample data to CSV files"""
         import os
-        
+
         # Create output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
         
@@ -219,18 +223,18 @@ class SampleDataGenerator:
         for data_type, df in sample_data.items():
             filename = os.path.join(output_dir, f"sample_{data_type}.csv")
             df.to_csv(filename, index=False)
-            print(f"Saved {len(df)} records to {filename}")
+            logger.info(f"Saved {len(df)} records to {filename}")
         
         return sample_data
 
 
 # Generate sample data when this module is run directly
 if __name__ == "__main__":
-    print("Generating sample data for Beverly Knits Raw Material Planner...")
+    logger.info("Generating sample data for Beverly Knits Raw Material Planner...")
     sample_data = SampleDataGenerator.save_sample_data_to_csv()
     
-    print("\nSample data summary:")
+    logger.info("\nSample data summary:")
     for data_type, df in sample_data.items():
-        print(f"  {data_type}: {len(df)} records")
+        logger.info(f"  {data_type}: {len(df)} records")
     
-    print("\nSample data files created in 'data/' directory")
+    logger.info("\nSample data files created in 'data/' directory")

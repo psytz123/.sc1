@@ -3,16 +3,23 @@ Beverly Knits Real Data Loader - Enhanced Version
 Loads integrated real data with automatic quality fixes applied
 """
 
-import pandas as pd
-from pathlib import Path
-import sys
 import os
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+import sys
+from pathlib import Path
+
+import pandas as pd
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.supplier import Supplier
-from models.inventory import Inventory
-from models.bom import BillOfMaterials
 import json
+
+from models.bom import BillOfMaterials
+from models.inventory import Inventory
+from models.supplier import Supplier
+
 
 class EnhancedRealDataLoader:
     """Enhanced data loader with automatic quality fixes"""
@@ -189,7 +196,7 @@ class EnhancedRealDataLoader:
 
 def main():
     """Demonstrate enhanced real data loading"""
-    print("🔄 Loading Beverly Knits Enhanced Real Data...")
+    logger.info("🔄 Loading Beverly Knits Enhanced Real Data...")
     
     loader = EnhancedRealDataLoader(use_v2=True)
     
@@ -201,39 +208,39 @@ def main():
         boms = loader.load_boms()
         interchangeable = loader.load_interchangeable_yarns()
         
-        print(f"📊 Enhanced Data Summary:")
-        print(f"   Materials: {len(materials)} yarns")
-        print(f"   Suppliers: {len(suppliers)} supplier-material relationships")
-        print(f"   Inventory: {len(inventory)} inventory records")
-        print(f"   BOMs: {len(boms)} BOM lines for {boms['sku_id'].nunique()} styles")
-        print(f"   Interchangeable Groups: {len(interchangeable)} groups")
+        logger.info(f"📊 Enhanced Data Summary:")
+        logger.info(f"   Materials: {len(materials)} yarns")
+        logger.info(f"   Suppliers: {len(suppliers)} supplier-material relationships")
+        logger.info(f"   Inventory: {len(inventory)} inventory records")
+        logger.info(f"   BOMs: {len(boms)} BOM lines for {boms['sku_id'].nunique()} styles")
+        logger.info(f"   Interchangeable Groups: {len(interchangeable)} groups")
         
         # Validate data quality
         quality_summary = loader.validate_data_quality()
-        print(f"\n✅ Data Quality Validation:")
-        print(f"   Materials with zero cost: {quality_summary['materials_with_zero_cost']}")
-        print(f"   Materials with negative inventory: {quality_summary['materials_with_negative_inventory']}")
-        print(f"   Materials with negative incoming: {quality_summary['materials_with_negative_incoming']}")
-        print(f"   Materials with negative planning balance: {quality_summary['materials_with_negative_planning']} (allowed)")
-        print(f"   BOM styles summing to 1.0: {quality_summary['bom_validation']['styles_summing_to_one']}/{quality_summary['bom_validation']['total_styles']}")
-        print(f"   Supplier coverage: {quality_summary['supplier_coverage']:.1%}")
+        logger.info(f"\n✅ Data Quality Validation:")
+        logger.info(f"   Materials with zero cost: {quality_summary['materials_with_zero_cost']}")
+        logger.info(f"   Materials with negative inventory: {quality_summary['materials_with_negative_inventory']}")
+        logger.info(f"   Materials with negative incoming: {quality_summary['materials_with_negative_incoming']}")
+        logger.info(f"   Materials with negative planning balance: {quality_summary['materials_with_negative_planning']} (allowed)")
+        logger.info(f"   BOM styles summing to 1.0: {quality_summary['bom_validation']['styles_summing_to_one']}/{quality_summary['bom_validation']['total_styles']}")
+        logger.info(f"   Supplier coverage: {quality_summary['supplier_coverage']:.1%}")
         
         # Create objects for planning system
         supplier_objects = loader.create_supplier_objects()
         inventory_objects = loader.create_inventory_objects()
         bom_objects = loader.create_bom_objects()
         
-        print(f"\n🏭 Planning System Objects:")
-        print(f"   Supplier Objects: {len(supplier_objects)}")
-        print(f"   Inventory Objects: {len(inventory_objects)}")
-        print(f"   BOM Objects: {len(bom_objects)}")
+        logger.info(f"\n🏭 Planning System Objects:")
+        logger.info(f"   Supplier Objects: {len(supplier_objects)}")
+        logger.info(f"   Inventory Objects: {len(inventory_objects)}")
+        logger.info(f"   BOM Objects: {len(bom_objects)}")
         
-        print("\n✅ Enhanced real data loading complete!")
-        print("💡 All automatic fixes have been applied")
+        logger.info("\n✅ Enhanced real data loading complete!")
+        logger.info("💡 All automatic fixes have been applied")
         
     except FileNotFoundError as e:
-        print(f"❌ Enhanced data files not found. Please run data_integration_v2.py first.")
-        print(f"Error: {e}")
+        logger.info(f"❌ Enhanced data files not found. Please run data_integration_v2.py first.")
+        logger.info(f"Error: {e}")
 
 if __name__ == "__main__":
     main()

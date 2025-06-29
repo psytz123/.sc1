@@ -2,7 +2,7 @@
 Configuration and Business Rules for Beverly Knits Raw Material Planner
 """
 
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 
 class PlanningConfig:

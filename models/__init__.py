@@ -2,11 +2,11 @@
 Beverly Knits Raw Material Planner - Data Models
 """
 
-from .forecast import FinishedGoodsForecast
 from .bom import BillOfMaterials
+from .forecast import FinishedGoodsForecast
 from .inventory import Inventory
-from .supplier import Supplier
 from .recommendation import ProcurementRecommendation
+from .supplier import Supplier
 
 __all__ = [
     'FinishedGoodsForecast',

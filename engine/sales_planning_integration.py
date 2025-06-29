@@ -3,17 +3,15 @@ Sales to Planning Integration Module
 Connects sales-based forecasts with the main planning engine
 """
 
-import pandas as pd
-from typing import List, Dict, Optional, Tuple
 import logging
-from datetime import datetime
-from pathlib import Path
+from typing import Dict, List, Optional
 
+import pandas as pd
+
+from config.settings import PlanningConfig
+from data.sales_data_processor import SalesDataProcessor
 from models.forecast import FinishedGoodsForecast
 from models.sales_forecast_generator import SalesForecastGenerator
-from data.sales_data_processor import SalesDataProcessor
-from engine.planner import RawMaterialPlanner
-from config.settings import PlanningConfig
 
 logger = logging.getLogger(__name__)
 
@@ -192,9 +190,6 @@ class SalesPlanningIntegration:
         
         # Create planner instance
         from engine.planner import RawMaterialPlanner
-        from models.bom import BillOfMaterials
-        from models.inventory import Inventory
-        from models.supplier import Supplier
         
         self.planner = RawMaterialPlanner(self.config)
         

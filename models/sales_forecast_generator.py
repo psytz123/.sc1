@@ -4,14 +4,16 @@ Generates forecasts from historical sales data for integration with the planning
 Enhanced with automated forecast creation and improved integration
 """
 
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
-from typing import List, Dict, Optional, Tuple
 import logging
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
+
+import numpy as np
+import pandas as pd
 from scipy import stats
+
+from models.bom import BOMExploder
 from models.forecast import FinishedGoodsForecast
-from models.bom import BillOfMaterials, StyleYarnBOM, BOMExploder
 
 logger = logging.getLogger(__name__)
 

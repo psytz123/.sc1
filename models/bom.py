@@ -4,9 +4,12 @@ Enhanced to support style-to-yarn conversion with percentage-based composition
 """
 
 from dataclasses import dataclass
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 from typing import Dict, List, Optional, Tuple
+
 import pandas as pd
-import numpy as np
 
 
 @dataclass
@@ -221,7 +224,7 @@ class BOMExploder:
             if abs(total_percentage - 100.0) > 0.1:  # Allow small rounding errors
                 warning = f"Style {style_id} yarn percentages sum to {total_percentage:.2f}%, not 100%"
                 validation_warnings.append(warning)
-                print(f"Warning: {warning}")
+                logger.info(f"Warning: {warning}")
         
         # Explode each style forecast
         for style_id, forecast_qty in style_forecasts.items():
@@ -247,7 +250,7 @@ class BOMExploder:
                     })
             else:
                 # Log styles without BOM data
-                print(f"Info: No BOM data found for style {style_id}")
+                logger.info(f"Info: No BOM data found for style {style_id}")
         
         # Add validation warnings to the result
         if validation_warnings:

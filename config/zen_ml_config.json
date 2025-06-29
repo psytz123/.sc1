@@ -1,0 +1,69 @@
+{
+  "zen_mcp_server": {
+    "enabled": false,
+    "url": "http://localhost:8080/api",
+    "timeout": 30,
+    "retries": 3,
+    "api_key": "",
+    "health_check_interval": 60
+  },
+  "ml_settings": {
+    "default_model": "auto",
+    "confidence_level": 0.95,
+    "training": {
+      "test_split": 0.2,
+      "random_state": 42,
+      "cross_validation_folds": 5
+    },
+    "models": {
+      "demand_forecasting": {
+        "preferred_algorithms": ["xgboost", "prophet", "random_forest"],
+        "horizon_days": 90,
+        "update_frequency": "weekly"
+      },
+      "supplier_risk": {
+        "risk_factors": ["delivery_performance", "quality_score", "price_stability"],
+        "threshold_high_risk": 0.7,
+        "threshold_medium_risk": 0.5
+      },
+      "inventory_optimization": {
+        "service_level": 0.95,
+        "review_period_days": 7,
+        "lead_time_buffer": 1.2
+      },
+      "price_prediction": {
+        "features": ["historical_prices", "market_indicators", "seasonality"],
+        "update_frequency": "daily"
+      }
+    }
+  },
+  "data_processing": {
+    "cache_enabled": true,
+    "cache_ttl_hours": 24,
+    "batch_size": 1000,
+    "parallel_processing": true,
+    "max_workers": 4
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/ml_integration.log",
+    "max_file_size_mb": 100,
+    "backup_count": 5,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  },
+  "performance": {
+    "model_cache_size": 10,
+    "prediction_timeout_seconds": 10,
+    "training_timeout_minutes": 60,
+    "memory_limit_gb": 8
+  },
+  "fallback_behavior": {
+    "use_local_ml": true,
+    "cache_predictions": true,
+    "alert_on_fallback": true,
+    "fallback_models": {
+      "demand_forecasting": "sklearn.RandomForestRegressor",
+      "time_series": "statsmodels.ARIMA"
+    }
+  }
+}

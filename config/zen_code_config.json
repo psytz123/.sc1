@@ -1,0 +1,15 @@
+{
+  "code_management": {
+    "analysis": {
+      "languages": ["python"],
+      "quality_thresholds": {
+        "complexity": 10,
+        "maintainability": 0.7
+      }
+    },
+    "generation": {
+      "templates_path": "templates/",
+      "output_path": "generated/"
+    }
+  }
+}

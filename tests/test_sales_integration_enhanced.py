@@ -2,16 +2,16 @@
 Test Sales Integration - Comprehensive test suite for sales-based planning
 """
 
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
 import logging
-from pathlib import Path
+from datetime import datetime
 
-from models.sales_forecast_generator import SalesForecastGenerator
+import numpy as np
+import pandas as pd
+
 from data.sales_data_processor import SalesDataProcessor
 from engine.sales_planning_integration import SalesPlanningIntegration
 from models.forecast import FinishedGoodsForecast
+from models.sales_forecast_generator import SalesForecastGenerator
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)

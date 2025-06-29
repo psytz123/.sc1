@@ -1,0 +1,20 @@
+# Deep Learning Requirements
+# Use this file with Python 3.11 or 3.12 for full deep learning support
+
+# TensorFlow (requires Python <=3.12)
+tensorflow>=2.13.0
+tensorflow-probability>=0.21.0
+
+# PyTorch (check compatibility with your Python version)
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Other deep learning frameworks
+jax>=0.4.0
+jaxlib>=0.4.0
+flax>=0.7.0
+
+# Neural network utilities
+keras>=2.13.0
+transformers>=4.30.0  # For NLP tasks

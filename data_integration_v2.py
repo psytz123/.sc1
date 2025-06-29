@@ -6,10 +6,15 @@ Automatically handles data quality issues:
 3. BOM percentages > 0.99 rounded to 1.0
 """
 
-import pandas as pd
 import json
-from pathlib import Path
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 import warnings
+from pathlib import Path
+
+import pandas as pd
+
 warnings.filterwarnings('ignore')
 
 class BeverlyKnitsDataIntegrator:
@@ -21,7 +26,7 @@ class BeverlyKnitsDataIntegrator:
         
     def load_and_clean_data(self):
         """Load and automatically clean all data files"""
-        print("🔄 Loading and cleaning Beverly Knits data...")
+        logger.info("🔄 Loading and cleaning Beverly Knits data...")
         
         # Load raw data
         yarn_master = pd.read_csv(self.data_dir / "Yarn_ID_1.csv")
@@ -29,11 +34,11 @@ class BeverlyKnitsDataIntegrator:
         suppliers = pd.read_csv(self.data_dir / "Supplier_ID.csv")
         boms = pd.read_csv(self.data_dir / "Style_BOM.csv")
         
-        print(f"✅ Loaded raw data:")
-        print(f"   • Yarn Master: {len(yarn_master)} records")
-        print(f"   • Inventory: {len(inventory)} records")
-        print(f"   • Suppliers: {len(suppliers)} records")
-        print(f"   • BOMs: {len(boms)} records")
+        logger.info(f"✅ Loaded raw data:")
+        logger.info(f"   • Yarn Master: {len(yarn_master)} records")
+        logger.info(f"   • Inventory: {len(inventory)} records")
+        logger.info(f"   • Suppliers: {len(suppliers)} records")
+        logger.info(f"   • BOMs: {len(boms)} records")
         
         # Apply automatic fixes
         inventory_cleaned = self._fix_inventory_balances(inventory)
@@ -49,7 +54,7 @@ class BeverlyKnitsDataIntegrator:
     
     def _fix_inventory_balances(self, inventory_df):
         """Fix negative inventory balances by rounding to 0"""
-        print("\n🔧 Fixing inventory balances...")
+        logger.info("\n🔧 Fixing inventory balances...")
 
         inventory_fixed = inventory_df.copy()
 
@@ -74,7 +79,7 @@ class BeverlyKnitsDataIntegrator:
         negative_stock = inventory_fixed['Inventory'] < 0
         if negative_stock.any():
             count = negative_stock.sum()
-            print(f"   • Fixed {count} negative inventory balances → 0")
+            logger.info(f"   • Fixed {count} negative inventory balances → 0")
             inventory_fixed.loc[negative_stock, 'Inventory'] = 0
             self.quality_issues.append(f"Fixed {count} negative inventory balances")
 
@@ -82,7 +87,7 @@ class BeverlyKnitsDataIntegrator:
         negative_on_order = inventory_fixed['On_Order'] < 0
         if negative_on_order.any():
             count = negative_on_order.sum()
-            print(f"   • Fixed {count} negative on-order balances → 0")
+            logger.info(f"   • Fixed {count} negative on-order balances → 0")
             inventory_fixed.loc[negative_on_order, 'On_Order'] = 0
             self.quality_issues.append(f"Fixed {count} negative on-order balances")
 
@@ -90,13 +95,13 @@ class BeverlyKnitsDataIntegrator:
         negative_planning = inventory_fixed[planning_col] < 0
         if negative_planning.any():
             count = negative_planning.sum()
-            print(f"   • Kept {count} negative planning balances (allowed)")
+            logger.info(f"   • Kept {count} negative planning balances (allowed)")
 
         return inventory_fixed
     
     def _fix_bom_percentages(self, boms_df):
         """Fix BOM percentages > 0.99 by rounding to 1.0"""
-        print("\n🔧 Fixing BOM percentages...")
+        logger.info("\n🔧 Fixing BOM percentages...")
         
         boms_fixed = boms_df.copy()
         
@@ -108,7 +113,7 @@ class BeverlyKnitsDataIntegrator:
         styles_to_fix = style_totals[close_to_one].index
 
         if len(styles_to_fix) > 0:
-            print(f"   • Found {len(styles_to_fix)} styles with percentages close to 1.0")
+            logger.info(f"   • Found {len(styles_to_fix)} styles with percentages close to 1.0")
 
             for style_id in styles_to_fix:
                 style_mask = boms_fixed['Style_ID'] == style_id
@@ -119,7 +124,7 @@ class BeverlyKnitsDataIntegrator:
                     adjustment_factor = 1.0 / current_total
                     boms_fixed.loc[style_mask, 'BOM_Percentage'] *= adjustment_factor
 
-            print(f"   • Adjusted {len(styles_to_fix)} styles to sum to 1.0")
+            logger.info(f"   • Adjusted {len(styles_to_fix)} styles to sum to 1.0")
             self.quality_issues.append(f"Fixed BOM percentages for {len(styles_to_fix)} styles")
 
         # Check for styles still not summing to 1.0
@@ -127,14 +132,14 @@ class BeverlyKnitsDataIntegrator:
         incorrect_totals = final_totals[(final_totals < 0.98) | (final_totals > 1.02)]
 
         if len(incorrect_totals) > 0:
-            print(f"   ⚠️  {len(incorrect_totals)} styles still have incorrect totals (require manual review)")
+            logger.info(f"   ⚠️  {len(incorrect_totals)} styles still have incorrect totals (require manual review)")
             self.quality_issues.append(f"{len(incorrect_totals)} styles still have incorrect BOM totals")
 
         return boms_fixed
     
     def _clean_suppliers(self, suppliers_df):
         """Clean supplier data by removing invalid suppliers"""
-        print("\n🔧 Cleaning supplier data...")
+        logger.info("\n🔧 Cleaning supplier data...")
         
         # Remove suppliers marked for removal
         valid_suppliers = suppliers_df[
@@ -144,16 +149,16 @@ class BeverlyKnitsDataIntegrator:
         
         removed_count = len(suppliers_df) - len(valid_suppliers)
         if removed_count > 0:
-            print(f"   • Removed {removed_count} invalid suppliers")
+            logger.info(f"   • Removed {removed_count} invalid suppliers")
             self.quality_issues.append(f"Removed {removed_count} invalid suppliers")
         
         return valid_suppliers
     
     def _integrate_datasets(self, yarn_master, inventory, suppliers, boms):
         """Integrate all datasets with enhanced logic"""
-        print("\n🔄 Integrating datasets...")
+        logger.info("\n🔄 Integrating datasets...")
         
-        print("\n🔄 Integrating datasets...")
+        logger.info("\n🔄 Integrating datasets...")
 
         # Create master materials dataset
         materials = self._create_materials_master(yarn_master, inventory)
@@ -209,7 +214,7 @@ class BeverlyKnitsDataIntegrator:
         # Handle missing costs (assume they were updated manually)
         zero_cost_count = (materials['cost_per_unit'] == 0).sum()
         if zero_cost_count > 0:
-            print(f"   • Found {zero_cost_count} materials with zero cost (assuming manually updated)")
+            logger.info(f"   • Found {zero_cost_count} materials with zero cost (assuming manually updated)")
 
         return materials
     
@@ -323,7 +328,7 @@ class BeverlyKnitsDataIntegrator:
     
     def save_integrated_data(self, integrated_data):
         """Save all integrated datasets"""
-        print("\n💾 Saving integrated datasets...")
+        logger.info("\n💾 Saving integrated datasets...")
         
         # Save main datasets
         integrated_data['materials'].to_csv(self.data_dir / 'integrated_materials_v2.csv', index=False)
@@ -344,35 +349,35 @@ class BeverlyKnitsDataIntegrator:
                 f.write(f"• {issue}\n")
             f.write(f"\nTotal automatic fixes applied: {len(integrated_data['quality_issues'])}\n")
         
-        print(f"✅ Saved updated datasets:")
-        print(f"   • integrated_materials_v2.csv ({len(integrated_data['materials'])} records)")
-        print(f"   • integrated_suppliers_v2.csv ({len(integrated_data['suppliers'])} records)")
-        print(f"   • integrated_inventory_v2.csv ({len(integrated_data['inventory'])} records)")
-        print(f"   • integrated_boms_v2.csv ({len(integrated_data['boms'])} records)")
-        print(f"   • interchangeable_yarns_v2.json ({len(integrated_data['interchangeable_yarns'])} groups)")
-        print(f"   • data_quality_report_v2.txt ({len(integrated_data['quality_issues'])} fixes)")
+        logger.info(f"✅ Saved updated datasets:")
+        logger.info(f"   • integrated_materials_v2.csv ({len(integrated_data['materials'])} records)")
+        logger.info(f"   • integrated_suppliers_v2.csv ({len(integrated_data['suppliers'])} records)")
+        logger.info(f"   • integrated_inventory_v2.csv ({len(integrated_data['inventory'])} records)")
+        logger.info(f"   • integrated_boms_v2.csv ({len(integrated_data['boms'])} records)")
+        logger.info(f"   • interchangeable_yarns_v2.json ({len(integrated_data['interchangeable_yarns'])} groups)")
+        logger.info(f"   • data_quality_report_v2.txt ({len(integrated_data['quality_issues'])} fixes)")
 
 def main():
     """Run the enhanced data integration"""
-    print("🚀 Beverly Knits Enhanced Data Integration")
-    print("=" * 50)
+    logger.info("🚀 Beverly Knits Enhanced Data Integration")
+    logger.info("=" * 50)
     
     integrator = BeverlyKnitsDataIntegrator()
     integrated_data = integrator.load_and_clean_data()
     integrator.save_integrated_data(integrated_data)
     
-    print("\n🎉 Enhanced Integration Complete!")
-    print("\nAutomatic fixes applied:")
+    logger.info("\n🎉 Enhanced Integration Complete!")
+    logger.info("\nAutomatic fixes applied:")
     for issue in integrated_data['quality_issues']:
-        print(f"   ✅ {issue}")
+        logger.info(f"   ✅ {issue}")
     
-    print(f"\n📊 Final Statistics:")
-    print(f"   • Materials: {len(integrated_data['materials'])}")
-    print(f"   • Supplier relationships: {len(integrated_data['suppliers'])}")
-    print(f"   • Inventory records: {len(integrated_data['inventory'])}")
-    print(f"   • BOM lines: {len(integrated_data['boms'])}")
-    print(f"   • Interchangeable groups: {len(integrated_data['interchangeable_yarns'])}")
-    print(f"   • Automatic fixes: {len(integrated_data['quality_issues'])}")
+    logger.info(f"\n📊 Final Statistics:")
+    logger.info(f"   • Materials: {len(integrated_data['materials'])}")
+    logger.info(f"   • Supplier relationships: {len(integrated_data['suppliers'])}")
+    logger.info(f"   • Inventory records: {len(integrated_data['inventory'])}")
+    logger.info(f"   • BOM lines: {len(integrated_data['boms'])}")
+    logger.info(f"   • Interchangeable groups: {len(integrated_data['interchangeable_yarns'])}")
+    logger.info(f"   • Automatic fixes: {len(integrated_data['quality_issues'])}")
 
 if __name__ == "__main__":
     main()

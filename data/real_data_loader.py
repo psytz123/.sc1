@@ -3,16 +3,23 @@ Beverly Knits Real Data Loader
 Loads integrated real data into the planning system
 """
 
-import pandas as pd
-from pathlib import Path
-import sys
 import os
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+import sys
+from pathlib import Path
+
+import pandas as pd
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.supplier import Supplier
-from models.inventory import Inventory
-from models.bom import BillOfMaterials
 import json
+
+from models.bom import BillOfMaterials
+from models.inventory import Inventory
+from models.supplier import Supplier
+
 
 class RealDataLoader:
     """Loads Beverly Knits real data into planning system format"""
@@ -167,7 +174,7 @@ class RealDataLoader:
 
 def main():
     """Demonstrate real data loading"""
-    print("🔄 Loading Beverly Knits Real Data...")
+    logger.info("🔄 Loading Beverly Knits Real Data...")
     
     loader = RealDataLoader()
     
@@ -178,42 +185,42 @@ def main():
     boms = loader.load_boms()
     interchangeable = loader.load_interchangeable_yarns()
     
-    print(f"📊 Loaded Data Summary:")
-    print(f"   Materials: {len(materials)} yarns")
-    print(f"   Suppliers: {len(suppliers)} supplier-material relationships")
-    print(f"   Inventory: {len(inventory)} inventory records")
-    print(f"   BOMs: {len(boms)} BOM lines for {boms['sku_id'].nunique()} styles")
-    print(f"   Interchangeable Groups: {len(interchangeable)} groups")
+    logger.info(f"📊 Loaded Data Summary:")
+    logger.info(f"   Materials: {len(materials)} yarns")
+    logger.info(f"   Suppliers: {len(suppliers)} supplier-material relationships")
+    logger.info(f"   Inventory: {len(inventory)} inventory records")
+    logger.info(f"   BOMs: {len(boms)} BOM lines for {boms['sku_id'].nunique()} styles")
+    logger.info(f"   Interchangeable Groups: {len(interchangeable)} groups")
     
     # Create objects for planning system
     supplier_objects = loader.create_supplier_objects()
     inventory_objects = loader.create_inventory_objects()
     bom_objects = loader.create_bom_objects()
     
-    print(f"\n🏭 Planning System Objects:")
-    print(f"   Supplier Objects: {len(supplier_objects)}")
-    print(f"   Inventory Objects: {len(inventory_objects)}")
-    print(f"   BOM Objects: {len(bom_objects)}")
+    logger.info(f"\n🏭 Planning System Objects:")
+    logger.info(f"   Supplier Objects: {len(supplier_objects)}")
+    logger.info(f"   Inventory Objects: {len(inventory_objects)}")
+    logger.info(f"   BOM Objects: {len(bom_objects)}")
     
     # Show sample material info
     sample_material = materials.iloc[0]['material_id']
     material_info = loader.get_material_info(str(sample_material))
-    print(f"\n📋 Sample Material Info (ID: {sample_material}):")
+    logger.info(f"\n📋 Sample Material Info (ID: {sample_material}):")
     for key, value in material_info.items():
-        print(f"   {key}: {value}")
+        logger.info(f"   {key}: {value}")
     
     # Show interchangeable materials
     interchangeable_mats = loader.get_interchangeable_materials(str(sample_material))
     if interchangeable_mats:
-        print(f"   Interchangeable with: {interchangeable_mats}")
+        logger.info(f"   Interchangeable with: {interchangeable_mats}")
     
     # Generate sample forecasts
     sample_forecasts = loader.generate_sample_forecasts()
     sample_forecasts.to_csv('data/real_data_sample_forecasts.csv', index=False)
-    print(f"\n📈 Generated sample forecasts: {len(sample_forecasts)} records")
+    logger.info(f"\n📈 Generated sample forecasts: {len(sample_forecasts)} records")
     
-    print("\n✅ Real data loading complete!")
-    print("💡 Use RealDataLoader class to integrate with planning system")
+    logger.info("\n✅ Real data loading complete!")
+    logger.info("💡 Use RealDataLoader class to integrate with planning system")
 
 if __name__ == "__main__":
     main()

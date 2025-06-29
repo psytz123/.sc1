@@ -1,0 +1,43 @@
+{
+  "zen_server_url": "http://localhost:5000",
+  "scan_interval_minutes": 30,
+  "auto_commit": false,
+  "auto_pr": true,
+  "excluded_paths": [
+    "__pycache__",
+    ".git",
+    "node_modules",
+    "venv",
+    ".venv",
+    "dist",
+    "build",
+    ".pytest_cache",
+    "*.egg-info"
+  ],
+  "file_patterns": [
+    "*.py",
+    "*.js",
+    "*.ts",
+    "*.jsx",
+    "*.tsx",
+    "*.java",
+    "*.cpp",
+    "*.c",
+    "*.h",
+    "*.cs"
+  ],
+  "max_concurrent_tasks": 3,
+  "task_priorities": {
+    "security": "CRITICAL",
+    "bug_fix": "HIGH",
+    "performance": "HIGH",
+    "refactor": "MEDIUM",
+    "documentation": "LOW"
+  },
+  "ml_improvements": {
+    "enabled": true,
+    "model_retraining_interval_days": 7,
+    "performance_threshold": 0.85,
+    "data_collection": true
+  }
+}

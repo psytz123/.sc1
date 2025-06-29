@@ -2,10 +2,11 @@
 Supplier Data Model with EOQ Optimization and Multi-Supplier Sourcing
 """
 
-from dataclasses import dataclass
-from typing import Dict, List, Optional, NamedTuple
-import pandas as pd
 import math
+from dataclasses import dataclass
+from typing import Dict, List, NamedTuple, Optional
+
+import pandas as pd
 
 
 @dataclass

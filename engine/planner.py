@@ -2,18 +2,21 @@
 Planning Engine - Orchestrates the raw material planning process
 """
 
-import pandas as pd
-from datetime import datetime, timedelta
 from collections import defaultdict
-from typing import List, Dict, Optional
+from utils.logger import get_logger
 
-from models.forecast import FinishedGoodsForecast, ForecastProcessor
-from models.bom import BillOfMaterials, BOMExploder
-from models.inventory import Inventory, InventoryNetter
-from models.supplier import Supplier, SupplierSelector, EOQCalculator
-from models.recommendation import ProcurementRecommendation, RiskFlag
+logger = get_logger(__name__)
+from datetime import datetime, timedelta
+from typing import Dict, List
+
+import pandas as pd
+
 from config.settings import PlanningConfig
-from utils.helpers import DateUtils, ReportGenerator
+from models.bom import BillOfMaterials, BOMExploder
+from models.forecast import FinishedGoodsForecast, ForecastProcessor
+from models.inventory import Inventory, InventoryNetter
+from models.recommendation import ProcurementRecommendation
+from models.supplier import EOQCalculator, Supplier, SupplierSelector
 
 
 class RawMaterialPlanner:
@@ -38,25 +41,25 @@ class RawMaterialPlanner:
         Returns:
             List of procurement recommendations
         """
-        print("\n🧶 Beverly Knits Raw Material Planning Engine")
-        print("=" * 50)
-        
+        logger.info("Starting Beverly Knits Raw Material Planning Engine")
+        logger.info("=" * 50)
+
         # Step 1: Unify forecasts
-        print("\n📊 Step 1: Unifying forecasts...")
+        logger.info("Step 1: Unifying forecasts...")
 
         # Check if we need to generate forecasts from sales data
         if hasattr(self.config, 'enable_sales_forecasting') and self.config.enable_sales_forecasting:
-            print("   Generating forecasts from sales history...")
+            logger.info("Generating forecasts from sales history...")
             sales_forecasts = self._generate_sales_forecasts()
             if sales_forecasts:
                 forecasts.extend(sales_forecasts)
-                print(f"   Added {len(sales_forecasts)} sales-based forecasts")
+                logger.info(f"Added {len(sales_forecasts)} sales-based forecasts")
 
         unified_forecasts = self.forecast_processor.unify_forecasts(forecasts)
-        print(f"   Unified {len(forecasts)} forecasts into {len(unified_forecasts)} SKU demands")
+        logger.info(f"Unified {len(forecasts)} forecasts into {len(unified_forecasts)} SKU demands")
 
         # Step 2: Explode BOMs
-        print("\n🔧 Step 2: Exploding BOMs...")
+        logger.info("Step 2: Exploding BOMs...")
 
         # Check if we have style-to-yarn BOMs
         if hasattr(self.config, 'use_style_yarn_bom') and self.config.use_style_yarn_bom:
@@ -64,22 +67,22 @@ class RawMaterialPlanner:
         else:
             material_requirements = BOMExploder.explode_requirements(unified_forecasts, boms)
 
-        print(f"   Exploded to {len(material_requirements)} material requirements")
-        
+        logger.info(f"Exploded to {len(material_requirements)} material requirements")
+
         # Step 3: Net against inventory
-        print("\n📦 Step 3: Netting against inventory...")
+        logger.info("Step 3: Netting against inventory...")
         net_requirements = self.inventory_netter.calculate_net_requirements(
             material_requirements, inventory
         )
-        print(f"   Calculated net requirements for {len(net_requirements)} materials")
-        
+        logger.info(f"Calculated net requirements for {len(net_requirements)} materials")
+
         # Step 4 & 5: Optimize procurement and select suppliers
-        print("\n🛒 Step 4 & 5: Optimizing procurement and selecting suppliers...")
+        logger.info("Step 4 & 5: Optimizing procurement and selecting suppliers...")
         recommendations = self._generate_recommendations(net_requirements, suppliers)
-        print(f"   Generated {len(recommendations)} procurement recommendations")
-        
+        logger.info(f"Generated {len(recommendations)} procurement recommendations")
+
         # Step 6: Generate output
-        print("\n📄 Step 6: Generating reports...")
+        logger.info("Step 6: Generating reports...")
         self._generate_reports(recommendations)
 
         # Store recommendations for summary
@@ -105,7 +108,7 @@ class RawMaterialPlanner:
 
             material_suppliers = suppliers_by_material.get(material_id, [])
             if not material_suppliers:
-                print(f"   ⚠️  No suppliers found for material {material_id}")
+                logger.info(f"   ⚠️  No suppliers found for material {material_id}")
                 continue
 
             # Apply safety stock buffer
@@ -188,7 +191,7 @@ class RawMaterialPlanner:
             return planning_inputs.get('forecasts', [])
 
         except Exception as e:
-            print(f"   ⚠️  Error generating sales forecasts: {e}")
+            logger.info(f"   ⚠️  Error generating sales forecasts: {e}")
             return []
 
     def _explode_with_style_yarn_bom(self,
@@ -217,13 +220,13 @@ class RawMaterialPlanner:
             # Explode style forecasts to yarn requirements
             yarn_requirements = {}
             if style_forecasts:
-                print(f"   📊 Exploding {len(style_forecasts)} style forecasts to yarn requirements")
+                logger.info(f"   📊 Exploding {len(style_forecasts)} style forecasts to yarn requirements")
                 yarn_requirements = integrator.explode_style_forecast_to_yarn(style_forecasts)
 
                 # Log summary
                 total_yarn_qty = sum(req['total_qty'] for req in yarn_requirements.values())
-                print(f"   ✅ Generated requirements for {len(yarn_requirements)} yarns")
-                print(f"   📦 Total yarn required: {total_yarn_qty:,.0f} yards")
+                logger.info(f"   ✅ Generated requirements for {len(yarn_requirements)} yarns")
+                logger.info(f"   📦 Total yarn required: {total_yarn_qty:,.0f} yards")
 
             # If there are also SKU forecasts, handle them with regular BOM explosion
             if sku_forecasts and boms:
@@ -236,10 +239,11 @@ class RawMaterialPlanner:
             return yarn_requirements
 
         except ImportError:
-            print(f"   ⚠️  Enhanced BOM integration not available, falling back to standard method")
+            logger.info(f"   ⚠️  Enhanced BOM integration not available, falling back to standard method")
             # Fall back to the original method
-            from models.bom import BOMExploder, StyleYarnBOM
             import pandas as pd
+
+            from models.bom import BOMExploder
 
             # Load style-yarn BOM data
             bom_file = getattr(self.config, 'style_yarn_bom_file', 'data/cfab_Yarn_Demand_By_Style.csv')
@@ -257,7 +261,7 @@ class RawMaterialPlanner:
             return yarn_requirements
 
         except Exception as e:
-            print(f"   ⚠️  Error with style-yarn BOM explosion: {e}")
+            logger.info(f"   ⚠️  Error with style-yarn BOM explosion: {e}")
             # Fall back to regular BOM explosion
             from models.bom import BOMExploder
             return BOMExploder.explode_requirements(unified_forecasts, boms)
@@ -275,7 +279,7 @@ class RawMaterialPlanner:
                 import numpy as np
                 from scipy import stats
 
-                avg_demand = np.mean(demand_history)
+                np.mean(demand_history)
                 std_demand = np.std(demand_history)
 
                 # Get service level from config
@@ -294,7 +298,7 @@ class RawMaterialPlanner:
                 return req_data['net_requirement'] * 0.2
 
         except Exception as e:
-            print(f"   ⚠️  Error calculating statistical safety stock: {e}")
+            logger.info(f"   ⚠️  Error calculating statistical safety stock: {e}")
             return req_data['net_requirement'] * 0.2
 
     def _optimize_multi_supplier(self,

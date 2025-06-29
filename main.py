@@ -4,26 +4,27 @@ Beverly Knits Raw Material Planner - Streamlit Application
 AI-driven raw material planning system with interactive web interface.
 """
 
-import streamlit as st
+import io
+import os
+import sys
+from datetime import datetime
+
 import pandas as pd
 import plotly.express as px
-from datetime import datetime
-import io
-import sys
-import os
+import streamlit as st
 
 # Add project root to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from engine.planner import RawMaterialPlanner
-from models.forecast import ForecastProcessor
-from models.bom import BOMExploder
-from models.inventory import InventoryNetter
-from models.supplier import SupplierSelector
-from models.recommendation import RecommendationGenerator
 from config.settings import BusinessRules
-from utils.helpers import ReportGenerator
 from data.sample_data_generator import SampleDataGenerator
+from engine.planner import RawMaterialPlanner
+from models.bom import BOMExploder
+from models.forecast import ForecastProcessor
+from models.inventory import InventoryNetter
+from models.recommendation import RecommendationGenerator
+from models.supplier import SupplierSelector
+from utils.helpers import ReportGenerator
 
 
 def main():
@@ -292,7 +293,7 @@ def display_planning_results():
     # Additional metrics row
     col1, col2, col3, col4, col5 = st.columns(5)
 
-    multi_supplier_materials = len(set(rec.material_id for rec in recommendations)) - len(recommendations)
+    len(set(rec.material_id for rec in recommendations)) - len(recommendations)
     materials_without_suppliers = sum(1 for rec in recommendations if rec.supplier_id == "NO_SUPPLIER")
     avg_order_qty = sum(rec.order_quantity for rec in recommendations) / len(recommendations) if recommendations else 0
     total_materials = len(set(rec.material_id for rec in recommendations))

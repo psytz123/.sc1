@@ -3,9 +3,10 @@ Procurement Recommendation Data Model
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Optional
-import pandas as pd
 from enum import Enum
+from typing import Dict, List, Optional
+
+import pandas as pd
 
 
 class RiskFlag(Enum):

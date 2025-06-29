@@ -1,0 +1,22 @@
+{
+  "run_interval_minutes": 30,
+  "initial_delay_seconds": 10,
+  "max_consecutive_errors": 3,
+  "error_retry_delay_minutes": 5,
+  "working_hours": {
+    "enabled": false,
+    "start_hour": 9,
+    "end_hour": 17,
+    "weekends_enabled": false
+  },
+  "notifications": {
+    "enabled": false,
+    "webhook_url": "",
+    "notify_on_error": true,
+    "notify_on_completion": false
+  },
+  "performance": {
+    "max_run_time_minutes": 60,
+    "memory_limit_mb": 1024
+  }
+}

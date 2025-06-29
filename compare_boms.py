@@ -1,5 +1,7 @@
 import pandas as pd
-import numpy as np
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 # Read both BOM files
 style_bom = pd.read_csv('data/Style_BOM.csv')
@@ -13,10 +15,10 @@ style_grouped = style_bom.groupby('sku_id')
 integrated_grouped = integrated_bom.groupby('sku_id')
 
 # Find discrepancies
-print("=" * 80)
-print("BOM COMPARISON REPORT")
-print("=" * 80)
-print()
+logger.info("=" * 80)
+logger.info("BOM COMPARISON REPORT")
+logger.info("=" * 80)
+logger.info()
 
 # 1. SKUs missing from integrated BOM
 style_skus = set(style_bom['sku_id'].unique())
@@ -24,16 +26,16 @@ integrated_skus = set(integrated_bom['sku_id'].unique())
 
 missing_skus = style_skus - integrated_skus
 if missing_skus:
-    print(f"1. SKUs in Style_BOM but missing from Integrated BOM: {len(missing_skus)}")
+    logger.info(f"1. SKUs in Style_BOM but missing from Integrated BOM: {len(missing_skus)}")
     for sku in sorted(missing_skus)[:10]:  # Show first 10
-        print(f"   - {sku}")
+        logger.info(f"   - {sku}")
     if len(missing_skus) > 10:
-        print(f"   ... and {len(missing_skus) - 10} more")
-    print()
+        logger.info(f"   ... and {len(missing_skus) - 10} more")
+    logger.info()
 
 # 2. SKUs with missing materials or incorrect percentages
-print("2. SKUs with discrepancies in materials or percentages:")
-print()
+logger.info("2. SKUs with discrepancies in materials or percentages:")
+logger.info()
 
 discrepancy_count = 0
 for sku in sorted(integrated_skus):
@@ -67,46 +69,46 @@ for sku in sorted(integrated_skus):
         if missing_materials or extra_materials or mismatches or abs(style_total - integrated_total) > 0.001:
             discrepancy_count += 1
             if discrepancy_count <= 20:  # Show first 20 discrepancies
-                print(f"   SKU: {sku}")
+                logger.info(f"   SKU: {sku}")
                 
                 if missing_materials:
-                    print(f"      Missing materials in integrated BOM:")
+                    logger.info(f"      Missing materials in integrated BOM:")
                     for mat in missing_materials:
-                        print(f"         - Material {mat}: {style_data[mat]:.3f} (from Style_BOM)")
+                        logger.info(f"         - Material {mat}: {style_data[mat]:.3f} (from Style_BOM)")
                 
                 if extra_materials:
-                    print(f"      Extra materials in integrated BOM:")
+                    logger.info(f"      Extra materials in integrated BOM:")
                     for mat in extra_materials:
-                        print(f"         - Material {mat}: {integrated_data[mat]:.3f}")
+                        logger.info(f"         - Material {mat}: {integrated_data[mat]:.3f}")
                 
                 if mismatches:
-                    print(f"      Percentage mismatches:")
+                    logger.info(f"      Percentage mismatches:")
                     for mat, style_val, integrated_val in mismatches:
-                        print(f"         - Material {mat}: Style_BOM={style_val:.3f}, Integrated={integrated_val:.3f}")
+                        logger.info(f"         - Material {mat}: Style_BOM={style_val:.3f}, Integrated={integrated_val:.3f}")
                 
-                print(f"      Total percentages: Style_BOM={style_total:.3f}, Integrated={integrated_total:.3f}")
-                print()
+                logger.info(f"      Total percentages: Style_BOM={style_total:.3f}, Integrated={integrated_total:.3f}")
+                logger.info()
 
 if discrepancy_count > 20:
-    print(f"   ... and {discrepancy_count - 20} more SKUs with discrepancies")
-    print()
+    logger.info(f"   ... and {discrepancy_count - 20} more SKUs with discrepancies")
+    logger.info()
 
 # 3. Floating point precision issues
-print("3. Floating point precision issues in integrated BOM:")
+logger.info("3. Floating point precision issues in integrated BOM:")
 precision_issues = integrated_bom[integrated_bom['quantity_per_unit'].astype(str).str.contains(r'\d{10,}')]
 if len(precision_issues) > 0:
-    print(f"   Found {len(precision_issues)} entries with precision issues")
+    logger.info(f"   Found {len(precision_issues)} entries with precision issues")
     for idx, row in precision_issues.head(10).iterrows():
-        print(f"   - {row['sku_id']}, Material {row['material_id']}: {row['quantity_per_unit']}")
+        logger.info(f"   - {row['sku_id']}, Material {row['material_id']}: {row['quantity_per_unit']}")
     if len(precision_issues) > 10:
-        print(f"   ... and {len(precision_issues) - 10} more")
+        logger.info(f"   ... and {len(precision_issues) - 10} more")
 else:
-    print("   No precision issues found")
+    logger.info("   No precision issues found")
 
-print()
-print("=" * 80)
-print("SUMMARY")
-print("=" * 80)
-print(f"Total SKUs in Style_BOM: {len(style_skus)}")
-print(f"Total SKUs in Integrated BOM: {len(integrated_skus)}")
-print(f"SKUs with discrepancies: {discrepancy_count}")
+logger.info()
+logger.info("=" * 80)
+logger.info("SUMMARY")
+logger.info("=" * 80)
+logger.info(f"Total SKUs in Style_BOM: {len(style_skus)}")
+logger.info(f"Total SKUs in Integrated BOM: {len(integrated_skus)}")
+logger.info(f"SKUs with discrepancies: {discrepancy_count}")

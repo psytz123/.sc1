@@ -1,0 +1,9 @@
+{
+  "data_processing": {
+    "validation_rules": {
+      "bom_percentage_tolerance": 0.01,
+      "inventory_negative_check": true
+    },
+    "temp_directory": "temp/data_processing"
+  }
+}

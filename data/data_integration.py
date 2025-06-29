@@ -3,11 +3,16 @@ Beverly Knits Real Data Integration Module
 Processes and validates yarn, supplier, inventory, and BOM data
 """
 
-import pandas as pd
-from typing import Dict, List
 import re
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Dict, List
+
+import pandas as pd
+
 
 @dataclass
 class DataQualityIssue:
@@ -46,14 +51,14 @@ class BeverlyKnitsDataIntegrator:
     
     def validate_supplier_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Validate and clean supplier data"""
-        print("🔍 Validating Supplier Data...")
+        logger.info("🔍 Validating Supplier Data...")
         
         # Identify suppliers marked for removal
         remove_suppliers = df[df['Lead_time'] == 'Remove'].copy()
         if not remove_suppliers.empty:
-            print(f"⚠️  Found {len(remove_suppliers)} suppliers marked for removal:")
+            logger.info(f"⚠️  Found {len(remove_suppliers)} suppliers marked for removal:")
             for _, row in remove_suppliers.iterrows():
-                print(f"   - {row['Supplier']} (ID: {row['Supplier_ID']})")
+                logger.info(f"   - {row['Supplier']} (ID: {row['Supplier_ID']})")
                 self.quality_issues.append(DataQualityIssue(
                     file_name="Supplier_ID.csv",
                     row_index=row.name,
@@ -94,12 +99,12 @@ class BeverlyKnitsDataIntegrator:
                 suggested_action="Provide minimum order quantity"
             ))
         
-        print(f"✅ Cleaned supplier data: {len(clean_df)} valid suppliers")
+        logger.info(f"✅ Cleaned supplier data: {len(clean_df)} valid suppliers")
         return clean_df
     
     def validate_yarn_inventory_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Validate and clean yarn inventory data"""
-        print("🔍 Validating Yarn Inventory Data...")
+        logger.info("🔍 Validating Yarn Inventory Data...")
         
         # Clean numeric columns - remove $ signs and commas
         numeric_columns = ['Inventory', 'On_Order', 'Allocated', 'Planning_Ballance', 'Cost_Pound', 'Total_Cast']
@@ -113,9 +118,9 @@ class BeverlyKnitsDataIntegrator:
         # Check for zero or missing costs
         zero_cost_yarns = df[(df['Cost_Pound'] == 0) | (df['Cost_Pound'].isna())]
         if not zero_cost_yarns.empty:
-            print(f"⚠️  Found {len(zero_cost_yarns)} yarns with zero or missing costs:")
+            logger.info(f"⚠️  Found {len(zero_cost_yarns)} yarns with zero or missing costs:")
             for _, row in zero_cost_yarns.iterrows():
-                print(f"   - Yarn {row['Yarn_ID']}: {row['Supplier']} - {row['Description']}")
+                logger.info(f"   - Yarn {row['Yarn_ID']}: {row['Supplier']} - {row['Description']}")
                 self.quality_issues.append(DataQualityIssue(
                     file_name="Yarn_ID_Current_Inventory.csv",
                     row_index=row.name,
@@ -128,9 +133,9 @@ class BeverlyKnitsDataIntegrator:
         # Check for negative planning balances
         negative_balance = df[df['Planning_Ballance'] < 0]
         if not negative_balance.empty:
-            print(f"⚠️  Found {len(negative_balance)} yarns with negative planning balance:")
+            logger.info(f"⚠️  Found {len(negative_balance)} yarns with negative planning balance:")
             for _, row in negative_balance.iterrows():
-                print(f"   - Yarn {row['Yarn_ID']}: Balance = {row['Planning_Ballance']}")
+                logger.info(f"   - Yarn {row['Yarn_ID']}: Balance = {row['Planning_Ballance']}")
                 self.quality_issues.append(DataQualityIssue(
                     file_name="Yarn_ID_Current_Inventory.csv",
                     row_index=row.name,
@@ -154,12 +159,12 @@ class BeverlyKnitsDataIntegrator:
                     suggested_action=f"Provide {col.lower()} information"
                 ))
         
-        print(f"✅ Processed yarn inventory data: {len(df)} yarns")
+        logger.info(f"✅ Processed yarn inventory data: {len(df)} yarns")
         return df
     
     def standardize_yarn_specifications(self, df: pd.DataFrame) -> pd.DataFrame:
         """Standardize yarn specifications for consistency"""
-        print("🔍 Standardizing Yarn Specifications...")
+        logger.info("🔍 Standardizing Yarn Specifications...")
         
         # Standardize blend percentages
         blend_patterns = {
@@ -189,7 +194,7 @@ class BeverlyKnitsDataIntegrator:
         
         non_standard_types = [t for t in unique_types if t not in standard_types and pd.notna(t)]
         if non_standard_types:
-            print(f"⚠️  Found non-standard material types: {non_standard_types}")
+            logger.info(f"⚠️  Found non-standard material types: {non_standard_types}")
             for yarn_type in non_standard_types:
                 affected_yarns = df[df['Type'] == yarn_type]
                 for _, row in affected_yarns.iterrows():
@@ -202,12 +207,12 @@ class BeverlyKnitsDataIntegrator:
                         suggested_action="Standardize material type"
                     ))
         
-        print(f"✅ Standardized yarn specifications")
+        logger.info(f"✅ Standardized yarn specifications")
         return df
     
     def find_interchangeable_yarns(self, df: pd.DataFrame) -> Dict[str, List[str]]:
         """Find yarns with same specifications that are interchangeable"""
-        print("🔍 Finding Interchangeable Yarns...")
+        logger.info("🔍 Finding Interchangeable Yarns...")
         
         # Group by key specifications
         spec_columns = ['Description', 'Blend', 'Type', 'Color']
@@ -242,14 +247,14 @@ class BeverlyKnitsDataIntegrator:
                     }
                 }
                 
-                print(f"   📦 {group_name}: {len(yarn_ids)} interchangeable yarns")
+                logger.info(f"   📦 {group_name}: {len(yarn_ids)} interchangeable yarns")
         
-        print(f"✅ Found {len(interchangeable_groups)} interchangeable yarn groups")
+        logger.info(f"✅ Found {len(interchangeable_groups)} interchangeable yarn groups")
         return interchangeable_groups
     
     def validate_bom_data(self, bom_df: pd.DataFrame, yarn_df: pd.DataFrame) -> pd.DataFrame:
         """Validate BOM data against yarn master data"""
-        print("🔍 Validating BOM Data...")
+        logger.info("🔍 Validating BOM Data...")
         
         # Check for missing yarn IDs in BOM
         yarn_ids_in_master = set(yarn_df['Yarn_ID'].astype(str))
@@ -257,10 +262,10 @@ class BeverlyKnitsDataIntegrator:
         
         missing_yarns = yarn_ids_in_bom - yarn_ids_in_master
         if missing_yarns:
-            print(f"⚠️  Found {len(missing_yarns)} yarn IDs in BOM not in master data:")
+            logger.info(f"⚠️  Found {len(missing_yarns)} yarn IDs in BOM not in master data:")
             for yarn_id in list(missing_yarns)[:10]:  # Show first 10
                 affected_styles = bom_df[bom_df['Yarn_ID'].astype(str) == yarn_id]['Style_ID'].tolist()
-                print(f"   - Yarn {yarn_id} used in styles: {affected_styles[:3]}...")
+                logger.info(f"   - Yarn {yarn_id} used in styles: {affected_styles[:3]}...")
                 self.quality_issues.append(DataQualityIssue(
                     file_name="Style_BOM.csv",
                     row_index=-1,
@@ -275,9 +280,9 @@ class BeverlyKnitsDataIntegrator:
         incorrect_totals = style_totals[abs(style_totals - 1.0) > 0.001]
         
         if not incorrect_totals.empty:
-            print(f"⚠️  Found {len(incorrect_totals)} styles with incorrect BOM percentages:")
+            logger.info(f"⚠️  Found {len(incorrect_totals)} styles with incorrect BOM percentages:")
             for style_id, total in incorrect_totals.head(10).items():
-                print(f"   - Style {style_id}: Total = {total:.3f}")
+                logger.info(f"   - Style {style_id}: Total = {total:.3f}")
                 self.quality_issues.append(DataQualityIssue(
                     file_name="Style_BOM.csv",
                     row_index=-1,
@@ -287,7 +292,7 @@ class BeverlyKnitsDataIntegrator:
                     suggested_action="BOM percentages should sum to 1.0"
                 ))
         
-        print(f"✅ Validated BOM data: {len(bom_df)} BOM lines for {bom_df['Style_ID'].nunique()} styles")
+        logger.info(f"✅ Validated BOM data: {len(bom_df)} BOM lines for {bom_df['Style_ID'].nunique()} styles")
         return bom_df
     
     def generate_quality_report(self) -> str:
@@ -323,7 +328,7 @@ class BeverlyKnitsDataIntegrator:
     
     def create_integrated_datasets(self, data: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
         """Create integrated datasets for the planning system"""
-        print("🔧 Creating Integrated Datasets...")
+        logger.info("🔧 Creating Integrated Datasets...")
         
         # Merge yarn specs with inventory data
         yarn_master = pd.merge(
@@ -401,18 +406,18 @@ class BeverlyKnitsDataIntegrator:
             'supplier_master': suppliers_clean
         }
         
-        print("✅ Created integrated datasets")
+        logger.info("✅ Created integrated datasets")
         return integrated_data
 
 def main():
     """Main integration function"""
-    print("🚀 Starting Beverly Knits Data Integration...")
+    logger.info("🚀 Starting Beverly Knits Data Integration...")
     
     integrator = BeverlyKnitsDataIntegrator()
     
     # Load all data
     raw_data = integrator.load_all_data()
-    print(f"📊 Loaded {len(raw_data)} data files")
+    logger.info(f"📊 Loaded {len(raw_data)} data files")
     
     # Validate and clean data
     raw_data['suppliers'] = integrator.validate_supplier_data(raw_data['suppliers'])
@@ -437,16 +442,16 @@ def main():
     for name, df in integrated_data.items():
         if isinstance(df, pd.DataFrame):
             df.to_csv(f'data/integrated_{name}.csv', index=False)
-            print(f"💾 Saved integrated_{name}.csv ({len(df)} records)")
+            logger.info(f"💾 Saved integrated_{name}.csv ({len(df)} records)")
     
     # Save interchangeable groups
     import json
     with open('data/interchangeable_yarns.json', 'w') as f:
         json.dump(interchangeable_groups, f, indent=2)
     
-    print("\n" + quality_report)
-    print(f"\n🎯 Integration complete! Found {len(interchangeable_groups)} interchangeable yarn groups")
-    print("📋 Check data_quality_report.txt for detailed issues to address")
+    logger.info("\n" + quality_report)
+    logger.info(f"\n🎯 Integration complete! Found {len(interchangeable_groups)} interchangeable yarn groups")
+    logger.info("📋 Check data_quality_report.txt for detailed issues to address")
 
 if __name__ == "__main__":
     main()

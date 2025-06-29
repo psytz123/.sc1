@@ -5,11 +5,11 @@ This module provides improved integration with cfab_Yarn_Demand_By_Style.csv
 for accurate BOM explosion from style-level forecasts to yarn requirements.
 """
 
-import pandas as pd
-import numpy as np
-from typing import Dict, List, Tuple, Optional
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
+from typing import Dict, List, Tuple
+
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

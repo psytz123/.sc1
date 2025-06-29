@@ -4,8 +4,8 @@ Logging configuration for Beverly Knits Raw Material Planner
 
 import logging
 import logging.handlers
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 
 def setup_logging(log_level=logging.INFO, log_file=None):

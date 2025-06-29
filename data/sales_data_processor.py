@@ -3,17 +3,16 @@ Sales Data Processor
 Handles data pipeline integration between sales analysis and planning system
 """
 
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
-from typing import List, Dict, Optional, Tuple
 import logging
+from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Dict, List, Optional
 
-from models.forecast import FinishedGoodsForecast
-from models.sales_forecast_generator import SalesForecastGenerator
-from models.bom import BOMExploder, StyleYarnBOM
+import numpy as np
+import pandas as pd
+
 from config.settings import PlanningConfig
+from models.sales_forecast_generator import SalesForecastGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +69,7 @@ class SalesDataProcessor:
             logger.warning(f"Removed {removed_rows} invalid rows from sales data")
         
         # Validate data quality
-        validation_results = self._validate_sales_data_quality()
+        self._validate_sales_data_quality()
         
         logger.info(f"Loaded {len(self.sales_df)} valid sales records")
         logger.info(f"Date range: {self.sales_df[date_column].min()} to {self.sales_df[date_column].max()}")

@@ -1,0 +1,24 @@
+{
+  "zen_mcp_server": {
+    "url": "http://localhost:5000",
+    "endpoints": {
+      "ml_analysis": "/api/ml/analyze",
+      "code_generation": "/api/code/generate",
+      "multi_model_consensus": "/api/consensus"
+    },
+    "timeout": 30,
+    "retry_attempts": 3,
+    "models": {
+      "primary": "claude-3-opus",
+      "secondary": [
+        "gemini-pro",
+        "gpt-4"
+      ],
+      "specialized": {
+        "code": "claude-3-opus",
+        "analysis": "gemini-pro",
+        "creative": "gpt-4"
+      }
+    }
+  }
+}

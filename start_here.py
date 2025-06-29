@@ -8,17 +8,17 @@ This script provides instructions and commands to get started with the system.
 
 def print_banner():
     """Print welcome banner"""
-    print("🧶" * 50)
-    print("🧶  BEVERLY KNITS - AI RAW MATERIAL PLANNER  🧶")
-    print("🧶" * 50)
-    print()
-    print("Welcome to the intelligent supply chain planning system!")
-    print("This system helps optimize raw material procurement for textile manufacturing.")
-    print()
+    logger.info("🧶" * 50)
+    logger.info("🧶  BEVERLY KNITS - AI RAW MATERIAL PLANNER  🧶")
+    logger.info("🧶" * 50)
+    logger.info()
+    logger.info("Welcome to the intelligent supply chain planning system!")
+    logger.info("This system helps optimize raw material procurement for textile manufacturing.")
+    logger.info()
 
 def check_dependencies():
     """Check if required dependencies are installed"""
-    print("📋 Checking Dependencies...")
+    logger.info("📋 Checking Dependencies...")
     
     required_packages = [
         'pandas', 'streamlit', 'plotly', 'numpy'
@@ -29,44 +29,44 @@ def check_dependencies():
     for package in required_packages:
         try:
             __import__(package)
-            print(f"  ✅ {package}")
+            logger.info(f"  ✅ {package}")
         except ImportError:
-            print(f"  ❌ {package} - MISSING")
+            logger.info(f"  ❌ {package} - MISSING")
             missing_packages.append(package)
     
     if missing_packages:
-        print(f"\n⚠️  Missing packages: {', '.join(missing_packages)}")
-        print("   Run: pip install -r requirements.txt")
+        logger.info(f"\n⚠️  Missing packages: {', '.join(missing_packages)}")
+        logger.info("   Run: pip install -r requirements.txt")
         return False
     else:
-        print("\n✅ All dependencies are installed!")
+        logger.info("\n✅ All dependencies are installed!")
         return True
 
 def show_quick_start():
     """Show quick start instructions"""
-    print("\n🚀 QUICK START GUIDE")
-    print("=" * 20)
+    logger.info("\n🚀 QUICK START GUIDE")
+    logger.info("=" * 20)
     
-    print("\n1. 🧪 TEST THE SYSTEM:")
-    print("   python test_planner.py")
-    print("   → Runs complete system test with sample data")
+    logger.info("\n1. 🧪 TEST THE SYSTEM:")
+    logger.info("   python test_planner.py")
+    logger.info("   → Runs complete system test with sample data")
     
-    print("\n2. 🌐 LAUNCH WEB INTERFACE:")
-    print("   streamlit run main.py")
-    print("   → Opens interactive dashboard in your browser")
+    logger.info("\n2. 🌐 LAUNCH WEB INTERFACE:")
+    logger.info("   streamlit run main.py")
+    logger.info("   → Opens interactive dashboard in your browser")
     
-    print("\n3. 📊 USE SAMPLE DATA:")
-    print("   → Sample CSV files are available in the 'data/' directory")
-    print("   → Or generate new sample data using the web interface")
+    logger.info("\n3. 📊 USE SAMPLE DATA:")
+    logger.info("   → Sample CSV files are available in the 'data/' directory")
+    logger.info("   → Or generate new sample data using the web interface")
     
-    print("\n4. 📁 UPLOAD YOUR DATA:")
-    print("   → Use the web interface to upload your CSV files")
-    print("   → Required files: forecasts, boms, inventory, suppliers")
+    logger.info("\n4. 📁 UPLOAD YOUR DATA:")
+    logger.info("   → Use the web interface to upload your CSV files")
+    logger.info("   → Required files: forecasts, boms, inventory, suppliers")
 
 def show_data_format():
     """Show required data format"""
-    print("\n📋 DATA FORMAT REQUIREMENTS")
-    print("=" * 28)
+    logger.info("\n📋 DATA FORMAT REQUIREMENTS")
+    logger.info("=" * 28)
     
     formats = {
         "Forecasts CSV": ["sku_id", "forecast_qty", "forecast_date", "source"],
@@ -76,14 +76,14 @@ def show_data_format():
     }
     
     for file_type, columns in formats.items():
-        print(f"\n📄 {file_type}:")
+        logger.info(f"\n📄 {file_type}:")
         for col in columns:
-            print(f"   • {col}")
+            logger.info(f"   • {col}")
 
 def show_features():
     """Show key features"""
-    print("\n🎯 KEY FEATURES")
-    print("=" * 15)
+    logger.info("\n🎯 KEY FEATURES")
+    logger.info("=" * 15)
     
     features = [
         "🧠 AI-driven planning with 6-step intelligent process",
@@ -99,14 +99,14 @@ def show_features():
     ]
     
     for feature in features:
-        print(f"  {feature}")
+        logger.info(f"  {feature}")
 
 def show_example_output():
     """Show example output"""
-    print("\n📊 EXAMPLE OUTPUT")
-    print("=" * 17)
+    logger.info("\n📊 EXAMPLE OUTPUT")
+    logger.info("=" * 17)
     
-    print("""
+    logger.info("""
 Sample Procurement Recommendation:
 {
   "material_id": "YARN-COTTON",
@@ -130,8 +130,8 @@ def main():
     deps_ok = check_dependencies()
     
     if not deps_ok:
-        print("\n❌ Please install missing dependencies first!")
-        print("   Run: pip install -r requirements.txt")
+        logger.info("\n❌ Please install missing dependencies first!")
+        logger.info("   Run: pip install -r requirements.txt")
         return
     
     # Show guides
@@ -140,15 +140,15 @@ def main():
     show_features()
     show_example_output()
     
-    print("\n" + "🧶" * 50)
-    print("🧶  READY TO START PLANNING! 🚀")
-    print("🧶" * 50)
-    print()
-    print("Choose your next step:")
-    print("  • Run 'python test_planner.py' to test the system")
-    print("  • Run 'streamlit run main.py' to launch the web interface")
-    print("  • Check the README.md for detailed documentation")
-    print()
+    logger.info("\n" + "🧶" * 50)
+    logger.info("🧶  READY TO START PLANNING! 🚀")
+    logger.info("🧶" * 50)
+    logger.info()
+    logger.info("Choose your next step:")
+    logger.info("  • Run 'python test_planner.py' to test the system")
+    logger.info("  • Run 'streamlit run main.py' to launch the web interface")
+    logger.info("  • Check the README.md for detailed documentation")
+    logger.info()
 
 if __name__ == "__main__":
     main()

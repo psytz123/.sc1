@@ -3,14 +3,13 @@ Integration example: Sales Forecast Generator with Planning System
 Demonstrates how to use historical sales data to generate forecasts for the planning engine
 """
 
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
-from models.sales_forecast_generator import SalesForecastGenerator
-from models.forecast import ForecastProcessor
-from engine.planner import RawMaterialPlanner
-from models.bom import BillOfMaterials
 import logging
+from datetime import datetime, timedelta
+
+import numpy as np
+import pandas as pd
+
+from models.sales_forecast_generator import SalesForecastGenerator
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -130,7 +129,7 @@ def integrate_sales_forecasts_with_planner():
     
     # Step 6: Create forecast summary
     print("\n\nStep 6: Creating forecast summary...")
-    summary_df = generator.create_forecast_summary(forecasts)
+    generator.create_forecast_summary(forecasts)
     
     # Calculate totals by confidence level
     confidence_summary = pd.DataFrame()

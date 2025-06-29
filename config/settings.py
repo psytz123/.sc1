@@ -96,7 +96,7 @@ class PlanningConfig:
             **cls.DEFAULT_PROCUREMENT_CONFIG,
             **cls.DEFAULT_RISK_THRESHOLDS,
             **cls.DEFAULT_SALES_FORECAST_CONFIG,
-            'forecast_source_weights': cls.DEFAULT_FORECAST_SOURCE_WEIGHTS.copy(),
+            'forecast_source_weights': cls.FORECAST_SOURCE_WEIGHTS.copy(),
             'unit_conversions': cls.DEFAULT_UNIT_CONVERSIONS.copy()
         }
     

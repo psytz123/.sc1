@@ -15,7 +15,7 @@ from config.settings import PlanningConfig
 from models.bom import BillOfMaterials, BOMExploder
 from models.forecast import FinishedGoodsForecast, ForecastProcessor
 from models.inventory import Inventory, InventoryNetter
-from models.recommendation import ProcurementRecommendation
+from models.recommendation import ProcurementRecommendation, RiskFlag
 from models.supplier import EOQCalculator, Supplier, SupplierSelector
 
 
@@ -340,7 +340,7 @@ class RawMaterialPlanner:
                     material_id=material_id,
                     supplier_id=supplier.supplier_id,
                     order_qty=order_qty,
-                    unit_price=supplier.unit_price,
+                    unit_price=supplier.cost_per_unit,
                     total_cost=order_qty * supplier.cost_per_unit,
                     order_date=datetime.now().date(),
                     delivery_date=datetime.now().date() + timedelta(days=supplier.lead_time_days),

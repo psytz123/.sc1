@@ -155,10 +155,18 @@ class SalesDataProcessor:
         sales_summary.columns = ['_'.join(col).strip() for col in sales_summary.columns]
         sales_summary = sales_summary.reset_index()
         
+        # Prepare inventory data - handle column name differences
+        inventory_cols = self.inventory_df.columns.tolist()
+        if 'style_id' in inventory_cols and 'Style' not in inventory_cols:
+            # Rename style_id to Style for merging
+            inventory_for_merge = self.inventory_df.rename(columns={'style_id': 'Style'})
+        else:
+            inventory_for_merge = self.inventory_df
+
         # Merge with inventory
         merged_df = pd.merge(
             sales_summary,
-            self.inventory_df[['Style', 'yds', 'lbs']],
+            inventory_for_merge[['Style', 'yds', 'lbs']],
             on='Style',
             how='outer',
             suffixes=('_sales', '_inventory')

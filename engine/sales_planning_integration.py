@@ -4,6 +4,7 @@ Connects sales-based forecasts with the main planning engine
 """
 
 import logging
+import os
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -12,6 +13,9 @@ from config.settings import PlanningConfig
 from data.sales_data_processor import SalesDataProcessor
 from models.forecast import FinishedGoodsForecast
 from models.sales_forecast_generator import SalesForecastGenerator
+from models.bom import BillOfMaterials, BOMExploder
+from models.inventory import Inventory, InventoryNetter
+from models.supplier import Supplier
 
 logger = logging.getLogger(__name__)
 
@@ -264,14 +268,107 @@ class SalesPlanningIntegration:
     
     def _load_boms(self) -> List[BillOfMaterials]:
         """Load BOMs from data files"""
-        # Implementation depends on your BOM data structure
-        # This is a placeholder
-        return []
-    
+        try:
+            # Load integrated BOMs
+            bom_file = os.path.join(self.data_dir, 'integrated_boms_v3_corrected.csv')
+            if not os.path.exists(bom_file):
+                # Fallback to other BOM files
+                bom_file = os.path.join(self.data_dir, 'integrated_boms_v2.csv')
+                if not os.path.exists(bom_file):
+                    bom_file = os.path.join(self.data_dir, 'integrated_boms.csv')
+
+            if not os.path.exists(bom_file):
+                logger.warning("No BOM file found, using empty BOM list")
+                return []
+
+            logger.info(f"Loading BOMs from {bom_file}")
+            df = pd.read_csv(bom_file)
+
+            # Standardize column names
+            column_mapping = {
+                'quantity_per_unit': 'qty_per_unit',
+                'Quantity Per Unit': 'qty_per_unit',
+                'SKU': 'sku_id',
+                'Material': 'material_id',
+                'Material ID': 'material_id',
+                'Yarn ID': 'material_id'
+            }
+
+            df.rename(columns=column_mapping, inplace=True)
+
+            # Add unit column if not present (default to yards for yarn)
+            if 'unit' not in df.columns:
+                df['unit'] = 'yards'
+
+            # Convert to BOM objects
+            boms = BOMExploder.from_dataframe(df)
+            logger.info(f"Loaded {len(boms)} BOM entries")
+
+            # Validate BOM data
+            issues = BOMExploder.validate_bom_data(boms)
+            if issues:
+                logger.warning(f"BOM validation issues found: {len(issues)}")
+                for issue in issues[:5]:  # Show first 5 issues
+                    logger.warning(f"  - {issue}")
+
+            return boms
+
+        except Exception as e:
+            logger.error(f"Error loading BOMs: {str(e)}")
+            raise
+
     def _load_inventory(self) -> List[Inventory]:
         """Load inventory from data files"""
-        # Implementation depends on your inventory data structure
-        # This is a placeholder
+        try:
+            # Load integrated inventory
+            inventory_file = os.path.join(self.data_dir, 'integrated_inventory_v2.csv')
+            if not os.path.exists(inventory_file):
+                inventory_file = os.path.join(self.data_dir, 'integrated_inventory.csv')
+
+            if not os.path.exists(inventory_file):
+                logger.warning("No inventory file found, using empty inventory list")
+                return []
+
+            logger.info(f"Loading inventory from {inventory_file}")
+            df = pd.read_csv(inventory_file)
+
+            # Standardize column names
+            column_mapping = {
+                'current_stock': 'on_hand_qty',
+                'Current Stock': 'on_hand_qty',
+                'On Hand': 'on_hand_qty',
+                'incoming_stock': 'open_po_qty',
+                'Incoming Stock': 'open_po_qty',
+                'Open PO': 'open_po_qty',
+                'Material': 'material_id',
+                'Material ID': 'material_id',
+                'Yarn ID': 'material_id'
+            }
+
+            df.rename(columns=column_mapping, inplace=True)
+
+            # Add unit column if not present (default to yards for yarn)
+            if 'unit' not in df.columns:
+                df['unit'] = 'yards'
+
+            # Ensure required columns exist
+            if 'open_po_qty' not in df.columns:
+                df['open_po_qty'] = 0.0
+
+            # Convert to Inventory objects
+            inventories = InventoryNetter.from_dataframe(df)
+            logger.info(f"Loaded inventory for {len(inventories)} materials")
+
+            # Log inventory summary
+            total_on_hand = sum(inv.on_hand_qty for inv in inventories)
+            total_open_po = sum(inv.open_po_qty for inv in inventories)
+            logger.info(f"Total on-hand: {total_on_hand:,.2f}, Total open PO: {total_open_po:,.2f}")
+
+            return inventories
+
+        except Exception as e:
+            logger.error(f"Error loading inventory: {str(e)}")
+            raise
         return []
     
     def _load_suppliers(self) -> List[Supplier]:

@@ -5,6 +5,7 @@ This module extends the base RawMaterialPlanner with code management capabilitie
 enabling automated code analysis, optimization, and generation features.
 """
 
+import asyncio
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -48,23 +49,28 @@ class CodeEnhancedPlanner(RawMaterialPlanner):
         self.optimization_history = []
         self.analysis_cache = {}
         self.performance_metrics = {}
-        
+
     async def initialize_enhanced_capabilities(self):
         """Initialize both code management and ML features"""
         try:
             # Initialize code manager
             await self.code_manager.initialize()
             logger.info("✅ Code management capabilities initialized")
-            
+
             # Initialize ML client if available
             if self.ml_client.zen_available:
                 logger.info("🤖 ML capabilities available via zen-mcp-server")
             else:
                 logger.info("📊 Using local ML capabilities")
-                
+
         except Exception as e:
             logger.error(f"❌ Failed to initialize enhanced capabilities: {e}")
             raise
+
+    async def initialize_code_capabilities(self):
+        """Initialize code management features - alias for compatibility"""
+        await self.code_manager.initialize()
+        logger.info("Code management capabilities ready")
     
     async def analyze_planning_code_quality(self) -> Dict[str, Any]:
         """

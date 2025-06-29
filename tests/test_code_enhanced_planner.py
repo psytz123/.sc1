@@ -38,9 +38,18 @@ class TestCodeEnhancedPlanner:
         planner.code_manager.initialize = AsyncMock()
         
         await planner.initialize_enhanced_capabilities()
-        
+
         planner.code_manager.initialize.assert_called_once()
-    
+
+    @pytest.mark.asyncio
+    async def test_initialize_code_capabilities(self, planner):
+        """Test initialization of code capabilities (compatibility method)"""
+        planner.code_manager.initialize = AsyncMock()
+
+        await planner.initialize_code_capabilities()
+
+        planner.code_manager.initialize.assert_called_once()
+
     @pytest.mark.asyncio
     async def test_analyze_planning_code_quality(self, planner):
         """Test code quality analysis"""

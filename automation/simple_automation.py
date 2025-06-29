@@ -5,16 +5,18 @@ This version works directly with the codebase without requiring zen-mcp-server H
 It uses local code analysis tools and AI-powered improvements.
 """
 
-import ast
-import asyncio
+import os
 import json
-import logging
-import re
-from dataclasses import dataclass
-from datetime import datetime
-from enum import Enum
+import asyncio
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from datetime import datetime
+from typing import List, Dict, Any, Optional
+import ast
+import re
+from dataclasses import dataclass, field
+from enum import Enum
+import logging
+
 
 # Configure logging
 logging.basicConfig(

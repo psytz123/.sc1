@@ -4,8 +4,10 @@ Centralized logging configuration for Beverly Knits Raw Material Planner
 
 import logging
 import logging.handlers
+import os
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 
 class LoggerConfig:

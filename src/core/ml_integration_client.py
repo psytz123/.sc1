@@ -8,20 +8,20 @@ and optional zen-mcp-server integration.
 
 import asyncio
 import json
-import logging
-import time
-from contextlib import asynccontextmanager
-from datetime import datetime
+from typing import Dict, Any, Optional, List, Union
 from pathlib import Path
-from typing import Any, Dict, Optional
-
+import warnings
 import aiohttp
-import numpy as np
+from datetime import datetime, timedelta
 import pandas as pd
+import numpy as np
+from contextlib import asynccontextmanager
+import time
 
+import logging
 # Try to import logging configuration, fall back to basic logging if not available
 try:
-    from .logging_config import MLOperationLogger, get_logger, setup_logging
+    from .logging_config import setup_logging, get_logger, MLOperationLogger
     setup_logging()
     logger = get_logger(__name__)
 except ImportError:
@@ -63,32 +63,40 @@ ML_LIBRARIES = {
 
 # Try importing ML libraries
 try:
+    import sklearn
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.linear_model import LinearRegression
     from sklearn.metrics import mean_absolute_error, mean_squared_error
     ML_LIBRARIES['sklearn'] = True
 except ImportError:
     pass
 
 try:
+    import xgboost
     ML_LIBRARIES['xgboost'] = True
 except ImportError:
     pass
 
 try:
+    import lightgbm
     ML_LIBRARIES['lightgbm'] = True
 except ImportError:
     pass
 
 try:
+    from prophet import Prophet
     ML_LIBRARIES['prophet'] = True
 except ImportError:
     pass
 
 try:
+    import tensorflow
     ML_LIBRARIES['tensorflow'] = True
 except ImportError:
     pass
 
 try:
+    import torch
     ML_LIBRARIES['torch'] = True
 except ImportError:
     pass
@@ -96,10 +104,12 @@ except ImportError:
 
 class MLConnectionError(Exception):
     """Raised when connection to ML service fails"""
+    pass
 
 
 class MLTimeoutError(Exception):
     """Raised when ML operation times out"""
+    pass
 
 
 class BeverlyKnitsMLClient:
@@ -335,7 +345,7 @@ class BeverlyKnitsMLClient:
             # Simple local implementation using sklearn
             from sklearn.ensemble import RandomForestRegressor
             from sklearn.model_selection import train_test_split
-
+            
             # Prepare features and target
             # This is a simplified example - real implementation would be more sophisticated
             X = historical_data.drop(['demand', 'date'], axis=1, errors='ignore')
@@ -603,8 +613,8 @@ class BeverlyKnitsMLClient:
         try:
             # Simple implementation using sklearn
             from sklearn.ensemble import RandomForestRegressor
-            from sklearn.metrics import mean_absolute_error, r2_score
             from sklearn.model_selection import train_test_split
+            from sklearn.metrics import mean_absolute_error, r2_score
 
             # Prepare features (simplified)
             X = sales_data.index.values.reshape(-1, 1)  # Using index as time feature

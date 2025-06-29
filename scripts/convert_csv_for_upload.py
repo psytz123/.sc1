@@ -14,8 +14,8 @@ class BeverlyKnitsCSVConverter:
     """Converts Beverly Knits CSV files to expected upload format"""
     
     def __init__(self, input_dir: str = "data", output_dir: str = "data/upload_ready"):
-        self.input_dir = Path(input_dir)
-        self.output_dir = Path(output_dir)
+        self.input_dir = Path(input_dir).resolve()
+        self.output_dir = Path(output_dir).resolve()
         self.output_dir.mkdir(exist_ok=True)
         
     def convert_all_files(self):
@@ -23,10 +23,16 @@ class BeverlyKnitsCSVConverter:
         print("🔄 Converting Beverly Knits CSV files to upload format...")
         
         # Load raw data
-        yarn_master = pd.read_csv(self.input_dir / "Yarn_ID_1.csv")
-        inventory = pd.read_csv(self.input_dir / "Yarn_ID_Current_Inventory.csv")
-        suppliers = pd.read_csv(self.input_dir / "Supplier_ID.csv")
-        boms = pd.read_csv(self.input_dir / "Style_BOM.csv")
+        try:
+            print("Loading inventory: data/Yarn_ID_Current_Inventory.csv")
+            inventory = pd.read_csv(self.input_dir / "Yarn_ID_Current_Inventory.csv")
+            print("Loading suppliers: data/Supplier_ID.csv")
+            suppliers = pd.read_csv(self.input_dir / "Supplier_ID.csv")
+            print("Loading boms: data/Style_BOM.csv")
+            boms = pd.read_csv(self.input_dir / "Style_BOM.csv")
+        except FileNotFoundError as e:
+            print(f"❌ Error loading raw data: {e}")
+            return {}
         
         # Convert each file
         forecasts_df = self.create_forecasts_file()
@@ -67,7 +73,13 @@ class BeverlyKnitsCSVConverter:
         
         # For now, create sample forecasts based on BOMs
         # In production, this would analyze sales history
-        boms = pd.read_csv(self.input_dir / "Style_BOM.csv")
+        try:
+            print("Loading boms for forecast creation: data/Style_BOM.csv")
+            boms = pd.read_csv(self.input_dir / "Style_BOM.csv")
+        except FileNotFoundError as e:
+            print(f"❌ Error loading boms for forecast creation: {e}")
+            return pd.DataFrame()
+            
         unique_styles = boms['Style_ID'].unique()
         
         # Create forecast records

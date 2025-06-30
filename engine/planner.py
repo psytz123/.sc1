@@ -2,14 +2,20 @@
 Planning Engine - Orchestrates the raw material planning process
 """
 
+
 from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Dict, List
 from functools import lru_cache
+from pathlib import Path
+import json
 
 import pandas as pd
+from utils.logger import get_logger
 
 from config.settings import PlanningConfig
+
+logger = get_logger(__name__, level="DEBUG")
 from models.bom import BillOfMaterials, BOMExploder
 from models.forecast import FinishedGoodsForecast, ForecastProcessor
 from models.inventory import Inventory, InventoryNetter
@@ -124,6 +130,12 @@ class RawMaterialPlanner:
         for supplier in suppliers:
             suppliers_by_material[supplier.material_id].append(supplier)
 
+        # Debug logging
+        logger.debug(f"Loaded suppliers for {len(suppliers_by_material)} materials")
+        if len(suppliers_by_material) > 0:
+            sample_materials = list(suppliers_by_material.keys())[:5]
+            logger.debug(f"Sample material IDs in suppliers: {sample_materials}")
+
         for material_id, req_data in net_requirements.items():
             net_requirement = req_data['net_requirement']
             if net_requirement <= 0:
@@ -131,7 +143,12 @@ class RawMaterialPlanner:
 
             material_suppliers = suppliers_by_material.get(material_id, [])
             if not material_suppliers:
-                logger.info(f"   ⚠️  No suppliers found for material {material_id}")
+                logger.info(f"   [WARNING] No suppliers found for material {material_id}")
+                # Debug logging
+                if len(suppliers_by_material) > 0:
+                    sample_keys = list(suppliers_by_material.keys())[:5]
+                    logger.debug(f"   Sample supplier material IDs: {sample_keys}")
+                    logger.debug(f"   Looking for: {material_id} (type: {type(material_id)})")
                 continue
 
             # Apply safety stock buffer
@@ -155,8 +172,10 @@ class RawMaterialPlanner:
                 recommendations.extend(supplier_recommendations)
             else:
                 # Select single best supplier
-                selected_supplier = self.supplier_selector.select_supplier(
-                    material_suppliers, buffered_requirement
+                selected_supplier = self.supplier_selector.select_optimal_supplier(
+                    material_id=material_id,
+                    suppliers=material_suppliers,
+                    required_quantity=buffered_requirement
                 )
 
                 if selected_supplier:
@@ -193,6 +212,45 @@ class RawMaterialPlanner:
     def _generate_sales_forecasts(self) -> List[FinishedGoodsForecast]:
         """Generate forecasts from sales data"""
         try:
+            # Check if we should use the pre-generated forecasts
+            forecast_file = Path('output/generated_forecasts.csv')
+            integration_file = Path('output/sales_forecast_integration.json')
+
+            # If recent forecast file exists, use it
+            if forecast_file.exists() and integration_file.exists():
+                # Check if forecast is recent (within 24 hours)
+                file_age = datetime.now() - datetime.fromtimestamp(forecast_file.stat().st_mtime)
+                if file_age.total_seconds() < 86400:  # 24 hours
+                    logger.info("   Using pre-generated forecasts from sales analysis")
+
+                    # Load integration metadata
+                    with open(integration_file, 'r') as f:
+                        integration_data = json.load(f)
+
+                    # Load forecasts
+                    forecast_df = pd.read_csv(forecast_file)
+                    forecasts = []
+
+                    for _, row in forecast_df.iterrows():
+                        # Handle both 'quantity' and 'forecast_qty' column names
+                        qty = row.get('forecast_qty', row.get('quantity', 0))
+                        forecast = FinishedGoodsForecast(
+                            sku_id=row['sku_id'],
+                            forecast_qty=qty,
+                            source=row.get('source', 'sales_history'),
+                            confidence=row.get('confidence', 0.8),
+                            forecast_date=pd.to_datetime(row.get('forecast_date', datetime.now().date())),
+                            unit=row.get('unit', 'yards'),
+                            notes=row.get('notes', 'Generated from sales history')
+                        )
+                        forecasts.append(forecast)
+
+                    logger.info(f"   [OK] Loaded {len(forecasts)} forecasts from file")
+                    logger.info(f"   Total forecast quantity: {integration_data.get('total_forecast_qty', 0):,.0f}")
+                    return forecasts
+
+            # Otherwise, generate new forecasts
+            logger.info("   🔄 Generating new forecasts from sales data...")
             from data.sales_data_processor import SalesDataProcessor
 
             processor = SalesDataProcessor(self.config)
@@ -244,13 +302,13 @@ class RawMaterialPlanner:
             # Explode style forecasts to yarn requirements
             yarn_requirements = {}
             if style_forecasts:
-                logger.info(f"   📊 Exploding {len(style_forecasts)} style forecasts to yarn requirements")
+                logger.info(f"   Exploding {len(style_forecasts)} style forecasts to yarn requirements")
                 yarn_requirements = integrator.explode_style_forecast_to_yarn(style_forecasts)
 
                 # Log summary
                 total_yarn_qty = sum(req['total_qty'] for req in yarn_requirements.values())
-                logger.info(f"   ✅ Generated requirements for {len(yarn_requirements)} yarns")
-                logger.info(f"   📦 Total yarn required: {total_yarn_qty:,.0f} yards")
+                logger.info(f"   [OK] Generated requirements for {len(yarn_requirements)} yarns")
+                logger.info(f"   Total yarn required: {total_yarn_qty:,.0f} yards")
 
             # If there are also SKU forecasts, handle them with regular BOM explosion
             if sku_forecasts and boms:
@@ -472,3 +530,17 @@ class RawMaterialPlanner:
         return {
             'recommendations': pd.DataFrame(recommendations_data) if recommendations_data else pd.DataFrame()
         }
+
+    def _generate_reports(self, recommendations: List[ProcurementRecommendation]):
+        """Generate output reports from recommendations"""
+        # For now, just log a summary
+        if recommendations:
+            total_cost = sum(r.total_cost for r in recommendations)
+            logger.info(f"   Total procurement cost: ${total_cost:,.2f}")
+            logger.info(f"   Number of purchase orders: {len(recommendations)}")
+        else:
+            logger.info("   No procurement recommendations generated")
+
+        # In a real implementation, this would generate CSV/Excel reports
+        # For now, we'll just store the recommendations
+        self._recommendations = recommendations

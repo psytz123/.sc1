@@ -1,0 +1,76 @@
+2025-06-29 06:49:41 - __main__ - INFO - ============================================================
+2025-06-29 06:49:41 - __main__ - INFO - BEVERLY KNITS RAW MATERIAL PLANNER
+2025-06-29 06:49:41 - __main__ - INFO - ============================================================
+2025-06-29 06:49:41 - __main__ - INFO - 
+Configuration loaded:
+2025-06-29 06:49:41 - __main__ - INFO -   - Sales forecasting enabled: True
+2025-06-29 06:49:41 - __main__ - INFO -   - Planning horizon: 90 days
+2025-06-29 06:49:41 - __main__ - INFO -   - Safety stock method: statistical
+2025-06-29 06:49:41 - __main__ - INFO - 
+Initializing components...
+2025-06-29 06:49:41 - __main__ - INFO - 
+Loading data...
+2025-06-29 06:49:41 - models.forecast - INFO - Successfully created 120 forecasts from 120 rows
+2025-06-29 06:49:41 - __main__ - INFO - Loading suppliers...
+2025-06-29 06:49:41 - __main__ - INFO -   - Loaded 120 forecasts
+2025-06-29 06:49:41 - __main__ - INFO -   - Loaded 330 BOM entries
+2025-06-29 06:49:41 - __main__ - INFO -   - Loaded 245 inventory items
+2025-06-29 06:49:41 - __main__ - INFO -   - Loaded 245 suppliers
+2025-06-29 06:49:41 - __main__ - INFO - 
+============================================================
+2025-06-29 06:49:41 - __main__ - INFO - RUNNING PLANNING ENGINE
+2025-06-29 06:49:41 - __main__ - INFO - ============================================================
+2025-06-29 06:49:41 - engine.planner - INFO - Starting Beverly Knits Raw Material Planning Engine
+2025-06-29 06:49:41 - engine.planner - INFO - ==================================================
+2025-06-29 06:49:41 - engine.planner - INFO - Step 1: Unifying forecasts...
+2025-06-29 06:49:41 - engine.planner - INFO - Generating forecasts from sales history...
+2025-06-29 06:49:41 - engine.planner - INFO -    Using pre-generated forecasts from sales analysis
+2025-06-29 06:49:41 - engine.planner - INFO -    [OK] Loaded 42 forecasts from file
+2025-06-29 06:49:41 - engine.planner - INFO -    Total forecast quantity: 67,182
+2025-06-29 06:49:41 - engine.planner - INFO - Added 42 sales-based forecasts
+2025-06-29 06:49:41 - engine.planner - INFO - Unified 162 forecasts into 52 SKU demands
+2025-06-29 06:49:41 - engine.planner - INFO - Step 2: Exploding BOMs...
+Style 205FLX2006/M yarn percentages sum to 55.20%, not 100%
+Style C1B4545A/1D yarn percentages sum to 94.80%, not 100%
+Style CF5492/0 yarn percentages sum to 27.27%, not 100%
+Style FF 10008/0005C yarn percentages sum to 36.80%, not 100%
+Style FF 10008/0009A yarn percentages sum to 36.80%, not 100%
+Style FF 10008/0010C yarn percentages sum to 36.80%, not 100%
+Style FF 10008/0011C yarn percentages sum to 36.80%, not 100%
+Style FF 10008/0014C yarn percentages sum to 36.80%, not 100%
+Style FF25002/0008A yarn percentages sum to 1.20%, not 100%
+2025-06-29 06:49:41 - engine.planner - INFO -    Exploding 10 style forecasts to yarn requirements
+2025-06-29 06:49:41 - engine.planner - INFO -    [OK] Generated requirements for 13 yarns
+2025-06-29 06:49:41 - engine.planner - INFO -    Total yarn required: 46,906 yards
+2025-06-29 06:49:41 - engine.planner - INFO - Exploded to 13 material requirements
+2025-06-29 06:49:41 - engine.planner - INFO - Step 3: Netting against inventory...
+2025-06-29 06:49:41 - engine.planner - INFO - Calculated net requirements for 13 materials
+2025-06-29 06:49:41 - engine.planner - INFO - Step 4 & 5: Optimizing procurement and selecting suppliers...
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18767
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18929
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18320
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18707
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18708
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18669
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18903
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 19057
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18770
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 9863
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 11896
+2025-06-29 06:49:41 - engine.planner - INFO -    [WARNING] No suppliers found for material 18774
+2025-06-29 06:49:41 - engine.planner - INFO - Generated 0 procurement recommendations
+2025-06-29 06:49:41 - engine.planner - INFO - Step 6: Generating reports...
+2025-06-29 06:49:41 - engine.planner - INFO -    No procurement recommendations generated
+2025-06-29 06:49:41 - __main__ - INFO - 
+============================================================
+2025-06-29 06:49:41 - __main__ - INFO - PLANNING RESULTS
+2025-06-29 06:49:41 - __main__ - INFO - ============================================================
+2025-06-29 06:49:41 - __main__ - INFO - 
+No procurement recommendations generated.
+2025-06-29 06:49:41 - __main__ - INFO - This could mean:
+2025-06-29 06:49:41 - __main__ - INFO -   - Current inventory is sufficient
+2025-06-29 06:49:41 - __main__ - INFO -   - No forecasts require procurement
+2025-06-29 06:49:41 - __main__ - INFO -   - Missing BOM or supplier data
+2025-06-29 06:49:41 - __main__ - INFO - 
+Planning complete!
+2025-06-29 06:49:41 - __main__ - INFO - ============================================================

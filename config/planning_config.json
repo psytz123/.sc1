@@ -1,0 +1,22 @@
+{
+  "planning": {
+    "enable_sales_forecasting": true,
+    "sales_lookback_days": 90,
+    "planning_horizon_days": 90,
+    "aggregation_period": "weekly",
+    "safety_stock_method": "statistical",
+    "safety_stock_percentage": 0.1,
+    "enable_multi_supplier": true,
+    "use_style_yarn_bom": true,
+    "style_yarn_bom_file": "data/cfab_Yarn_Demand_By_Style.csv"
+  },
+  "forecasting": {
+    "confidence_threshold": 0.7,
+    "min_history_days": 30,
+    "service_level": 0.95
+  },
+  "inventory": {
+    "lead_time_buffer_days": 7,
+    "min_coverage_months": 2
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "generated_at": "2025-06-29T06:27:36.341683",
+  "forecast_file": "output\\generated_forecasts.csv",
+  "num_forecasts": 42,
+  "total_forecast_qty": 67182,
+  "analysis_file": "output\\sales_inventory_analysis.json",
+  "alerts_file": null,
+  "config": {
+    "lookback_days": 90,
+    "planning_horizon_days": 90,
+    "aggregation_period": "weekly",
+    "safety_stock_method": "statistical"
+  }
+}

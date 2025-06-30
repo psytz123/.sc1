@@ -1,0 +1,11 @@
+{
+  "forecast_summary": {
+    "num_forecasts": 42,
+    "total_quantity": 67182,
+    "avg_quantity": 1599.5714285714287,
+    "lookback_days": 90,
+    "planning_horizon_days": 90,
+    "aggregation_period": "weekly",
+    "safety_stock_method": "statistical"
+  }
+}

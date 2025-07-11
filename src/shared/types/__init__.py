@@ -364,7 +364,7 @@ __all__ = [
     'ValidationResult', 'ValidationErrors',
     'PageInfo', 'PaginatedResult',
     'FilterCriteria', 'SortCriteria',
-    'NotificationChannel', 'NotificationMessage',
+    'NotificationChannelType', 'NotificationMessage',
     'ReportFormat', 'ReportData',
     'ConfigKey', 'ConfigValue',
     'IntegrationConfig', 'IntegrationResult',

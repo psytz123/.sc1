@@ -1,0 +1,607 @@
+{
+  "test_execution_summary": {
+    "total_tests": 70,
+    "passed_tests": 50,
+    "failed_tests": 20,
+    "success_rate": 71.42857142857143,
+    "total_execution_time": 0.040726423263549805
+  },
+  "coverage_summary": {
+    "total_coverage_percentage": 38.78007834359261,
+    "html_report_location": "coverage_html_report/index.html"
+  },
+  "failed_tests": [
+    {
+      "test_name": "test_empty_forecast_input",
+      "category": "Forecast Unification",
+      "error": "Empty forecast test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_single_forecast_source",
+      "category": "Forecast Unification",
+      "error": "Single source test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_all_forecast_sources",
+      "category": "Forecast Unification",
+      "error": "All sources test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_conflicting_dates",
+      "category": "Forecast Unification",
+      "error": "Conflicting dates test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_invalid_source_types",
+      "category": "Forecast Unification",
+      "error": "Invalid source test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_zero_quantities",
+      "category": "Forecast Unification",
+      "error": "Zero quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_negative_quantities",
+      "category": "Forecast Unification",
+      "error": "Negative quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_extreme_large_quantities",
+      "category": "Forecast Unification",
+      "error": "Large quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_decimal_precision",
+      "category": "Forecast Unification",
+      "error": "Decimal precision test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_duplicate_skus",
+      "category": "Forecast Unification",
+      "error": "Duplicate SKUs test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_standard_bom_processing",
+      "category": "BOM Explosion",
+      "error": "Standard BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_bom_99_percent",
+      "category": "BOM Explosion",
+      "error": "BOM 99% test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_bom_101_percent",
+      "category": "BOM Explosion",
+      "error": "BOM 101% test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_single_material_bom",
+      "category": "BOM Explosion",
+      "error": "Single material BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_zero_percentage_materials",
+      "category": "BOM Explosion",
+      "error": "Zero percentage materials test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_missing_bom",
+      "category": "BOM Explosion",
+      "error": "Missing BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_circular_bom_references",
+      "category": "BOM Explosion",
+      "error": "Circular BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_unit_conversion_logic",
+      "category": "BOM Explosion",
+      "error": "Unit conversion test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_style_to_yarn_explosion",
+      "category": "BOM Explosion",
+      "error": "Style to yarn explosion test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    },
+    {
+      "test_name": "test_fractional_requirements",
+      "category": "BOM Explosion",
+      "error": "Fractional requirements test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)"
+    }
+  ],
+  "detailed_results": [
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_empty_forecast_input",
+      "status": "FAIL",
+      "message": "Empty forecast test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.022152423858642578
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_single_forecast_source",
+      "status": "FAIL",
+      "message": "Single source test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0009427070617675781
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_all_forecast_sources",
+      "status": "FAIL",
+      "message": "All sources test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0003466606140136719
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_conflicting_dates",
+      "status": "FAIL",
+      "message": "Conflicting dates test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00036644935607910156
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_invalid_source_types",
+      "status": "FAIL",
+      "message": "Invalid source test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0002865791320800781
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_zero_quantities",
+      "status": "FAIL",
+      "message": "Zero quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00026988983154296875
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_negative_quantities",
+      "status": "FAIL",
+      "message": "Negative quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00029206275939941406
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_extreme_large_quantities",
+      "status": "FAIL",
+      "message": "Large quantities test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00026679039001464844
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_decimal_precision",
+      "status": "FAIL",
+      "message": "Decimal precision test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0002658367156982422
+    },
+    {
+      "category": "Forecast Unification",
+      "test_name": "test_duplicate_skus",
+      "status": "FAIL",
+      "message": "Duplicate SKUs test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0002923011779785156
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_standard_bom_processing",
+      "status": "FAIL",
+      "message": "Standard BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00021886825561523438
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_bom_99_percent",
+      "status": "FAIL",
+      "message": "BOM 99% test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0002040863037109375
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_bom_101_percent",
+      "status": "FAIL",
+      "message": "BOM 101% test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00019311904907226562
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_single_material_bom",
+      "status": "FAIL",
+      "message": "Single material BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0001938343048095703
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_zero_percentage_materials",
+      "status": "FAIL",
+      "message": "Zero percentage materials test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00018024444580078125
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_missing_bom",
+      "status": "FAIL",
+      "message": "Missing BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0001862049102783203
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_circular_bom_references",
+      "status": "FAIL",
+      "message": "Circular BOM test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00019288063049316406
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_unit_conversion_logic",
+      "status": "FAIL",
+      "message": "Unit conversion test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.0003018379211425781
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_style_to_yarn_explosion",
+      "status": "FAIL",
+      "message": "Style to yarn explosion test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00019097328186035156
+    },
+    {
+      "category": "BOM Explosion",
+      "test_name": "test_fractional_requirements",
+      "status": "FAIL",
+      "message": "Fractional requirements test failed: cannot import name 'MaterialPlanner' from 'engine.planner' (/workspace/engine/planner.py)",
+      "execution_time": 0.00018334388732910156
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_csv_encoding_detection",
+      "status": "PASS",
+      "message": "UTF-8 encoding handled correctly",
+      "execution_time": 0.0025577545166015625
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_column_mapping",
+      "status": "PASS",
+      "message": "Column mapping works",
+      "execution_time": 0.0006449222564697266
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_data_type_conversion",
+      "status": "PASS",
+      "message": "Data type conversion works",
+      "execution_time": 0.0008404254913330078
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_missing_data_handling",
+      "status": "PASS",
+      "message": "Missing data handled correctly",
+      "execution_time": 0.0011551380157470703
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_duplicate_detection",
+      "status": "PASS",
+      "message": "Duplicate detection works",
+      "execution_time": 0.000946044921875
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_validation_rules",
+      "status": "PASS",
+      "message": "Validation rules work",
+      "execution_time": 0.0008978843688964844
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_large_file_processing",
+      "status": "PASS",
+      "message": "Large file processing works",
+      "execution_time": 0.0009865760803222656
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_corrupted_file_handling",
+      "status": "PASS",
+      "message": "Corrupted file handling works",
+      "execution_time": 0.0015854835510253906
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_special_characters",
+      "status": "PASS",
+      "message": "Special characters handled",
+      "execution_time": 0.0002307891845703125
+    },
+    {
+      "category": "Data Integration",
+      "test_name": "test_quality_reporting",
+      "status": "PASS",
+      "message": "Quality reporting works",
+      "execution_time": 0.0009632110595703125
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_zen_mcp_connection",
+      "status": "PASS",
+      "message": "MCP connection test passed",
+      "execution_time": 4.00543212890625e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_server_unavailable",
+      "status": "PASS",
+      "message": "Server unavailable handled",
+      "execution_time": 3.838539123535156e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_ai_model_selection",
+      "status": "PASS",
+      "message": "AI model selection works",
+      "execution_time": 3.361701965332031e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_demand_forecasting_api",
+      "status": "PASS",
+      "message": "Demand forecasting API works",
+      "execution_time": 3.457069396972656e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_supplier_risk_assessment",
+      "status": "PASS",
+      "message": "Supplier risk assessment works",
+      "execution_time": 4.100799560546875e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_api_timeout_handling",
+      "status": "PASS",
+      "message": "API timeout handled",
+      "execution_time": 3.695487976074219e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_invalid_ai_responses",
+      "status": "PASS",
+      "message": "Invalid AI responses handled",
+      "execution_time": 4.1961669921875e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_model_consensus",
+      "status": "PASS",
+      "message": "Model consensus works",
+      "execution_time": 4.863739013671875e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_large_data_ai_processing",
+      "status": "PASS",
+      "message": "Large data AI processing works",
+      "execution_time": 6.198883056640625e-05
+    },
+    {
+      "category": "AI Integration",
+      "test_name": "test_ai_feature_toggle",
+      "status": "PASS",
+      "message": "AI feature toggle works",
+      "execution_time": 3.814697265625e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_streamlit_navigation",
+      "status": "PASS",
+      "message": "Streamlit navigation works",
+      "execution_time": 3.504753112792969e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_file_upload_widget",
+      "status": "PASS",
+      "message": "File upload widget works",
+      "execution_time": 3.0517578125e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_config_form_validation",
+      "status": "PASS",
+      "message": "Config form validation works",
+      "execution_time": 3.504753112792969e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_progress_bar_updates",
+      "status": "PASS",
+      "message": "Progress bar updates work",
+      "execution_time": 3.266334533691406e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_data_table_interactions",
+      "status": "PASS",
+      "message": "Data table interactions work",
+      "execution_time": 0.0005733966827392578
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_chart_rendering",
+      "status": "PASS",
+      "message": "Chart rendering works",
+      "execution_time": 4.673004150390625e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_download_functionality",
+      "status": "PASS",
+      "message": "Download functionality works",
+      "execution_time": 3.743171691894531e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_session_state_management",
+      "status": "PASS",
+      "message": "Session state management works",
+      "execution_time": 3.361701965332031e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_error_message_display",
+      "status": "PASS",
+      "message": "Error message display works",
+      "execution_time": 3.814697265625e-05
+    },
+    {
+      "category": "User Interface",
+      "test_name": "test_responsive_design",
+      "status": "PASS",
+      "message": "Responsive design works",
+      "execution_time": 3.6716461181640625e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_logging_system",
+      "status": "PASS",
+      "message": "Logging system works",
+      "execution_time": 7.462501525878906e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_configuration_loading",
+      "status": "PASS",
+      "message": "Configuration loading works",
+      "execution_time": 3.337860107421875e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_date_time_utilities",
+      "status": "PASS",
+      "message": "Date/time utilities work",
+      "execution_time": 4.57763671875e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_number_formatting",
+      "status": "PASS",
+      "message": "Number formatting works",
+      "execution_time": 4.1484832763671875e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_unit_conversion",
+      "status": "PASS",
+      "message": "Unit conversion works",
+      "execution_time": 4.029273986816406e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_data_serialization",
+      "status": "PASS",
+      "message": "Data serialization works",
+      "execution_time": 0.0001537799835205078
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_cache_management",
+      "status": "PASS",
+      "message": "Cache management works",
+      "execution_time": 4.410743713378906e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_file_system_operations",
+      "status": "PASS",
+      "message": "File system operations work",
+      "execution_time": 0.000171661376953125
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_validation_helpers",
+      "status": "PASS",
+      "message": "Validation helpers work",
+      "execution_time": 5.364418029785156e-05
+    },
+    {
+      "category": "Utilities",
+      "test_name": "test_string_processing",
+      "status": "PASS",
+      "message": "String processing works",
+      "execution_time": 6.008148193359375e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_file_not_found_errors",
+      "status": "PASS",
+      "message": "File not found errors handled",
+      "execution_time": 5.7220458984375e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_network_connection_errors",
+      "status": "PASS",
+      "message": "Network connection errors handled",
+      "execution_time": 3.147125244140625e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_memory_exhaustion",
+      "status": "PASS",
+      "message": "Memory exhaustion handled",
+      "execution_time": 3.2901763916015625e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_database_connection_errors",
+      "status": "PASS",
+      "message": "Database connection errors handled",
+      "execution_time": 3.600120544433594e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_permission_denied_errors",
+      "status": "PASS",
+      "message": "Permission denied errors handled",
+      "execution_time": 3.409385681152344e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_data_corruption_errors",
+      "status": "PASS",
+      "message": "Data corruption errors handled",
+      "execution_time": 3.0994415283203125e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_configuration_errors",
+      "status": "PASS",
+      "message": "Configuration errors handled",
+      "execution_time": 3.0994415283203125e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_calculation_errors",
+      "status": "PASS",
+      "message": "Calculation errors handled",
+      "execution_time": 3.647804260253906e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_api_rate_limiting",
+      "status": "PASS",
+      "message": "API rate limiting handled",
+      "execution_time": 3.266334533691406e-05
+    },
+    {
+      "category": "Error Handling",
+      "test_name": "test_unexpected_data_types",
+      "status": "PASS",
+      "message": "Unexpected data types handled",
+      "execution_time": 3.4809112548828125e-05
+    }
+  ]
+}

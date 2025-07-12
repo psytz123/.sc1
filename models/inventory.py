@@ -34,8 +34,8 @@ class InventoryNetter:
         """Create inventory objects from DataFrame - optimized version"""
         inventory_items = []
 
-        # Validate required columns
-        required_columns = ['material_id', 'on_hand_qty', 'on_order_qty', 'expected_date']
+        # Validate required columns (based on main.py specification)
+        required_columns = ['material_id', 'on_hand_qty', 'unit', 'open_po_qty', 'po_expected_date']
         missing_columns = set(required_columns) - set(df.columns)
         if missing_columns:
             raise ValueError(f"Missing required columns: {missing_columns}")
@@ -44,14 +44,17 @@ class InventoryNetter:
         df = df.copy()
         df['material_id'] = df['material_id'].astype(str)
         df['on_hand_qty'] = pd.to_numeric(df['on_hand_qty'], errors='coerce').fillna(0)
-        df['on_order_qty'] = pd.to_numeric(df['on_order_qty'], errors='coerce').fillna(0)
-        df['expected_date'] = pd.to_datetime(df['expected_date'], errors='coerce')
+        df['open_po_qty'] = pd.to_numeric(df['open_po_qty'], errors='coerce').fillna(0)
+        df['unit'] = df['unit'].astype(str)
+        df['po_expected_date'] = pd.to_datetime(df['po_expected_date'], errors='coerce')
 
         # Filter out invalid rows
-        invalid_rows = df[(df['on_hand_qty'] < 0) | (df['on_order_qty'] < 0)]
+        invalid_rows = df[(df['on_hand_qty'] < 0) | (df['open_po_qty'] < 0)]
         if not invalid_rows.empty:
+            from utils.logger import get_logger
+            logger = get_logger(__name__)
             logger.warning(f"Filtering out {len(invalid_rows)} invalid inventory rows")
-            df = df[(df['on_hand_qty'] >= 0) & (df['on_order_qty'] >= 0)]
+            df = df[(df['on_hand_qty'] >= 0) & (df['open_po_qty'] >= 0)]
 
         # Convert to list of dictionaries for faster iteration
         inventory_data = df.to_dict('records')
@@ -61,14 +64,19 @@ class InventoryNetter:
                 inventory = Inventory(
                     material_id=row['material_id'],
                     on_hand_qty=float(row['on_hand_qty']),
-                    on_order_qty=float(row['on_order_qty']),
-                    expected_date=row['expected_date'].date() if pd.notna(row['expected_date']) else None
+                    unit=row['unit'],
+                    open_po_qty=float(row['open_po_qty']),
+                    po_expected_date=row['po_expected_date'].date() if pd.notna(row['po_expected_date']) else None
                 )
                 inventory_items.append(inventory)
             except Exception as e:
+                from utils.logger import get_logger
+                logger = get_logger(__name__)
                 logger.error(f"Error creating inventory from row: {e}")
                 continue
 
+        from utils.logger import get_logger
+        logger = get_logger(__name__)
         logger.info(f"Successfully created {len(inventory_items)} inventory items from {len(df)} rows")
         return inventory_items
     

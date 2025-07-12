@@ -1,0 +1,122 @@
+{
+  "timestamp": "2025-07-12 09:23:44",
+  "summary": {
+    "total_tests": 18,
+    "successes": 18,
+    "errors": 0,
+    "warnings": 0,
+    "success_rate": 100.0
+  },
+  "test_results": [
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Python 3.13",
+      "timestamp": 1752312224.2574472
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "pandas available",
+      "timestamp": 1752312224.257454
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "numpy available",
+      "timestamp": 1752312224.2574565
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "streamlit available",
+      "timestamp": 1752312224.4243884
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "plotly available",
+      "timestamp": 1752312224.4243932
+    },
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Running from correct directory",
+      "timestamp": 1752312224.424419
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "engine.planner imported successfully",
+      "timestamp": 1752312224.4298894
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.forecast imported successfully",
+      "timestamp": 1752312224.4299197
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.bom imported successfully",
+      "timestamp": 1752312224.4299333
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.inventory imported successfully",
+      "timestamp": 1752312224.429943
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "Forecast Model",
+      "timestamp": 1752312224.4305232
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "BOM Model",
+      "timestamp": 1752312224.43091
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "Inventory Model",
+      "timestamp": 1752312224.4310694
+    },
+    {
+      "category": "Engine Components",
+      "status": "SUCCESS",
+      "message": "MaterialPlanner instantiated",
+      "timestamp": 1752312224.4311001
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "unify_forecasts method available",
+      "timestamp": 1752312224.431102
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "explode_bom method available",
+      "timestamp": 1752312224.4311035
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "net_inventory method available",
+      "timestamp": 1752312224.4311044
+    },
+    {
+      "category": "Data Processing",
+      "status": "SUCCESS",
+      "message": "All pandas operations working",
+      "timestamp": 1752312224.4317825
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

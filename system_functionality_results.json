@@ -1,0 +1,449 @@
+{
+  "timestamp": "2025-07-12 04:15:53",
+  "summary": {
+    "total_tests": 59,
+    "successes": 37,
+    "errors": 10,
+    "warnings": 9,
+    "success_rate": 62.71186440677966,
+    "readiness": "NOT_READY"
+  },
+  "module_status": {
+    "main": {
+      "status": "ERROR",
+      "error": "No module named 'plotly'",
+      "file_path": "main.py"
+    },
+    "engine.planner": {
+      "status": "SUCCESS",
+      "module": "<module 'engine.planner' from '/workspace/engine/planner.py'>",
+      "file_path": "engine/planner.py"
+    },
+    "models.forecast": {
+      "status": "SUCCESS",
+      "module": "<module 'models.forecast' from '/workspace/models/forecast.py'>",
+      "file_path": "models/forecast.py"
+    },
+    "models.bom": {
+      "status": "SUCCESS",
+      "module": "<module 'models.bom' from '/workspace/models/bom.py'>",
+      "file_path": "models/bom.py"
+    },
+    "models.inventory": {
+      "status": "SUCCESS",
+      "module": "<module 'models.inventory' from '/workspace/models/inventory.py'>",
+      "file_path": "models/inventory.py"
+    },
+    "models.supplier": {
+      "status": "SUCCESS",
+      "module": "<module 'models.supplier' from '/workspace/models/supplier.py'>",
+      "file_path": "models/supplier.py"
+    },
+    "models.recommendation": {
+      "status": "SUCCESS",
+      "module": "<module 'models.recommendation' from '/workspace/models/recommendation.py'>",
+      "file_path": "models/recommendation.py"
+    },
+    "config.settings": {
+      "status": "SUCCESS",
+      "module": "<module 'config.settings' from '/workspace/config/settings.py'>",
+      "file_path": "config/settings.py"
+    },
+    "utils": {
+      "status": "SUCCESS",
+      "module": "<module 'utils' (namespace) from ['/workspace/utils', '/workspace/utils', '/workspace/utils']>"
+    },
+    "utils.data_validation": {
+      "status": "MISSING"
+    },
+    "utils.file_operations": {
+      "status": "MISSING"
+    },
+    "utils.calculations": {
+      "status": "MISSING"
+    },
+    "utils.logging_config": {
+      "status": "SUCCESS",
+      "module": "<module 'utils.logging_config' from '/workspace/utils/logging_config.py'>"
+    }
+  },
+  "test_results": [
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Python 3.13.3",
+      "timestamp": 1752293752.8566077
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "pandas available",
+      "timestamp": 1752293753.0841987
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "numpy available",
+      "timestamp": 1752293753.084205
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "streamlit available",
+      "timestamp": 1752293753.187566
+    },
+    {
+      "category": "Dependencies",
+      "status": "ERROR",
+      "message": "plotly not available",
+      "timestamp": 1752293753.1876316
+    },
+    {
+      "category": "Dependencies",
+      "status": "ERROR",
+      "message": "pydantic not available",
+      "timestamp": 1752293753.1876802
+    },
+    {
+      "category": "Dependencies",
+      "status": "ERROR",
+      "message": "loguru not available",
+      "timestamp": 1752293753.1877248
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "pathlib available",
+      "timestamp": 1752293753.1877291
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "datetime available",
+      "timestamp": 1752293753.1877356
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "decimal available",
+      "timestamp": 1752293753.1877394
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "typing available",
+      "timestamp": 1752293753.1877472
+    },
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Running from correct directory",
+      "timestamp": 1752293753.187788
+    },
+    {
+      "category": "Directory Structure",
+      "status": "SUCCESS",
+      "message": "engine/ exists",
+      "timestamp": 1752293753.187802
+    },
+    {
+      "category": "Directory Structure",
+      "status": "SUCCESS",
+      "message": "models/ exists",
+      "timestamp": 1752293753.187812
+    },
+    {
+      "category": "Directory Structure",
+      "status": "SUCCESS",
+      "message": "config/ exists",
+      "timestamp": 1752293753.1878204
+    },
+    {
+      "category": "Directory Structure",
+      "status": "SUCCESS",
+      "message": "utils/ exists",
+      "timestamp": 1752293753.1878273
+    },
+    {
+      "category": "Directory Structure",
+      "status": "SUCCESS",
+      "message": "data/ exists",
+      "timestamp": 1752293753.187839
+    },
+    {
+      "category": "Module Import",
+      "status": "ERROR",
+      "message": "main: No module named 'plotly'",
+      "timestamp": 1752293753.1914246
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "engine.planner imported successfully",
+      "timestamp": 1752293753.1964715
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.forecast imported successfully",
+      "timestamp": 1752293753.196503
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.bom imported successfully",
+      "timestamp": 1752293753.1965175
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.inventory imported successfully",
+      "timestamp": 1752293753.1965456
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.supplier imported successfully",
+      "timestamp": 1752293753.196557
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.recommendation imported successfully",
+      "timestamp": 1752293753.196568
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "config.settings imported successfully",
+      "timestamp": 1752293753.1965792
+    },
+    {
+      "category": "Optional Import",
+      "status": "SUCCESS",
+      "message": "utils available",
+      "timestamp": 1752293753.1965935
+    },
+    {
+      "category": "Optional Import",
+      "status": "WARNING",
+      "message": "utils.data_validation not available",
+      "timestamp": 1752293753.1966476
+    },
+    {
+      "category": "Optional Import",
+      "status": "WARNING",
+      "message": "utils.file_operations not available",
+      "timestamp": 1752293753.1966817
+    },
+    {
+      "category": "Optional Import",
+      "status": "WARNING",
+      "message": "utils.calculations not available",
+      "timestamp": 1752293753.1967108
+    },
+    {
+      "category": "Optional Import",
+      "status": "SUCCESS",
+      "message": "utils.logging_config available",
+      "timestamp": 1752293753.1972358
+    },
+    {
+      "category": "Core Models",
+      "status": "ERROR",
+      "message": "Forecast Model: Source must be one of: ['sales_order', 'projection', 'prod_plan', 'sales_history', 'manual', 'order', 'combined']",
+      "timestamp": 1752293753.1972592
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "BOM Model",
+      "timestamp": 1752293753.197267
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "Inventory Model",
+      "timestamp": 1752293753.1972725
+    },
+    {
+      "category": "Core Models",
+      "status": "ERROR",
+      "message": "Supplier Model: Supplier.__init__() missing 1 required positional argument: 'moq'",
+      "timestamp": 1752293753.1972814
+    },
+    {
+      "category": "Core Models",
+      "status": "ERROR",
+      "message": "Recommendation Model: ProcurementRecommendation.__init__() got an unexpected keyword argument 'quantity'",
+      "timestamp": 1752293753.1972919
+    },
+    {
+      "category": "Engine Components",
+      "status": "ERROR",
+      "message": "MaterialPlanner class not found",
+      "timestamp": 1752293753.1972973
+    },
+    {
+      "category": "Configuration",
+      "status": "SUCCESS",
+      "message": "Config module has 5 items",
+      "timestamp": 1752293753.1973062
+    },
+    {
+      "category": "Configuration Items",
+      "status": "WARNING",
+      "message": "PLANNING_CONFIG not found",
+      "timestamp": 1752293753.1973083
+    },
+    {
+      "category": "Configuration Items",
+      "status": "WARNING",
+      "message": "FORECAST_WEIGHTS not found",
+      "timestamp": 1752293753.197311
+    },
+    {
+      "category": "Configuration Items",
+      "status": "WARNING",
+      "message": "MATERIAL_CATEGORIES not found",
+      "timestamp": 1752293753.1973128
+    },
+    {
+      "category": "Configuration Items",
+      "status": "WARNING",
+      "message": "SAFETY_STOCK_CONFIG not found",
+      "timestamp": 1752293753.1973147
+    },
+    {
+      "category": "Configuration Items",
+      "status": "WARNING",
+      "message": "EOQ_CONFIG not found",
+      "timestamp": 1752293753.1973171
+    },
+    {
+      "category": "Environment Variables",
+      "status": "INFO",
+      "message": "PYTHONPATH not set (optional)",
+      "timestamp": 1752293753.1973302
+    },
+    {
+      "category": "Environment Variables",
+      "status": "INFO",
+      "message": "STREAMLIT_SERVER_PORT not set (optional)",
+      "timestamp": 1752293753.1973348
+    },
+    {
+      "category": "Environment Variables",
+      "status": "INFO",
+      "message": "STREAMLIT_SERVER_ADDRESS not set (optional)",
+      "timestamp": 1752293753.1973376
+    },
+    {
+      "category": "Utilities",
+      "status": "SUCCESS",
+      "message": "File Operations",
+      "timestamp": 1752293753.197506
+    },
+    {
+      "category": "Utilities",
+      "status": "SUCCESS",
+      "message": "Data Validation",
+      "timestamp": 1752293753.1987078
+    },
+    {
+      "category": "Utilities",
+      "status": "SUCCESS",
+      "message": "Calculations",
+      "timestamp": 1752293753.19872
+    },
+    {
+      "category": "Utilities",
+      "status": "SUCCESS",
+      "message": "Logging",
+      "timestamp": 1752293753.198851
+    },
+    {
+      "category": "Data Processing",
+      "status": "SUCCESS",
+      "message": "All pandas operations working",
+      "timestamp": 1752293753.2003841
+    },
+    {
+      "category": "Complete Workflow",
+      "status": "ERROR",
+      "message": "Workflow testing failed: module 'engine.planner' has no attribute 'MaterialPlanner'",
+      "timestamp": 1752293753.2004056
+    },
+    {
+      "category": "UI Components",
+      "status": "SUCCESS",
+      "message": "Streamlit imported successfully",
+      "timestamp": 1752293753.2004113
+    },
+    {
+      "category": "UI Components",
+      "status": "SUCCESS",
+      "message": "Found 6 Streamlit components",
+      "timestamp": 1752293753.2005568
+    },
+    {
+      "category": "UI Components",
+      "status": "WARNING",
+      "message": "Plotly not available",
+      "timestamp": 1752293753.2007532
+    },
+    {
+      "category": "System Integration",
+      "status": "ERROR",
+      "message": "Module Dependencies: Too many import failures: 9/13",
+      "timestamp": 1752293753.2007713
+    },
+    {
+      "category": "System Integration",
+      "status": "SUCCESS",
+      "message": "Data Flow Integration",
+      "timestamp": 1752293753.2012572
+    },
+    {
+      "category": "System Integration",
+      "status": "SUCCESS",
+      "message": "Error Handling Integration",
+      "timestamp": 1752293753.2014005
+    },
+    {
+      "category": "System Integration",
+      "status": "SUCCESS",
+      "message": "Configuration Integration",
+      "timestamp": 1752293753.2014043
+    },
+    {
+      "category": "System Integration",
+      "status": "SUCCESS",
+      "message": "File System Integration",
+      "timestamp": 1752293753.2014372
+    }
+  ],
+  "errors": [
+    "Dependencies: plotly not available",
+    "Dependencies: pydantic not available",
+    "Dependencies: loguru not available",
+    "Module Import: main: No module named 'plotly'",
+    "Core Models: Forecast Model: Source must be one of: ['sales_order', 'projection', 'prod_plan', 'sales_history', 'manual', 'order', 'combined']",
+    "Core Models: Supplier Model: Supplier.__init__() missing 1 required positional argument: 'moq'",
+    "Core Models: Recommendation Model: ProcurementRecommendation.__init__() got an unexpected keyword argument 'quantity'",
+    "Engine Components: MaterialPlanner class not found",
+    "Complete Workflow: Workflow testing failed: module 'engine.planner' has no attribute 'MaterialPlanner'",
+    "System Integration: Module Dependencies: Too many import failures: 9/13"
+  ],
+  "warnings": [
+    "Optional Import: utils.data_validation not available",
+    "Optional Import: utils.file_operations not available",
+    "Optional Import: utils.calculations not available",
+    "Configuration Items: PLANNING_CONFIG not found",
+    "Configuration Items: FORECAST_WEIGHTS not found",
+    "Configuration Items: MATERIAL_CATEGORIES not found",
+    "Configuration Items: SAFETY_STOCK_CONFIG not found",
+    "Configuration Items: EOQ_CONFIG not found",
+    "UI Components: Plotly not available"
+  ]
+}

@@ -5,6 +5,7 @@ Real-time monitoring dashboard for the automated code management system.
 """
 
 import asyncio
+import os
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -22,6 +23,13 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+# Load environment variables
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv is optional
+
 
 class AutomationDashboard:
     """
@@ -37,10 +45,14 @@ class AutomationDashboard:
     
     def __init__(self):
         self.console = Console()
-        self.zen_url = "http://localhost:5000"
-        self.metrics_file = Path("logs/automation_metrics.json")
-        self.reports_dir = Path("reports")
-        self.refresh_interval = 5  # seconds
+        self.zen_url = os.getenv("ZEN_SERVER_URL", "http://localhost:5000")
+        self.metrics_file = Path(os.getenv("METRICS_FILE", "logs/automation_metrics.json"))
+        self.reports_dir = Path(os.getenv("REPORTS_DIR", "reports"))
+        self.refresh_interval = int(os.getenv("DASHBOARD_REFRESH_INTERVAL", "5"))
+        self.host = os.getenv("DASHBOARD_HOST", "localhost")
+        self.port = int(os.getenv("DASHBOARD_PORT", "8080"))
+        self.max_reports = int(os.getenv("MAX_RECENT_REPORTS", "5"))
+        self.timeout = int(os.getenv("ZEN_SERVER_TIMEOUT", "5"))
         
     def load_metrics(self) -> Dict[str, Any]:
         """Load current metrics from file"""
@@ -58,8 +70,11 @@ class AutomationDashboard:
             "uptime_hours": 0
         }
     
-    def load_recent_reports(self, limit: int = 5) -> List[Dict[str, Any]]:
+    def load_recent_reports(self, limit: int = None) -> List[Dict[str, Any]]:
         """Load recent improvement reports"""
+        if limit is None:
+            limit = self.max_reports
+        
         reports = []
         
         if self.reports_dir.exists():
@@ -81,7 +96,7 @@ class AutomationDashboard:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
                     f"{self.zen_url}/version",
-                    timeout=aiohttp.ClientTimeout(total=5)
+                    timeout=aiohttp.ClientTimeout(total=self.timeout)
                 ) as response:
                     return response.status == 200
         except:
@@ -279,14 +294,209 @@ class AutomationDashboard:
                 except Exception as e:
                     self.console.logger.info(f"[red]Error updating dashboard: {e}[/red]")
                     await asyncio.sleep(self.refresh_interval)
+    
+    async def run_web_interface(self):
+        """Run dashboard as a web interface"""
+        from aiohttp import web, web_runner
+        
+        async def health_check(request):
+            """Health check endpoint"""
+            return web.json_response({"status": "healthy", "timestamp": datetime.now().isoformat()})
+        
+        async def metrics_endpoint(request):
+            """Metrics API endpoint"""
+            metrics = self.load_metrics()
+            reports = self.load_recent_reports()
+            zen_status = await self.check_zen_server_status()
+            
+            return web.json_response({
+                "metrics": metrics,
+                "reports": reports,
+                "zen_server_status": zen_status,
+                "timestamp": datetime.now().isoformat()
+            })
+        
+        async def dashboard_html(request):
+            """Serve dashboard HTML page"""
+            html = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zen-MCP Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #2a2a2a; padding: 20px; border-radius: 8px; border: 1px solid #3a3a3a; }
+        .metric { display: flex; justify-content: space-between; margin: 10px 0; }
+        .metric-label { color: #aaa; }
+        .metric-value { color: #0ff; font-weight: bold; }
+        .status-ok { color: #0f0; }
+        .status-error { color: #f00; }
+        .refresh-info { text-align: center; margin-top: 20px; color: #666; }
+    </style>
+    <script>
+        async function updateDashboard() {
+            try {
+                const response = await fetch('/api/metrics');
+                const data = await response.json();
+                
+                // Update metrics
+                const metrics = data.metrics;
+                document.getElementById('total-runs').textContent = metrics.total_runs;
+                document.getElementById('successful-runs').textContent = metrics.successful_runs;
+                document.getElementById('failed-runs').textContent = metrics.failed_runs;
+                document.getElementById('success-rate').textContent = 
+                    metrics.total_runs > 0 ? ((metrics.successful_runs / metrics.total_runs) * 100).toFixed(1) + '%' : '0%';
+                document.getElementById('tasks-completed').textContent = metrics.total_tasks_completed;
+                document.getElementById('avg-runtime').textContent = metrics.average_run_time.toFixed(2) + 's';
+                document.getElementById('error-count').textContent = metrics.error_count;
+                document.getElementById('uptime').textContent = metrics.uptime_hours.toFixed(1) + 'h';
+                
+                // Update status
+                const zenStatus = data.zen_server_status;
+                const statusElement = document.getElementById('zen-status');
+                statusElement.textContent = zenStatus ? 'Running' : 'Not Running';
+                statusElement.className = zenStatus ? 'status-ok' : 'status-error';
+                
+                document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Error updating dashboard:', error);
+            }
+        }
+        
+        // Update every 5 seconds
+        setInterval(updateDashboard, 5000);
+        updateDashboard(); // Initial load
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Zen-MCP Automation Dashboard</h1>
+            <p>Real-time monitoring for automated code management</p>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="card">
+                <h3>📊 Automation Metrics</h3>
+                <div class="metric">
+                    <span class="metric-label">Total Runs:</span>
+                    <span class="metric-value" id="total-runs">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Successful Runs:</span>
+                    <span class="metric-value" id="successful-runs">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Failed Runs:</span>
+                    <span class="metric-value" id="failed-runs">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Success Rate:</span>
+                    <span class="metric-value" id="success-rate">0%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Tasks Completed:</span>
+                    <span class="metric-value" id="tasks-completed">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Avg Runtime:</span>
+                    <span class="metric-value" id="avg-runtime">0s</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Current Errors:</span>
+                    <span class="metric-value" id="error-count">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Uptime:</span>
+                    <span class="metric-value" id="uptime">0h</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🔌 System Status</h3>
+                <div class="metric">
+                    <span class="metric-label">Zen-MCP Server:</span>
+                    <span class="metric-value" id="zen-status">Checking...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="refresh-info">
+            Last updated: <span id="last-update">Loading...</span>
+        </div>
+    </div>
+</body>
+</html>
+            """
+            return web.Response(text=html, content_type='text/html')
+        
+        # Create web application
+        app = web.Application()
+        app.router.add_get('/', dashboard_html)
+        app.router.add_get('/health', health_check)
+        app.router.add_get('/api/metrics', metrics_endpoint)
+        
+        # Start server
+        runner = web_runner.AppRunner(app)
+        await runner.setup()
+        site = web_runner.TCPSite(runner, self.host, self.port)
+        await site.start()
+        
+        self.console.print(f"✅ Web dashboard started at http://{self.host}:{self.port}")
+        self.console.print("Press Ctrl+C to stop")
+        
+        try:
+            while True:
+                await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            pass
+        finally:
+            await runner.cleanup()
 
 
 async def main():
     """Main entry point"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Zen-MCP Automation Dashboard")
+    parser.add_argument(
+        "--mode", 
+        choices=["terminal", "web"], 
+        default="terminal",
+        help="Dashboard mode: terminal (rich TUI) or web (HTTP server)"
+    )
+    parser.add_argument(
+        "--host",
+        default=os.getenv("DASHBOARD_HOST", "localhost"),
+        help="Host to bind web server to"
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=int(os.getenv("DASHBOARD_PORT", "8080")),
+        help="Port for web server"
+    )
+    
+    args = parser.parse_args()
+    
     dashboard = AutomationDashboard()
     
+    # Override host/port if provided via command line
+    if args.host != "localhost":
+        dashboard.host = args.host
+    if args.port != 8080:
+        dashboard.port = args.port
+    
     try:
-        await dashboard.run()
+        if args.mode == "web":
+            await dashboard.run_web_interface()
+        else:
+            await dashboard.run()
     except KeyboardInterrupt:
         logger.info("\n✅ Dashboard closed")
 

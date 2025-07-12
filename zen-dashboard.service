@@ -1,0 +1,28 @@
+[Unit]
+Description=Zen-MCP Automation Dashboard
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dashboard
+Group=dashboard
+WorkingDirectory=/opt/zen-dashboard
+Environment=PYTHONPATH=/opt/zen-dashboard
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/zen-dashboard/venv/bin/python automation/dashboard.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=zen-dashboard
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/zen-dashboard/logs /opt/zen-dashboard/reports
+
+[Install]
+WantedBy=multi-user.target

@@ -76,7 +76,14 @@ class BOMExploder:
         df['sku_id'] = df['sku_id'].astype(str)
         df['material_id'] = df['material_id'].astype(str)
         df['qty_per_unit'] = pd.to_numeric(df['qty_per_unit'], errors='coerce')
-        df['unit_of_measure'] = df.get('unit_of_measure', 'unit').astype(str)
+        
+        # Handle unit column - check for both 'unit' and 'unit_of_measure' column names
+        if 'unit' in df.columns:
+            df['unit'] = df['unit'].astype(str)
+        elif 'unit_of_measure' in df.columns:
+            df['unit'] = df['unit_of_measure'].astype(str)
+        else:
+            df['unit'] = 'unit'  # Default value
 
         # Filter out invalid rows
         invalid_rows = df[df['qty_per_unit'].isna() | (df['qty_per_unit'] <= 0)]
@@ -93,7 +100,7 @@ class BOMExploder:
                     sku_id=row['sku_id'],
                     material_id=row['material_id'],
                     qty_per_unit=float(row['qty_per_unit']),
-                    unit_of_measure=row['unit_of_measure']
+                    unit=row['unit']
                 )
                 boms.append(bom)
             except Exception as e:

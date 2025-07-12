@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from typing import Dict, List, NamedTuple, Optional
 
 import pandas as pd
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -310,9 +313,21 @@ class SupplierSelector:
         else:
             df['contract_qty_limit'] = None
 
-        df['reliability_score'] = pd.to_numeric(df.get('reliability_score', 1.0), errors='coerce').fillna(1.0)
-        df['ordering_cost'] = pd.to_numeric(df.get('ordering_cost', 100.0), errors='coerce').fillna(100.0)
-        df['holding_cost_rate'] = pd.to_numeric(df.get('holding_cost_rate', 0.2), errors='coerce').fillna(0.2)
+        # Handle optional columns with defaults
+        if 'reliability_score' in df.columns:
+            df['reliability_score'] = pd.to_numeric(df['reliability_score'], errors='coerce').fillna(1.0)
+        else:
+            df['reliability_score'] = 1.0
+            
+        if 'ordering_cost' in df.columns:
+            df['ordering_cost'] = pd.to_numeric(df['ordering_cost'], errors='coerce').fillna(100.0)
+        else:
+            df['ordering_cost'] = 100.0
+            
+        if 'holding_cost_rate' in df.columns:
+            df['holding_cost_rate'] = pd.to_numeric(df['holding_cost_rate'], errors='coerce').fillna(0.2)
+        else:
+            df['holding_cost_rate'] = 0.2
 
         # Check for invalid data
         invalid_rows = df[df['cost_per_unit'].isna() | (df['cost_per_unit'] <= 0)]

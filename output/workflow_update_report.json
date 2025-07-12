@@ -1,0 +1,208 @@
+{
+  "update_summary": {
+    "total_time": 0.190554,
+    "completion_status": "SUCCESS"
+  },
+  "validation_results": {
+    "file_validation": {
+      "files_found": [
+        "cfab_Yarn_Demand_By_Style.csv",
+        "eFab_SO_List.csv",
+        "Style_BOM.csv",
+        "Inventory.csv",
+        "Supplier_ID.csv",
+        "Yarn_ID.csv"
+      ],
+      "files_missing": [],
+      "file_validations": {
+        "cfab_Yarn_Demand_By_Style.csv": {
+          "total_records": 330,
+          "unique_styles": 121,
+          "unique_yarns": 137,
+          "issues": [
+            "9 styles with incorrect percentage totals"
+          ]
+        },
+        "eFab_SO_List.csv": {
+          "total_records": 79,
+          "unique_styles": 27,
+          "on_hold_orders": "23",
+          "issues": []
+        },
+        "Style_BOM.csv": {
+          "total_records": 330,
+          "unique_styles": 121,
+          "unique_yarns": 137,
+          "issues": [
+            "9 styles with incorrect BOM percentage totals"
+          ]
+        },
+        "Inventory.csv": {
+          "total_records": 461,
+          "columns": [
+            "style_id",
+            "yds",
+            "lbs",
+            "Unnamed: 3",
+            "Unnamed: 4"
+          ],
+          "issues": []
+        },
+        "Supplier_ID.csv": {
+          "total_records": 37,
+          "columns": [
+            "Supplier_ID",
+            "Supplier",
+            "Lead_time",
+            "MOQ",
+            "Type"
+          ],
+          "issues": []
+        },
+        "Yarn_ID.csv": {
+          "total_records": 248,
+          "columns": [
+            "Yarn_ID",
+            "Supplier",
+            "Description",
+            "Blend",
+            "Type",
+            "Color",
+            "Desc_1",
+            "Desc_2",
+            "Desc_3",
+            "On_Order",
+            "Allocated",
+            "Planning_Ballance",
+            "Cost_Pound",
+            "Total_Cast"
+          ],
+          "issues": []
+        }
+      },
+      "cross_validation": {
+        "yarn_demand_styles": "{'CK3813K14L/0', 'CT0246/0', 'CEE4682A/1', '721SM0470/U', '721SM0627/1', 'C1B4639A/1', 'CEE4677A/1', '1853/LU', 'FF25002/0008A', '2140477/I', 'CK3013Q14L/0', '601SM0654/2', 'CF5463/0', 'CT2155/1UU', '2027-2.9/B', 'CEE4638A/1', 'C1B4612A/1N', 'CF5488/0', 'CK309T-16/0', 'C1B4634A/1', 'CEE4674A/1', 'CF5405/0', '2140372/I', '1SM0470/30G', 'C2B3237/3B', 'CF5424/0', 'CK3813K-14/0', 'CF5092/1', 'FF 10008/0014C', 'CF5490/B', 'C1B4312A/1RECD', 'C5T4522A/1D', 'JC24/1', '180001/20ST2', 'CK309T-14/0', 'CF5490/C', 'FF 10008/0011C', 'CF5464/0', '3009OW/0', 'CT22150/1BA', 'CF5489/C', 'FF 10008/0010C', 'CF5451/0', 'C1B4384A/4', 'CF5461/1', 'CF5434/0', '125792/1', 'C1B4613A/1', 'FF 10008/0009A', '205FLX2006/M', 'CK309T-18/0', 'CEE4688A/1', 'C1B4038/1C', 'CK3013Q-14/0', 'BK 8552/0', 'CF5466/0', 'CF5461/2', '205FLX2006/B', 'CT3085/1K', 'CF5321/F1925', 'BK 8101/0', '751SM0780/1', 'CEE4687A/1', 'CF5489/B', 'CF5439/0', 'C1B4654AA/1', '1874/B', 'CF5462/0', 'CK309T-14L/0', 'CF5446/0', 'CF5493/0', 'CF5492/0', 'C1B4571A/1A', 'C1B3402/1D', 'CEE4681A/1', 'CF5487/0', 'FF 10008/0005C', 'CMR4649A/1', 'JC24/4', 'CF5482/0', 'DFF446J/B', 'CF5432/0', 'CEE4683A/1', 'C1B4654AA/12S', 'C1B3799/2U', 'C1B4637A/1', '2027-2.9/MVS', 'C1B4313A/2RECO', 'CF5321/JAN9', '641SM0693/0', 'CF5439/BKT2', 'KBDU600K/0', 'CF5127/U', 'CF5489/A', 'FAB310-40/0', '910001/ST2', 'CF5474/0', 'C718/0', '71246/BB', '2140390/I', '1853/L', 'C1B4679A/1', '1SM0824-60/0', 'C1B4632A/1', 'CF5490/A', '2140391/I', 'JB38/2', '1922/L', 'CEE4078/2', 'CF5261/STR', 'C1B4338A/1L', 'CF5433/0', 'KBDU602C/0', 'CK309T14L/0', 'CSP4479A/1M', 'CF5128/0', 'BK 5425/1', 'C1B4545A/1D', 'CEE4317A/1L', 'CMR4659A/1', 'CF5491/0'}",
+        "style_bom_styles": "{'CK3813K14L/0', 'CT0246/0', 'CEE4682A/1', '721SM0470/U', '721SM0627/1', 'C1B4639A/1', 'CEE4677A/1', '1853/LU', 'FF25002/0008A', '2140477/I', 'CK3013Q14L/0', '601SM0654/2', 'CF5463/0', 'CT2155/1UU', '2027-2.9/B', 'CEE4638A/1', 'C1B4612A/1N', 'CF5488/0', 'CK309T-16/0', 'C1B4634A/1', 'CEE4674A/1', 'CF5405/0', '2140372/I', '1SM0470/30G', 'C2B3237/3B', 'CF5424/0', 'CK3813K-14/0', 'CF5092/1', 'FF 10008/0014C', 'CF5490/B', 'C1B4312A/1RECD', 'C5T4522A/1D', 'JC24/1', '180001/20ST2', 'CK309T-14/0', 'CF5490/C', 'FF 10008/0011C', 'CF5464/0', '3009OW/0', 'CT22150/1BA', 'CF5489/C', 'FF 10008/0010C', 'CF5451/0', 'C1B4384A/4', 'CF5461/1', 'CF5434/0', '125792/1', 'C1B4613A/1', 'FF 10008/0009A', '205FLX2006/M', 'CK309T-18/0', 'CEE4688A/1', 'C1B4038/1C', 'CK3013Q-14/0', 'BK 8552/0', 'CF5466/0', 'CF5461/2', '205FLX2006/B', 'CT3085/1K', 'CF5321/F1925', 'BK 8101/0', '751SM0780/1', 'CEE4687A/1', 'CF5489/B', 'CF5439/0', 'C1B4654AA/1', '1874/B', 'CF5462/0', 'CK309T-14L/0', 'CF5446/0', 'CF5493/0', 'CF5492/0', 'C1B4571A/1A', 'C1B3402/1D', 'CEE4681A/1', 'CF5487/0', 'FF 10008/0005C', 'CMR4649A/1', 'JC24/4', 'CF5482/0', 'DFF446J/B', 'CF5432/0', 'CEE4683A/1', 'C1B4654AA/12S', 'C1B3799/2U', 'C1B4637A/1', '2027-2.9/MVS', 'C1B4313A/2RECO', 'CF5321/JAN9', '641SM0693/0', 'CF5439/BKT2', 'KBDU600K/0', 'CF5127/U', 'CF5489/A', 'FAB310-40/0', '910001/ST2', 'CF5474/0', 'C718/0', '71246/BB', '2140390/I', '1853/L', 'C1B4679A/1', '1SM0824-60/0', 'C1B4632A/1', 'CF5490/A', '2140391/I', 'JB38/2', '1922/L', 'CEE4078/2', 'CF5261/STR', 'C1B4338A/1L', 'CF5433/0', 'KBDU602C/0', 'CK309T14L/0', 'CSP4479A/1M', 'CF5128/0', 'BK 5425/1', 'C1B4545A/1D', 'CEE4317A/1L', 'CMR4659A/1', 'CF5491/0'}",
+        "yarn_demand_yarns": "{np.int64(18954), np.int64(18961), np.int64(18452), np.int64(18454), np.int64(18966), np.int64(18974), np.int64(18975), np.int64(7716), np.int64(18469), np.int64(18982), np.int64(18983), np.int64(10795), np.int64(18991), np.int64(14895), np.int64(19004), np.int64(19019), np.int64(9296), np.int64(11344), np.int64(18517), np.int64(19031), np.int64(18526), np.int64(18019), np.int64(19043), np.int64(19045), np.int64(18024), np.int64(19049), np.int64(19050), np.int64(19054), np.int64(19057), np.int64(19060), np.int64(11896), np.int64(18553), np.int64(18564), np.int64(9863), np.int64(18569), np.int64(18573), np.int64(18575), np.int64(18576), np.int64(11409), np.int64(18594), np.int64(18086), np.int64(18598), np.int64(18599), np.int64(11967), np.int64(18644), np.int64(18645), np.int64(18646), np.int64(18659), np.int64(13545), np.int64(18667), np.int64(18669), np.int64(12526), np.int64(14061), np.int64(18673), np.int64(10995), np.int64(18164), np.int64(18679), np.int64(13560), np.int64(13561), np.int64(18690), np.int64(18696), np.int64(12047), np.int64(18703), np.int64(18707), np.int64(18708), np.int64(18712), np.int64(18208), np.int64(12066), np.int64(18725), np.int64(18726), np.int64(10027), np.int64(18732), np.int64(18228), np.int64(18229), np.int64(18232), np.int64(18233), np.int64(18758), np.int64(18763), np.int64(18767), np.int64(18770), np.int64(18771), np.int64(18773), np.int64(18774), np.int64(18794), np.int64(18795), np.int64(18285), np.int64(18290), np.int64(18804), np.int64(12150), np.int64(18811), np.int64(18813), np.int64(18307), np.int64(18819), np.int64(18826), np.int64(18829), np.int64(14223), np.int64(18320), np.int64(18845), np.int64(18334), np.int64(14242), np.int64(18850), np.int64(18851), np.int64(18341), np.int64(18343), np.int64(18344), np.int64(10153), np.int64(18861), np.int64(18863), np.int64(18864), np.int64(18865), np.int64(11697), np.int64(18868), np.int64(18869), np.int64(18870), np.int64(18873), np.int64(18372), np.int64(18884), np.int64(18376), np.int64(18893), np.int64(18894), np.int64(18896), np.int64(18387), np.int64(18899), np.int64(12243), np.int64(18903), np.int64(13794), np.int64(18414), np.int64(11759), np.int64(18928), np.int64(18929), np.int64(18927), np.int64(18419), np.int64(18415), np.int64(18937), np.int64(18426), np.int64(18939), np.int64(18941)}",
+        "style_bom_yarns": "{np.int64(18954), np.int64(18961), np.int64(18452), np.int64(18454), np.int64(18966), np.int64(18974), np.int64(18975), np.int64(7716), np.int64(18469), np.int64(18982), np.int64(18983), np.int64(10795), np.int64(18991), np.int64(14895), np.int64(19004), np.int64(19019), np.int64(9296), np.int64(11344), np.int64(18517), np.int64(19031), np.int64(18526), np.int64(18019), np.int64(19043), np.int64(19045), np.int64(18024), np.int64(19049), np.int64(19050), np.int64(19054), np.int64(19057), np.int64(19060), np.int64(11896), np.int64(18553), np.int64(18564), np.int64(9863), np.int64(18569), np.int64(18573), np.int64(18575), np.int64(18576), np.int64(11409), np.int64(18594), np.int64(18086), np.int64(18598), np.int64(18599), np.int64(11967), np.int64(18644), np.int64(18645), np.int64(18646), np.int64(18659), np.int64(13545), np.int64(18667), np.int64(18669), np.int64(12526), np.int64(14061), np.int64(18673), np.int64(10995), np.int64(18164), np.int64(18679), np.int64(13560), np.int64(13561), np.int64(18690), np.int64(18696), np.int64(12047), np.int64(18703), np.int64(18707), np.int64(18708), np.int64(18712), np.int64(18208), np.int64(12066), np.int64(18725), np.int64(18726), np.int64(10027), np.int64(18732), np.int64(18228), np.int64(18229), np.int64(18232), np.int64(18233), np.int64(18758), np.int64(18763), np.int64(18767), np.int64(18770), np.int64(18771), np.int64(18773), np.int64(18774), np.int64(18794), np.int64(18795), np.int64(18285), np.int64(18290), np.int64(18804), np.int64(12150), np.int64(18811), np.int64(18813), np.int64(18307), np.int64(18819), np.int64(18826), np.int64(18829), np.int64(14223), np.int64(18320), np.int64(18845), np.int64(18334), np.int64(14242), np.int64(18850), np.int64(18851), np.int64(18341), np.int64(18343), np.int64(18344), np.int64(10153), np.int64(18861), np.int64(18863), np.int64(18864), np.int64(18865), np.int64(11697), np.int64(18868), np.int64(18869), np.int64(18870), np.int64(18873), np.int64(18372), np.int64(18884), np.int64(18376), np.int64(18893), np.int64(18894), np.int64(18896), np.int64(18387), np.int64(18899), np.int64(12243), np.int64(18903), np.int64(13794), np.int64(18414), np.int64(11759), np.int64(18928), np.int64(18929), np.int64(18927), np.int64(18419), np.int64(18415), np.int64(18937), np.int64(18426), np.int64(18939), np.int64(18941)}",
+        "issues": []
+      }
+    },
+    "bom_processing": {
+      "style_bom_processing": {
+        "success": true,
+        "total_boms": 330,
+        "unique_styles": 121,
+        "unique_yarns": 137
+      },
+      "yarn_demand_processing": {
+        "success": true,
+        "total_boms": 330,
+        "unique_styles": 121,
+        "unique_yarns": 137
+      },
+      "cross_validation": {
+        "success": true,
+        "validation_results": {
+          "style_bom_validation": {
+            "total_bom_lines": 330,
+            "unique_styles": 121,
+            "styles_with_incorrect_totals": 9,
+            "incorrect_total_details": {
+              "205FLX2006/M": 0.552,
+              "C1B4545A/1D": 0.948,
+              "CF5492/0": 0.2727,
+              "FF 10008/0005C": 0.368,
+              "FF 10008/0009A": 0.368,
+              "FF 10008/0010C": 0.368,
+              "FF 10008/0011C": 0.368,
+              "FF 10008/0014C": 0.368,
+              "FF25002/0008A": 0.012
+            },
+            "average_total": 0.9555735537190083,
+            "min_total": 0.012,
+            "max_total": 1.0001
+          },
+          "yarn_demand_validation": {
+            "total_records": 330,
+            "unique_styles": 121,
+            "styles_with_incorrect_percentages": 9,
+            "incorrect_percentage_details": {
+              "205FLX2006/M": 55.2,
+              "C1B4545A/1D": 94.8,
+              "CF5492/0": 27.27,
+              "FF 10008/0005C": 36.800000000000004,
+              "FF 10008/0009A": 36.800000000000004,
+              "FF 10008/0010C": 36.800000000000004,
+              "FF 10008/0011C": 36.800000000000004,
+              "FF 10008/0014C": 36.800000000000004,
+              "FF25002/0008A": 1.2
+            },
+            "average_percentage": 95.55735537190083,
+            "min_percentage": 1.2,
+            "max_percentage": 100.01
+          },
+          "cross_validation": {
+            "styles_in_both": 121,
+            "styles_only_in_bom": 0,
+            "styles_only_in_demand": 0,
+            "styles_only_in_bom_list": [],
+            "styles_only_in_demand_list": []
+          }
+        }
+      }
+    }
+  },
+  "test_results": {
+    "integration_test": {
+      "load_test": {
+        "success": false,
+        "error": "could not convert string to float: 'rolls'"
+      },
+      "conversion_test": {
+        "success": false,
+        "error": "could not convert string to float: 'rolls'"
+      },
+      "validation_test": {
+        "success": false,
+        "error": "could not convert string to float: 'rolls'"
+      }
+    },
+    "planning_test": {
+      "planning_cycle_test": {
+        "success": false,
+        "error": "could not convert string to float: 'rolls'"
+      },
+      "recommendations_test": null,
+      "export_test": {
+        "success": true,
+        "files_exported": 1,
+        "exported_files": [
+          "excel"
+        ]
+      }
+    },
+    "system_test": {
+      "end_to_end_test": {
+        "success": false,
+        "error": "could not convert string to float: 'rolls'"
+      },
+      "performance_test": null,
+      "integration_test": null
+    }
+  },
+  "recommendations": [
+    "Resolve 2 data quality issues",
+    "Fix data loading issues before deployment",
+    "Resolve planning engine issues"
+  ],
+  "next_steps": [
+    "1. Review and resolve any data quality issues",
+    "2. Train users on new live data format",
+    "3. Update data collection processes",
+    "4. Implement regular data validation checks",
+    "5. Set up automated planning runs",
+    "6. Monitor system performance",
+    "7. Collect user feedback and iterate"
+  ]
+}

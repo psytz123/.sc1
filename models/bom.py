@@ -388,3 +388,152 @@ class BOMExploder:
                 merged[material_id]['sources'].extend(req_data['sources'])
         
         return merged
+
+    @classmethod
+    def from_live_data_format(cls, df: pd.DataFrame) -> List[BillOfMaterials]:
+        """Create BOM objects from live data format (Style_ID, Yarn_ID, BOM_Percentage)"""
+        boms = []
+
+        # Validate required columns for live data format
+        required_columns = ['Style_ID', 'Yarn_ID', 'BOM_Percentage']
+        missing_columns = set(required_columns) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Missing required columns for live data: {missing_columns}")
+
+        # Prepare data with proper types
+        df = df.copy()
+        df['Style_ID'] = df['Style_ID'].astype(str)
+        df['Yarn_ID'] = df['Yarn_ID'].astype(str)
+        df['BOM_Percentage'] = pd.to_numeric(df['BOM_Percentage'], errors='coerce')
+
+        # Filter out invalid rows
+        invalid_rows = df[df['BOM_Percentage'].isna() | (df['BOM_Percentage'] <= 0)]
+        if not invalid_rows.empty:
+            logger.warning(f"Filtering out {len(invalid_rows)} invalid BOM rows")
+            df = df[~df['BOM_Percentage'].isna() & (df['BOM_Percentage'] > 0)]
+
+        # Convert to list of dictionaries for faster iteration
+        bom_data = df.to_dict('records')
+
+        for row in bom_data:
+            try:
+                bom = BillOfMaterials(
+                    sku_id=row['Style_ID'],
+                    material_id=row['Yarn_ID'],
+                    qty_per_unit=float(row['BOM_Percentage']),
+                    unit="percentage",
+                    percentage=float(row['BOM_Percentage']) * 100  # Convert to 0-100 scale
+                )
+                boms.append(bom)
+            except Exception as e:
+                logger.error(f"Error creating BOM from live data row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(boms)} BOM entries from live data format")
+        return boms
+
+    @classmethod
+    def from_yarn_demand_by_style(cls, df: pd.DataFrame) -> List[StyleYarnBOM]:
+        """
+        Create StyleYarnBOM objects from cfab_Yarn_Demand_By_Style.csv format
+        Enhanced to handle live data format exactly
+        """
+        style_yarn_boms = []
+
+        # Validate required columns for yarn demand format
+        required_columns = ['Style', 'Yarn', 'Percentage']
+        missing_columns = set(required_columns) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Missing required columns for yarn demand: {missing_columns}")
+
+        # Prepare data
+        df = df.copy()
+        df['Style'] = df['Style'].astype(str)
+        df['Yarn'] = df['Yarn'].astype(str)
+        df['Percentage'] = pd.to_numeric(df['Percentage'], errors='coerce')
+
+        # Filter out invalid rows
+        valid_df = df[df['Percentage'] > 0]
+
+        # Convert to list of dictionaries for faster iteration
+        style_yarn_data = valid_df.to_dict('records')
+
+        for row in style_yarn_data:
+            try:
+                style_yarn_bom = StyleYarnBOM(
+                    style_id=row['Style'],
+                    yarn_id=row['Yarn'],
+                    percentage=row['Percentage']  # Already in 0-100 scale in live data
+                )
+                style_yarn_boms.append(style_yarn_bom)
+            except Exception as e:
+                logger.error(f"Error creating StyleYarnBOM from yarn demand row: {e}")
+                continue
+
+        logger.info(f"Successfully created {len(style_yarn_boms)} style-yarn BOM entries from yarn demand format")
+        return style_yarn_boms
+
+    @classmethod
+    def validate_live_data_boms(cls, style_bom_df: pd.DataFrame, yarn_demand_df: pd.DataFrame = None) -> Dict[str, any]:
+        """Validate BOM data from live data format"""
+        validation_results = {
+            'style_bom_validation': {},
+            'yarn_demand_validation': {},
+            'cross_validation': {}
+        }
+        
+        # Validate Style_BOM.csv format
+        if not style_bom_df.empty:
+            # Group by style and check percentage totals
+            style_totals = style_bom_df.groupby('Style_ID')['BOM_Percentage'].sum()
+            
+            # Find styles with incorrect totals (should sum to 1.0)
+            incorrect_totals = {
+                style: total for style, total in style_totals.items()
+                if abs(total - 1.0) > 0.01  # Allow small rounding errors
+            }
+            
+            validation_results['style_bom_validation'] = {
+                'total_bom_lines': len(style_bom_df),
+                'unique_styles': len(style_totals),
+                'styles_with_incorrect_totals': len(incorrect_totals),
+                'incorrect_total_details': incorrect_totals,
+                'average_total': style_totals.mean(),
+                'min_total': style_totals.min(),
+                'max_total': style_totals.max()
+            }
+        
+        # Validate yarn demand format if provided
+        if yarn_demand_df is not None and not yarn_demand_df.empty:
+            # Group by style and check percentage totals
+            style_percentages = yarn_demand_df.groupby('Style')['Percentage'].sum()
+            
+            # Find styles with incorrect percentage totals (should sum to 100.0)
+            incorrect_percentages = {
+                style: total for style, total in style_percentages.items()
+                if abs(total - 100.0) > 0.1
+            }
+            
+            validation_results['yarn_demand_validation'] = {
+                'total_records': len(yarn_demand_df),
+                'unique_styles': len(style_percentages),
+                'styles_with_incorrect_percentages': len(incorrect_percentages),
+                'incorrect_percentage_details': incorrect_percentages,
+                'average_percentage': style_percentages.mean(),
+                'min_percentage': style_percentages.min(),
+                'max_percentage': style_percentages.max()
+            }
+            
+            # Cross-validation between the two formats
+            style_bom_styles = set(style_bom_df['Style_ID'].unique())
+            yarn_demand_styles = set(yarn_demand_df['Style'].unique())
+            
+            validation_results['cross_validation'] = {
+                'styles_in_both': len(style_bom_styles & yarn_demand_styles),
+                'styles_only_in_bom': len(style_bom_styles - yarn_demand_styles),
+                'styles_only_in_demand': len(yarn_demand_styles - style_bom_styles),
+                'styles_only_in_bom_list': list(style_bom_styles - yarn_demand_styles),
+                'styles_only_in_demand_list': list(yarn_demand_styles - style_bom_styles)
+            }
+        
+        return validation_results

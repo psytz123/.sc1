@@ -1,0 +1,10 @@
+{
+  "system_mode": "live_data",
+  "data_integration": "live_data_integration",
+  "planning_engine": "live_data_planner",
+  "file_format": "live_csv_format",
+  "auto_validation": true,
+  "auto_conversion": true,
+  "enhanced_bom_processing": true,
+  "style_to_yarn_mapping": true
+}

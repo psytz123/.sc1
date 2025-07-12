@@ -1,0 +1,32 @@
+{
+  "data_source": "live_csv_files",
+  "file_format": "live_format",
+  "data_files": {
+    "yarn_demand": "cfab_Yarn_Demand_By_Style.csv",
+    "sales_orders": "eFab_SO_List.csv",
+    "style_bom": "Style_BOM.csv",
+    "inventory": "Inventory.csv",
+    "suppliers": "Supplier_ID.csv",
+    "yarn_master": "Yarn_ID.csv"
+  },
+  "processing_options": {
+    "handle_comma_separated_numbers": true,
+    "parse_currency_formats": true,
+    "process_html_toggles": true,
+    "convert_percentage_scales": true,
+    "filter_inactive_suppliers": true
+  },
+  "validation_settings": {
+    "cross_validate_bom_files": true,
+    "check_percentage_totals": true,
+    "validate_cost_data": true,
+    "check_supplier_activity": true
+  },
+  "planning_settings": {
+    "safety_stock_percentage": 0.2,
+    "lead_time_buffer_days": 7,
+    "planning_horizon_days": 90,
+    "service_level": 0.95,
+    "enable_multi_supplier": true
+  }
+}

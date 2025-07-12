@@ -346,38 +346,43 @@ class SystemFunctionalityTest:
         
         planner_module = self.module_status['engine.planner']['module']
         
-        # Test MaterialPlanner class exists
-        if hasattr(planner_module, 'MaterialPlanner'):
-            planner_class = getattr(planner_module, 'MaterialPlanner')
+        # Test RawMaterialPlanner class exists
+        if hasattr(planner_module, 'RawMaterialPlanner'):
+            planner_class = getattr(planner_module, 'RawMaterialPlanner')
             
             try:
-                # Test instantiation
-                planner = planner_class()
-                self.log_success("Engine Components", "MaterialPlanner instantiated")
-                
-                # Test required methods exist
-                required_methods = [
-                    'unify_forecasts', 'explode_bom', 'net_inventory',
-                    'optimize_procurement', 'select_suppliers', 'generate_recommendations'
-                ]
-                
-                for method_name in required_methods:
-                    if hasattr(planner, method_name):
-                        method = getattr(planner, method_name)
-                        if callable(method):
-                            self.log_success("Engine Methods", f"{method_name} method available")
+                # Test instantiation with config
+                if 'config.settings' in self.module_status and self.module_status['config.settings']['status'] == 'SUCCESS':
+                    config_module = self.module_status['config.settings']['module']
+                    config_class = getattr(config_module, 'PlanningConfig')
+                    config = config_class()
+                    planner = planner_class(config)
+                    self.log_success("Engine Components", "RawMaterialPlanner instantiated")
+                    
+                    # Test required methods exist
+                    required_methods = [
+                        'plan', 'generate_summary_report', 'export_results_to_dataframes'
+                    ]
+                    
+                    for method_name in required_methods:
+                        if hasattr(planner, method_name):
+                            method = getattr(planner, method_name)
+                            if callable(method):
+                                self.log_success("Engine Methods", f"{method_name} method available")
+                            else:
+                                self.log_error("Engine Methods", f"{method_name} exists but not callable")
                         else:
-                            self.log_error("Engine Methods", f"{method_name} exists but not callable")
-                    else:
-                        self.log_error("Engine Methods", f"{method_name} method missing")
-                
-                # Test method signatures
-                self.test_method_signatures(planner, required_methods)
+                            self.log_error("Engine Methods", f"{method_name} method missing")
+                    
+                    # Test method signatures
+                    self.test_method_signatures(planner, required_methods)
+                else:
+                    self.log_error("Engine Components", "Config module not available for planner instantiation")
                 
             except Exception as e:
-                self.log_error("Engine Components", f"MaterialPlanner instantiation failed: {str(e)}")
+                self.log_error("Engine Components", f"RawMaterialPlanner instantiation failed: {str(e)}")
         else:
-            self.log_error("Engine Components", "MaterialPlanner class not found")
+            self.log_error("Engine Components", "RawMaterialPlanner class not found")
     
     def test_method_signatures(self, planner, method_names):
         """Test method signatures are correct"""
@@ -582,73 +587,77 @@ class SystemFunctionalityTest:
                 raise Exception("Planning engine not available")
             
             planner_module = self.module_status['engine.planner']['module']
-            planner_class = getattr(planner_module, 'MaterialPlanner')
-            planner = planner_class()
+            planner_class = getattr(planner_module, 'RawMaterialPlanner')
             
-            # Create minimal test data
-            import pandas as pd
+            # Check if config is available
+            if 'config.settings' not in self.module_status or self.module_status['config.settings']['status'] != 'SUCCESS':
+                raise Exception("Config module not available")
+            
+            config_module = self.module_status['config.settings']['module']
+            config_class = getattr(config_module, 'PlanningConfig')
+            config = config_class()
+            planner = planner_class(config)
+            
+            # Create minimal test data using model classes
+            from models.forecast import FinishedGoodsForecast
+            from models.bom import BillOfMaterials
+            from models.inventory import Inventory
+            from models.supplier import Supplier
             
             # Test forecast data
-            forecast_data = pd.DataFrame({
-                'sku_id': ['SKU-001'],
-                'forecast_qty': [100],
-                'source': ['sales_order'],
-                'forecast_date': ['2025-02-01']
-            })
+            forecasts = [
+                FinishedGoodsForecast(
+                    sku_id='SKU-001',
+                    forecast_qty=100,
+                    source='sales_order',
+                    forecast_date='2025-02-01'
+                )
+            ]
             
             # Test BOM data
-            bom_data = pd.DataFrame({
-                'sku_id': ['SKU-001'],
-                'material_id': ['MAT-001'],
-                'qty_per_unit': [1.0]
-            })
+            boms = [
+                BillOfMaterials(
+                    sku_id='SKU-001',
+                    material_id='MAT-001',
+                    qty_per_unit=1.0,
+                    unit='yards'
+                )
+            ]
             
             # Test inventory data
-            inventory_data = pd.DataFrame({
-                'material_id': ['MAT-001'],
-                'on_hand_qty': [25]
-            })
+            inventory = [
+                Inventory(
+                    material_id='MAT-001',
+                    on_hand_qty=25,
+                    unit='yards'
+                )
+            ]
             
             # Test supplier data
-            supplier_data = pd.DataFrame({
-                'material_id': ['MAT-001'],
-                'supplier_id': ['SUP-001'],
-                'cost_per_unit': [10.0],
-                'lead_time_days': [14]
-            })
+            suppliers = [
+                Supplier(
+                    material_id='MAT-001',
+                    supplier_id='SUP-001',
+                    cost_per_unit=10.0,
+                    lead_time_days=14,
+                    moq=50
+                )
+            ]
             
             # Test workflow steps
             workflow_steps = [
-                ('Forecast Unification', lambda: planner.unify_forecasts(forecast_data)),
-                ('BOM Explosion', lambda: planner.explode_bom(bom_data, forecast_data)),
-                ('Inventory Netting', lambda: planner.net_inventory(
-                    pd.DataFrame({'material_id': ['MAT-001'], 'gross_requirement': [100]}), 
-                    inventory_data
-                )),
-                ('Procurement Optimization', lambda: planner.optimize_procurement(
-                    pd.DataFrame({'material_id': ['MAT-001'], 'net_requirement': [75]})
-                )),
-                ('Supplier Selection', lambda: planner.select_suppliers(
-                    pd.DataFrame({'material_id': ['MAT-001'], 'optimized_qty': [85]}), 
-                    supplier_data
-                )),
-                ('Recommendation Generation', lambda: planner.generate_recommendations(
-                    pd.DataFrame({
-                        'material_id': ['MAT-001'], 
-                        'supplier_id': ['SUP-001'], 
-                        'quantity': [85], 
-                        'unit_cost': [10.0]
-                    })
-                ))
+                ('Complete Planning Process', lambda: planner.plan(forecasts, boms, inventory, suppliers)),
+                ('Generate Summary Report', lambda: planner.generate_summary_report()),
+                ('Export Results to DataFrames', lambda: planner.export_results_to_dataframes())
             ]
             
             for step_name, step_func in workflow_steps:
                 try:
                     result = step_func()
-                    if result is not None and len(result) >= 0:
+                    if result is not None:
                         self.log_success("Workflow Steps", f"{step_name} completed")
                     else:
-                        self.log_warning("Workflow Steps", f"{step_name} returned empty result")
+                        self.log_warning("Workflow Steps", f"{step_name} returned None")
                 except Exception as e:
                     self.log_error("Workflow Steps", f"{step_name} failed: {str(e)}")
             

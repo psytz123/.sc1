@@ -136,16 +136,17 @@ def quick_system_health_check():
     # 4. Planning Engine Check
     print("\n⚙️  Planning Engine Check...")
     try:
-        from engine.planner import MaterialPlanner
+        from engine.planner import RawMaterialPlanner
+        from config.settings import PlanningConfig
         
         # Test instantiation
-        planner = MaterialPlanner()
-        print("   ✅ MaterialPlanner instantiated")
+        config = PlanningConfig()
+        planner = RawMaterialPlanner(config)
+        print("   ✅ RawMaterialPlanner instantiated")
         
         # Test required methods
         required_methods = [
-            'unify_forecasts', 'explode_bom', 'net_inventory',
-            'optimize_procurement', 'select_suppliers', 'generate_recommendations'
+            'plan', 'generate_summary_report', 'export_results_to_dataframes'
         ]
         
         missing_methods = []
@@ -170,28 +171,56 @@ def quick_system_health_check():
     print("\n🔄 Basic Workflow Test...")
     try:
         import pandas as pd
-        from engine.planner import MaterialPlanner
+        from engine.planner import RawMaterialPlanner
+        from config.settings import PlanningConfig
+        from models.forecast import FinishedGoodsForecast
+        from models.bom import BillOfMaterials
+        from models.inventory import Inventory
+        from models.supplier import Supplier
         
-        planner = MaterialPlanner()
+        config = PlanningConfig()
+        planner = RawMaterialPlanner(config)
         
         # Create minimal test data
-        forecast_data = pd.DataFrame({
-            'sku_id': ['TEST-SKU'],
-            'forecast_qty': [100],
-            'source': ['test'],
-            'forecast_date': ['2025-02-01']
-        })
+        forecasts = [
+            FinishedGoodsForecast(
+                sku_id='TEST-SKU',
+                forecast_qty=100,
+                source='sales_order',
+                forecast_date='2025-02-01'
+            )
+        ]
         
-        bom_data = pd.DataFrame({
-            'sku_id': ['TEST-SKU'],
-            'material_id': ['TEST-MAT'],
-            'qty_per_unit': [1.0]
-        })
+        boms = [
+            BillOfMaterials(
+                sku_id='TEST-SKU',
+                material_id='TEST-MAT',
+                qty_per_unit=1.0,
+                unit='yards'
+            )
+        ]
+        
+        inventory = [
+            Inventory(
+                material_id='TEST-MAT',
+                on_hand_qty=25,
+                unit='yards'
+            )
+        ]
+        
+        suppliers = [
+            Supplier(
+                material_id='TEST-MAT',
+                supplier_id='TEST-SUP',
+                cost_per_unit=10.0,
+                lead_time_days=14,
+                moq=50
+            )
+        ]
         
         # Test basic workflow steps
         workflow_tests = [
-            ('Forecast Processing', lambda: planner.unify_forecasts(forecast_data)),
-            ('BOM Processing', lambda: planner.explode_bom(bom_data, forecast_data))
+            ('Complete Planning Process', lambda: planner.plan(forecasts, boms, inventory, suppliers))
         ]
         
         workflow_failures = []

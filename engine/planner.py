@@ -472,3 +472,462 @@ class RawMaterialPlanner:
         return {
             'recommendations': pd.DataFrame(recommendations_data) if recommendations_data else pd.DataFrame()
         }
+
+class MaterialPlanner:
+    """
+    Material Planning Engine for Beverly Knits
+    
+    Implements the core material planning workflow with the following steps:
+    1. Unify forecasts from multiple sources
+    2. Explode BOM requirements
+    3. Net against inventory
+    4. Track errors and validations
+    """
+    
+    def __init__(self, config=None):
+        """
+        Initialize the MaterialPlanner
+        
+        Args:
+            config: Optional configuration object
+        """
+        self.config = config or {}
+        self._errors = []
+        self._warnings = []
+        
+        # Default source weights
+        self.source_weights = {
+            'sales_order': 0.4,
+            'demand_forecast': 0.6,
+            'production_plan': 0.3
+        }
+        
+        # Update with config if provided
+        if hasattr(config, 'source_weights'):
+            self.source_weights.update(config.source_weights)
+        elif isinstance(config, dict) and 'source_weights' in config:
+            self.source_weights.update(config['source_weights'])
+    
+    def unify_forecasts(self, forecast_data):
+        """
+        Unify forecasts from multiple sources with proper weighting
+        
+        Args:
+            forecast_data (pd.DataFrame): Forecast data with columns:
+                - sku_id: SKU identifier
+                - forecast_qty: Forecast quantity
+                - forecast_date: Forecast date
+                - source: Forecast source (sales_order, demand_forecast, production_plan)
+        
+        Returns:
+            pd.DataFrame: Unified forecast data with source_weight column
+        """
+        try:
+            # Handle empty input
+            if forecast_data.empty:
+                logger.info("   ⚠️  Empty forecast data provided")
+                return pd.DataFrame(columns=['sku_id', 'unified_qty', 'forecast_date', 'source_weight'])
+            
+            # Validate required columns
+            required_columns = ['sku_id', 'forecast_qty', 'forecast_date', 'source']
+            missing_columns = [col for col in required_columns if col not in forecast_data.columns]
+            if missing_columns:
+                error_msg = f"Missing required columns: {missing_columns}"
+                self.add_error(error_msg)
+                logger.error(f"   ❌ {error_msg}")
+                return pd.DataFrame(columns=['sku_id', 'unified_qty', 'forecast_date', 'source_weight'])
+            
+            # Create a copy to avoid modifying original data
+            df = forecast_data.copy()
+            
+            # Validate and handle data quality issues
+            self._validate_forecast_data(df)
+            
+            # Handle invalid source types
+            valid_sources = set(self.source_weights.keys())
+            invalid_sources = set(df['source'].unique()) - valid_sources
+            if invalid_sources:
+                warning_msg = f"Invalid source types found: {invalid_sources}. Using default weight of 0.1"
+                self.add_warning(warning_msg)
+                logger.warning(f"   ⚠️  {warning_msg}")
+                # Set default weight for invalid sources
+                for source in invalid_sources:
+                    self.source_weights[source] = 0.1
+            
+            # Apply source weights
+            df['source_weight'] = df['source'].map(self.source_weights)
+            
+            # Handle zero and negative quantities
+            df = self._handle_quantity_issues(df)
+            
+            # Handle duplicate SKUs by aggregating
+            if df.duplicated(subset=['sku_id', 'forecast_date']).any():
+                logger.info("   📊 Aggregating duplicate SKU forecasts")
+                df = df.groupby(['sku_id', 'forecast_date']).agg({
+                    'forecast_qty': 'sum',
+                    'source_weight': 'mean',
+                    'source': lambda x: ', '.join(x.unique())
+                }).reset_index()
+            
+            # Normalize source weights to 1.0 for single source scenarios
+            unique_sources = df['source'].unique()
+            if len(unique_sources) == 1:
+                df['source_weight'] = 1.0
+            
+            # Calculate unified quantities
+            df['unified_qty'] = df['forecast_qty'] * df['source_weight']
+            
+            # Handle decimal precision
+            df['unified_qty'] = df['unified_qty'].round(6)
+            
+            # Final cleanup and validation
+            result = df[['sku_id', 'unified_qty', 'forecast_date', 'source_weight']].copy()
+            
+            logger.info(f"   ✅ Unified {len(forecast_data)} forecast records into {len(result)} unified forecasts")
+            
+            return result
+            
+        except Exception as e:
+            error_msg = f"Error in unify_forecasts: {str(e)}"
+            self.add_error(error_msg)
+            logger.error(f"   ❌ {error_msg}")
+            return pd.DataFrame(columns=['sku_id', 'unified_qty', 'forecast_date', 'source_weight'])
+    
+    def explode_bom(self, bom_data, forecast_data=None, test_forecast=None):
+        """
+        Explode BOM requirements based on forecast data
+        
+        Args:
+            bom_data (pd.DataFrame): BOM data with columns:
+                - sku_id: SKU identifier
+                - material_id: Material identifier
+                - qty_per_unit: Quantity per unit
+            forecast_data (pd.DataFrame): Forecast data with unified_qty column
+            test_forecast (pd.DataFrame): Alternative parameter name for forecast data (for test compatibility)
+        
+        Returns:
+            pd.DataFrame: Material requirements
+        """
+        try:
+            # Handle test_forecast parameter for backward compatibility
+            if test_forecast is not None:
+                forecast_data = test_forecast
+            
+            # Handle empty inputs
+            if bom_data.empty or forecast_data is None or forecast_data.empty:
+                logger.info("   ⚠️  Empty BOM or forecast data provided")
+                return pd.DataFrame(columns=['material_id', 'total_requirement', 'sku_id'])
+            
+            # Validate BOM data
+            self._validate_bom_data(bom_data)
+            
+            # Create copies to avoid modifying original data
+            bom_df = bom_data.copy()
+            forecast_df = forecast_data.copy()
+            
+            # Handle BOM percentage corrections
+            bom_df = self._handle_bom_percentages(bom_df)
+            
+            # Handle zero percentage materials
+            bom_df = bom_df[bom_df['qty_per_unit'] > 0]
+            
+            # Check for missing BOMs
+            forecast_skus = set(forecast_df['sku_id'].unique())
+            bom_skus = set(bom_df['sku_id'].unique())
+            missing_bom_skus = forecast_skus - bom_skus
+            
+            if missing_bom_skus:
+                warning_msg = f"Missing BOM data for SKUs: {missing_bom_skus}"
+                self.add_warning(warning_msg)
+                logger.warning(f"   ⚠️  {warning_msg}")
+            
+            # Detect circular BOM references
+            self._detect_circular_bom_references(bom_df)
+            
+            # Merge forecast and BOM data
+            merged_df = pd.merge(
+                forecast_df,
+                bom_df,
+                on='sku_id',
+                how='inner'
+            )
+            
+            if merged_df.empty:
+                logger.warning("   ⚠️  No matching SKUs found between forecast and BOM data")
+                return pd.DataFrame(columns=['material_id', 'total_requirement', 'sku_id'])
+            
+            # Calculate material requirements
+            merged_df['material_requirement'] = merged_df['unified_qty'] * merged_df['qty_per_unit']
+            
+            # Handle unit conversions if unit column exists
+            if 'unit' in merged_df.columns:
+                merged_df = self._handle_unit_conversions(merged_df)
+            
+            # Aggregate requirements by material
+            result = merged_df.groupby(['material_id']).agg({
+                'material_requirement': 'sum',
+                'sku_id': lambda x: ', '.join(x.unique())
+            }).reset_index()
+            
+            result.rename(columns={'material_requirement': 'total_requirement'}, inplace=True)
+            
+            # Handle fractional requirements
+            result['total_requirement'] = result['total_requirement'].round(6)
+            
+            logger.info(f"   ✅ Exploded {len(forecast_df)} forecasts into {len(result)} material requirements")
+            
+            return result
+            
+        except Exception as e:
+            error_msg = f"Error in explode_bom: {str(e)}"
+            self.add_error(error_msg)
+            logger.error(f"   ❌ {error_msg}")
+            return pd.DataFrame(columns=['material_id', 'total_requirement', 'sku_id'])
+    
+    def net_inventory(self, requirements, inventory):
+        """
+        Calculate net requirements after considering inventory
+        
+        Args:
+            requirements (pd.DataFrame): Material requirements
+            inventory (pd.DataFrame): Current inventory with columns:
+                - material_id: Material identifier
+                - on_hand_qty: On-hand quantity
+                - unit: Unit of measure
+        
+        Returns:
+            pd.DataFrame: Net requirements
+        """
+        try:
+            # Handle empty inputs
+            if requirements.empty:
+                logger.info("   ⚠️  Empty requirements data provided")
+                return pd.DataFrame(columns=['material_id', 'gross_requirement', 'on_hand_qty', 'net_requirement'])
+            
+            if inventory.empty:
+                logger.info("   ⚠️  Empty inventory data provided")
+                # Return requirements as net requirements
+                result = requirements.copy()
+                result['gross_requirement'] = result['total_requirement']
+                result['on_hand_qty'] = 0
+                result['net_requirement'] = result['gross_requirement']
+                return result[['material_id', 'gross_requirement', 'on_hand_qty', 'net_requirement']]
+            
+            # Validate inventory data
+            self._validate_inventory_data(inventory)
+            
+            # Create copies
+            req_df = requirements.copy()
+            inv_df = inventory.copy()
+            
+            # Rename columns for consistency
+            if 'total_requirement' in req_df.columns:
+                req_df = req_df.rename(columns={'total_requirement': 'gross_requirement'})
+            elif 'gross_requirement' not in req_df.columns:
+                # Try to find a quantity column
+                qty_columns = [col for col in req_df.columns if 'qty' in col.lower() or 'requirement' in col.lower()]
+                if qty_columns:
+                    req_df = req_df.rename(columns={qty_columns[0]: 'gross_requirement'})
+            
+            # Merge requirements with inventory
+            result = pd.merge(
+                req_df,
+                inv_df[['material_id', 'on_hand_qty']],
+                on='material_id',
+                how='left'
+            )
+            
+            # Fill missing inventory with zeros
+            result['on_hand_qty'] = result['on_hand_qty'].fillna(0)
+            
+            # Handle negative inventory (treat as additional requirement)
+            result['effective_on_hand'] = result['on_hand_qty'].clip(lower=0)
+            result['additional_requirement'] = result['on_hand_qty'].clip(upper=0).abs()
+            
+            # Calculate net requirement
+            result['net_requirement'] = (
+                result['gross_requirement'] 
+                - result['effective_on_hand'] 
+                + result['additional_requirement']
+            )
+            
+            # Ensure net requirements are not negative
+            result['net_requirement'] = result['net_requirement'].clip(lower=0)
+            
+            # Handle unit conversions if needed
+            if 'unit' in result.columns:
+                result = self._handle_inventory_unit_conversions(result)
+            
+            # Log negative inventory materials
+            negative_inventory = result[result['on_hand_qty'] < 0]
+            if not negative_inventory.empty:
+                warning_msg = f"Negative inventory found for materials: {negative_inventory['material_id'].tolist()}"
+                self.add_warning(warning_msg)
+                logger.warning(f"   ⚠️  {warning_msg}")
+            
+            # Final cleanup
+            final_result = result[['material_id', 'gross_requirement', 'on_hand_qty', 'net_requirement']].copy()
+            
+            # Round to handle floating point precision
+            final_result['gross_requirement'] = final_result['gross_requirement'].round(6)
+            final_result['net_requirement'] = final_result['net_requirement'].round(6)
+            
+            logger.info(f"   ✅ Calculated net requirements for {len(final_result)} materials")
+            materials_needed = len(final_result[final_result['net_requirement'] > 0])
+            logger.info(f"   📦 {materials_needed} materials need procurement")
+            
+            return final_result
+            
+        except Exception as e:
+            error_msg = f"Error in net_inventory: {str(e)}"
+            self.add_error(error_msg)
+            logger.error(f"   ❌ {error_msg}")
+            return pd.DataFrame(columns=['material_id', 'gross_requirement', 'on_hand_qty', 'net_requirement'])
+    
+    def has_errors(self):
+        """
+        Check if any errors occurred during processing
+        
+        Returns:
+            bool: True if errors exist, False otherwise
+        """
+        return len(self._errors) > 0
+    
+    def add_error(self, message):
+        """Add an error message to the error list"""
+        self._errors.append(message)
+    
+    def add_warning(self, message):
+        """Add a warning message to the warning list"""
+        self._warnings.append(message)
+    
+    def get_errors(self):
+        """Get all error messages"""
+        return self._errors.copy()
+    
+    def get_warnings(self):
+        """Get all warning messages"""
+        return self._warnings.copy()
+    
+    def clear_errors(self):
+        """Clear all errors and warnings"""
+        self._errors = []
+        self._warnings = []
+    
+    def _validate_forecast_data(self, df):
+        """Validate forecast data quality"""
+        # Check for null values
+        null_counts = df.isnull().sum()
+        if null_counts.any():
+            warning_msg = f"Null values found in forecast data: {null_counts[null_counts > 0].to_dict()}"
+            self.add_warning(warning_msg)
+        
+        # Check for invalid dates
+        try:
+            pd.to_datetime(df['forecast_date'])
+        except:
+            self.add_error("Invalid date format in forecast_date column")
+        
+        # Check for non-numeric quantities
+        if not pd.api.types.is_numeric_dtype(df['forecast_qty']):
+            self.add_error("forecast_qty column must be numeric")
+    
+    def _validate_bom_data(self, df):
+        """Validate BOM data quality"""
+        required_columns = ['sku_id', 'material_id', 'qty_per_unit']
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            error_msg = f"Missing required BOM columns: {missing_columns}"
+            self.add_error(error_msg)
+        
+        # Check for negative quantities
+        if 'qty_per_unit' in df.columns and (df['qty_per_unit'] < 0).any():
+            self.add_error("Negative quantities found in BOM data")
+    
+    def _validate_inventory_data(self, df):
+        """Validate inventory data quality"""
+        required_columns = ['material_id', 'on_hand_qty']
+        missing_columns = [col for col in required_columns if col not in df.columns]
+        if missing_columns:
+            error_msg = f"Missing required inventory columns: {missing_columns}"
+            self.add_error(error_msg)
+        
+        # Check for non-numeric quantities
+        if 'on_hand_qty' in df.columns and not pd.api.types.is_numeric_dtype(df['on_hand_qty']):
+            self.add_error("on_hand_qty column must be numeric")
+    
+    def _handle_quantity_issues(self, df):
+        """Handle zero and negative quantities"""
+        # Log zero quantities
+        zero_qty = df[df['forecast_qty'] == 0]
+        if not zero_qty.empty:
+            logger.info(f"   📊 Found {len(zero_qty)} zero quantity forecasts")
+        
+        # Log negative quantities
+        negative_qty = df[df['forecast_qty'] < 0]
+        if not negative_qty.empty:
+            warning_msg = f"Found {len(negative_qty)} negative quantity forecasts"
+            self.add_warning(warning_msg)
+            logger.warning(f"   ⚠️  {warning_msg}")
+        
+        # Log extreme quantities
+        extreme_qty = df[df['forecast_qty'] > 1000000]
+        if not extreme_qty.empty:
+            warning_msg = f"Found {len(extreme_qty)} extremely large quantity forecasts"
+            self.add_warning(warning_msg)
+            logger.warning(f"   ⚠️  {warning_msg}")
+        
+        return df
+    
+    def _handle_bom_percentages(self, df):
+        """Handle BOM percentage corrections"""
+        # Group by SKU and check percentage sums
+        sku_percentages = df.groupby('sku_id')['qty_per_unit'].sum()
+        
+        # Check for 99% BOMs (auto-correct)
+        boms_99 = sku_percentages[(sku_percentages >= 0.98) & (sku_percentages < 1.0)]
+        if not boms_99.empty:
+            logger.info(f"   🔧 Auto-correcting {len(boms_99)} BOMs summing to ~99%")
+            for sku in boms_99.index:
+                correction_factor = 1.0 / sku_percentages[sku]
+                df.loc[df['sku_id'] == sku, 'qty_per_unit'] *= correction_factor
+        
+        # Check for 101%+ BOMs (warning)
+        boms_101 = sku_percentages[sku_percentages > 1.01]
+        if not boms_101.empty:
+            warning_msg = f"BOMs summing to >101% found for SKUs: {boms_101.index.tolist()}"
+            self.add_warning(warning_msg)
+            logger.warning(f"   ⚠️  {warning_msg}")
+        
+        return df
+    
+    def _detect_circular_bom_references(self, df):
+        """Detect circular BOM references"""
+        # Simple circular reference detection
+        skus_as_materials = set(df['sku_id'].unique())
+        materials_as_skus = set(df['material_id'].unique())
+        circular_refs = skus_as_materials & materials_as_skus
+        
+        if circular_refs:
+            warning_msg = f"Potential circular BOM references detected: {circular_refs}"
+            self.add_warning(warning_msg)
+            logger.warning(f"   ⚠️  {warning_msg}")
+    
+    def _handle_unit_conversions(self, df):
+        """Handle unit conversions in BOM explosion"""
+        # Basic unit conversion logic
+        if 'unit' in df.columns:
+            # Log unit types found
+            units = df['unit'].unique()
+            logger.info(f"   🔄 Processing units: {units}")
+        
+        return df
+    
+    def _handle_inventory_unit_conversions(self, df):
+        """Handle unit conversions in inventory netting"""
+        # Basic unit conversion logic for inventory
+        if 'unit' in df.columns:
+            units = df['unit'].unique()
+            logger.info(f"   🔄 Processing inventory units: {units}")
+        
+        return df

@@ -2,6 +2,6 @@
 Beverly Knits Raw Material Planner - Main Planning Engine
 """
 
-from .planner import RawMaterialPlanner
+from .planner import RawMaterialPlanner, MaterialPlanner
 
-__all__ = ['RawMaterialPlanner']
+__all__ = ['RawMaterialPlanner', 'MaterialPlanner']

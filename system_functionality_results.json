@@ -1,0 +1,124 @@
+{
+  "timestamp": "2025-07-12 09:20:24",
+  "summary": {
+    "total_tests": 18,
+    "successes": 17,
+    "errors": 1,
+    "warnings": 0,
+    "success_rate": 94.44444444444444
+  },
+  "test_results": [
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Python 3.13",
+      "timestamp": 1752312024.8528965
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "pandas available",
+      "timestamp": 1752312024.8529024
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "numpy available",
+      "timestamp": 1752312024.8529053
+    },
+    {
+      "category": "Dependencies",
+      "status": "SUCCESS",
+      "message": "streamlit available",
+      "timestamp": 1752312024.954931
+    },
+    {
+      "category": "Dependencies",
+      "status": "ERROR",
+      "message": "plotly not available",
+      "timestamp": 1752312024.9549904
+    },
+    {
+      "category": "Environment",
+      "status": "SUCCESS",
+      "message": "Running from correct directory",
+      "timestamp": 1752312024.9550176
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "engine.planner imported successfully",
+      "timestamp": 1752312024.9604208
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.forecast imported successfully",
+      "timestamp": 1752312024.9604492
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.bom imported successfully",
+      "timestamp": 1752312024.9604619
+    },
+    {
+      "category": "Module Import",
+      "status": "SUCCESS",
+      "message": "models.inventory imported successfully",
+      "timestamp": 1752312024.9604702
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "Forecast Model",
+      "timestamp": 1752312024.9609752
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "BOM Model",
+      "timestamp": 1752312024.961381
+    },
+    {
+      "category": "Core Models",
+      "status": "SUCCESS",
+      "message": "Inventory Model",
+      "timestamp": 1752312024.9615343
+    },
+    {
+      "category": "Engine Components",
+      "status": "SUCCESS",
+      "message": "MaterialPlanner instantiated",
+      "timestamp": 1752312024.9615703
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "unify_forecasts method available",
+      "timestamp": 1752312024.9615722
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "explode_bom method available",
+      "timestamp": 1752312024.9615736
+    },
+    {
+      "category": "Engine Methods",
+      "status": "SUCCESS",
+      "message": "net_inventory method available",
+      "timestamp": 1752312024.961576
+    },
+    {
+      "category": "Data Processing",
+      "status": "SUCCESS",
+      "message": "All pandas operations working",
+      "timestamp": 1752312024.9622607
+    }
+  ],
+  "errors": [
+    "Dependencies: plotly not available"
+  ],
+  "warnings": []
+}
